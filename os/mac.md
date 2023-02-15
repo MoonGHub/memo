@@ -3,6 +3,7 @@
 ## Shortcut
 
 - `Ctrl Cmd Space`: 이모티콘
+- `Shift Cmd .`: 숨김 파일 토글
 
 ---
 
