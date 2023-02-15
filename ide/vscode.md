@@ -1,6 +1,6 @@
-# Shortcut - VSCode
+# IDE - VSCode
 
-## Windows
+## Windows Shortcut
 
 - Origin
 
@@ -16,7 +16,7 @@
   - `Ctrl n`: New file
   - `Ctrl Alt s`: Save Without Formatting
 
-## Mac
+## Mac Shortcut
 
 - Origin
   - `Cmd \`: Split Editor/Terminal

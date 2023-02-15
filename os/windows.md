@@ -2,4 +2,6 @@
 
 ## Shortcut
 
-- `windows .`: 이모티콘
+- `Windows .`: 이모티콘
+
+---
