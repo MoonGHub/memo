@@ -32,7 +32,7 @@ Drawing Line : `---` or `***`
 
 **Bold Text** : `**TEXT**` or `__TEXT__`
 
-_italic_ : `*TEXT*` or `_TEXT`
+_italic_ : `*TEXT*` or `_TEXT_`
 
 **_Bold and Italic_** : `***TEXT***` or `___TEXT___`
 
