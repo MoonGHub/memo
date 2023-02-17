@@ -1,4 +1,4 @@
-# Database - MySQL
+# DATABASE - MySQL
 
 ## 유저
 

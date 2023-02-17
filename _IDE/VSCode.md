@@ -12,6 +12,7 @@
   - `Home/End`: Cursor Home/End
   - `Ctrl d`: 커서 단어 반복 선택
   - `Ctrl Shift Alt Up/Down`: 커서 여러개 생성
+  - `Ctrl h`: Find and Replace
 
 - Custom
   - `Windows Shift \`: Split Editor
@@ -29,6 +30,9 @@
   - `Cmd Shift u`: OUTPUT 콘솔 토글
   - `Option Shift a`: 블록 주석
   - `Cmd 방향키`: 커서 끝
+  - `Shift Option Drag` : 마우스 드래그
+  - `Option Click` : 멀티 커서
+  - `Ctrl g`: Go to Line
 
 - Custom
   - `Ctrl d`: 커서 단어 반복 선택
@@ -36,3 +40,4 @@
   - `Ctrl Cmd s`: Save Without Formatting
   - `Ctrl Enter`: Git - Open File
   - `Ctrl Shift Cmd Up/Down`: 커서 여러개 생성
+  - `Ctrl h`: Find and Replace

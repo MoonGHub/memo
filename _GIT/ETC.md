@@ -1,4 +1,4 @@
-# Git - ETC
+# GIT - ETC
 
 ### 🦋 SSH Key gen 생성
 

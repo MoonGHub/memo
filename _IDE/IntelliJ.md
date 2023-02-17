@@ -1,0 +1,83 @@
+# IDE - IntelliJ
+
+- Intellij
+- ctrl + r : 실행 / 재실행
+-
+- auto reload ------------------------------------------------------------
+- main>resources>application-dev.yml에
+- # Dev Tools
+- devtools:
+- livereload:
+- enabled: true
+- 밑에 이건 생략 ..
+- freemaker:
+- cache: false
+- 추가
+-
+- buidl.gradle에 developmentOnly 'org.springframework.boot:spring-boot-devtools'
+- 추가
+-
+- Preferences의 Advanced Settings > Allow auto-make to start … 체크
+- Compiler > Build project automatically… 체크
+- → 이건 자바 설정.. ?
+-
+- 타임리프 ---------
+- spring.thymeleaf.cache=false
+- Edit Configurations > Running Application Update policies >
+- On ‘Update action : Update classes and resources
+- On frame deactivation : Update clases and resources
+- 로 변경!
+-
+- 자동 정렬(js) ------------------------------------------------------------
+- Preference > Actions on save > Reformat code 체크
+-
+-
+-
+-
+-
+- git 충돌
+- 1. 중간 해결
+- 지정 파일만 풀받기 가능?
+- 전체풀의 경우는…?
+-
+- 2. 직전 해결
+- pr시에 에디터에서 해결이 가능?
+- pr전에 풀받아서 해결
+- 1. 나의 완료 작업 commit
+- 2. master브랜치 fetch & pull
+- $git pull origin master # 브랜치에서 실행!, 마스터 브랜치를 당겨옴
+-     3) resolve해결 후 commit
+-     4) git push origin 브랜치명 -f
+-
+- 추가 내용
+- git reset 커밋해시 # 뒤에 커밋 모두 취소되고 working directory에 추가 됨
+-
+- 추가 내용
+-     git rebase -i --root 	# pick →  s (squash) 전체 합치기
+-     			# --root 옵션은 첫 커밋부터 최신까지 표시
+-     			# --root 대신 커밋해쉬^   (^에 주의!) 입력 시, 지정 커밋부터 최신까지 표시(→ 중간 부터 끝까지 합치기 가능)
+-
+- 추가 내용
+- 최신 커밋 수정은 git commit --amend
+- 중간 수정은 git rebase --interactive 지정커밋해쉬^
+-     # 커밋포커싱이 지정커밋해쉬로 바뀜
+- 지정커밋해쉬의 pick → edit && ZZ
+- 수정 후, git add .
+- git commit --amend
+- (+ 커밋 메세지 수정!)
+- git rebase --continue
+- no conflict시, 바로 5번
+- conflict시, 해당 파일이 conflict로 수정 됨 → resolve해줌
+- (resolve로 수정하는 파일은 지정커밋 이후 버젼의 파일임!!!)
+- resolve후, 다시 git rebase --continue
+- (+ conflict난 버젼의 메세지 수정(지정 커밋 이후임!))
+- Successfully 뜨면 성공 !
+-
+-
+-
+- 브랜치에서 브랜치따기
+- $​​git branch BIZWAVE-5362 origin/dev
+-
+-
+-
+-
