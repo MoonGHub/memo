@@ -13,6 +13,7 @@
   - `Ctrl d`: 커서 단어 반복 선택
   - `Ctrl Shift Alt Up/Down`: 커서 여러개 생성
   - `Ctrl h`: Find and Replace
+  - `Ctrl g`: Go to Line
 
 - Custom
   - `Windows Shift \`: Split Editor
@@ -41,3 +42,8 @@
   - `Ctrl Enter`: Git - Open File
   - `Ctrl Shift Cmd Up/Down`: 커서 여러개 생성
   - `Ctrl h`: Find and Replace
+
+## Extension Shortcut
+
+- Code runnder
+  - `Ctrl Alt(Cmd) n`: Run Code
