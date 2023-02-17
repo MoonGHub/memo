@@ -10,6 +10,8 @@
   - `Alt Down`: Move Right Terminal
   - `Ctrl Home/End`: Cursor Top/Bottom
   - `Home/End`: Cursor Home/End
+  - `Ctrl d`: 커서 단어 반복 선택
+  - `Ctrl Shift Alt Up/Down`: 커서 여러개 생성
 
 - Custom
   - `Windows Shift \`: Split Editor
@@ -26,10 +28,11 @@
   - `Option Shift Down/Up`: 행 복사
   - `Cmd Shift u`: OUTPUT 콘솔 토글
   - `Option Shift a`: 블록 주석
-  - `Option Cmd Up/Down `: 커서 여러개 생성
   - `Cmd 방향키`: 커서 끝
 
 - Custom
   - `Ctrl d`: 커서 단어 반복 선택
   - `Ctrl n`: New file
   - `Ctrl Cmd s`: Save Without Formatting
+  - `Ctrl Enter`: Git - Open File
+  - `Ctrl Shift Cmd Up/Down`: 커서 여러개 생성
