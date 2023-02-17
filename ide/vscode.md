@@ -8,6 +8,8 @@
   - `Ctrl PgDown`: Move Next Tab
   - `Alt Up`: Move Left Terminal
   - `Alt Down`: Move Right Terminal
+  - `Ctrl Home/End`: Cursor Top/Bottom
+  - `Home/End`: Cursor Home/End
 
 - Custom
   - `Windows Shift \`: Split Editor
@@ -19,8 +21,15 @@
 ## Mac Shortcut
 
 - Origin
+
   - `Cmd \`: Split Editor/Terminal
   - `Option Shift Down/Up`: 행 복사
-  - `Cmd d`: 커서 단어 반복 선택
   - `Cmd Shift u`: OUTPUT 콘솔 토글
   - `Option Shift a`: 블록 주석
+  - `Option Cmd Up/Down `: 커서 여러개 생성
+  - `Cmd 방향키`: 커서 끝
+
+- Custom
+  - `Ctrl d`: 커서 단어 반복 선택
+  - `Ctrl n`: New file
+  - `Ctrl Cmd s`: Save Without Formatting

@@ -1,5 +1,9 @@
 # Os - Linux
 
+## Shortcut
+
+- `Ctrl l`: Clear Terminal
+
 ## Command
 
 - man
@@ -41,3 +45,10 @@
 - 문자열검색
 - 메타캐릭터&기술자
 - 환경변수
+
+## LVM(Logical Volume Manager) 볼륨 사이즈 확장
+
+## Ubuntu
+
+- Command
+  - `sudo su`: Root계정 전환
