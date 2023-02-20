@@ -9,7 +9,7 @@
 
 ### 🦋 Terminal 꾸미기
 
-실리콘 맥의 경우 `arch -arm64`를 brew실행 시, Prefix로 추가
+**실리콘 맥의 경우, brew사용 시 Prefix로 `arch -arm64` 추가**
 
 1. `brew install wget`
 2. `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
