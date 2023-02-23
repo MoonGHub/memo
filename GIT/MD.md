@@ -66,15 +66,27 @@ Block code is the followings :
 console.log("print");
 ```
 
-<br>
+---
+
+- [x] #739 `#0d1117`
+- [ ] https://github.com/octo-org/octo-repo/issues/740
+- [ ] Add delight to the experience when all tasks are complete :tada:
+- ```md
+  - [x] #739 `#0d1117`
+  - [ ] https://github.com/octo-org/octo-repo/issues/740
+  - [ ] Add delight to the experience when all tasks are complete :tada:
+  ```
 
 ---
 
 ## Link
 
-- [test](naver.com): \[test\]\(naver.com\)
-- <a href="#">link</a> : html 태그를 쓰자
-- <img src="https://cdnb.artstation.com/p/assets/images/images/025/923/221/medium/-goblin-export.jpg?1587352888" width="10%" height="10%"/> : 이미지도 html 태그를 쓰자
+- [test](naver.com) : `[test](naver.com)`
+- <a href="#">link</a> : `<a href="#">link</a>`
+- `<img src="https://cdnb.artstation.com/p/assets/images/images/025/923/221/medium/-goblin-export.jpg?1587352888" width="10%" height="10%"/>`\
+  <img src="https://cdnb.artstation.com/p/assets/images/images/025/923/221/medium/-goblin-export.jpg?1587352888" width="10%" height="10%"/>
+- `![image](https://cdnb.artstation.com/p/assets/images/images/025/923/221/medium/-goblin-export.jpg?1587352888)`\
+  ![image](https://cdnb.artstation.com/p/assets/images/images/025/923/221/medium/-goblin-export.jpg?1587352888)
 
 <br>
 

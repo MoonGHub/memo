@@ -14,6 +14,7 @@
   - `Ctrl Shift Alt Up/Down`: 커서 여러개 생성
   - `Ctrl h`: Find and Replace
   - `Ctrl g`: Go to Line
+  - `Ctrl Shift c`: Open New External Terminal
 
 - Custom
   - `Windows Shift \`: Split Editor
@@ -34,6 +35,7 @@
   - `Shift Option Drag` : 마우스 드래그
   - `Option Click` : 멀티 커서
   - `Ctrl g`: Go to Line
+  - `Cmd Shift c`: Open New External Terminal
 
 - Custom
   - `Ctrl d`: 커서 단어 반복 선택
