@@ -1,5 +1,9 @@
 # NGINX
 
+## Command
+
+- `nginx -s reload`
+
 ## default.conf
 
 ```conf
