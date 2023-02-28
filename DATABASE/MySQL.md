@@ -24,13 +24,12 @@
 - `show databases;`
 - `use database_name;`
 
-- 음
-  - 읍
-
 ## 테이블
+
+> 명명 규칙
+>
+> - 테이블: 소문자, 언더스코어, 복수형, 축약X, 능동형\
+> - 칼럼: 접미어 활용, fk는 fk-부모테이블 등
 
 - `show tables;`
 - `desc table_name;`
-
-- 음
-  - 음
