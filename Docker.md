@@ -1,11 +1,14 @@
 # Docker
 
-CYCLE\
+**CYCLE**\
 DockerFile > Image > Container
 
 ## Install
 
-- `apt install docker-compose`
+1. `curl -fsSL https://get.docker.com -o get-docker.sh`
+2. `sh get-docker.sh`
+3. `docker info` 또는 `systemctl status docker` 또는 `snap services`
+4. `apt install docker-compose`
 
 ## Command
 
@@ -39,7 +42,7 @@ DockerFile > Image > Container
 
 ### 기타
 
-- `docker ps`\
+- `docker ps -a`\
   모든 컨테이너 목록 출력
 - `docker images`\
   이미지 목록 출력
@@ -56,15 +59,20 @@ DockerFile > Image > Container
 
 ### Hub
 
-- `docker login`
-- `docker tag <IMAGE_ID> <NEW_IMAGE_NAME>:<NEW_TAG>`\
-  로컬 이미지의 이름 및 태그 변경
-  - `docker tag app_nginx answlgus1122/app:nginx`
-  - `docker tag mysql:8.0 answlgus1122/app:mysql`
-- `docker push answlgus1122/app:myapp`\
-  도커 허브의 repository에 업로드
-- `docker pull -a answlgus1122/app`\
-  도커 허브에서 다운로드
+- 검색 및 다운로드
+  - `docker search nginx`
+  - `docker pull nginx:latest`\
+    태그 생략 가능
+- 이미지 업로드 및 다운로드
+  - `docker login`
+  - `docker tag <IMAGE_ID> <NEW_IMAGE_NAME>:<NEW_TAG>`\
+    로컬 이미지의 이름 및 태그 변경
+    - `docker tag app_nginx answlgus1122/app:nginx`
+    - `docker tag mysql:8.0 answlgus1122/app:mysql`
+  - `docker push answlgus1122/app:myapp`\
+    도커 허브의 repository에 업로드
+  - `docker pull -a answlgus1122/app`\
+    도커 허브에서 다운로드
 
 ### Example
 

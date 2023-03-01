@@ -1,5 +1,13 @@
 # IDE - VSCode
 
+### 🦋 언어 변경
+
+Command Palette > `Configure Display Language`
+
+---
+
+`F1`: Command Palette
+
 ## Windows Shortcut
 
 - Origin
@@ -12,13 +20,15 @@
   - `Home/End`: Cursor Home/End
   - `Ctrl d`: 커서 단어 반복 선택
   - `Ctrl Shift Alt Up/Down`: 커서 여러개 생성
+  - 마우스 드래그 선택 ?
+  - 멀티 커서 ?
   - `Ctrl h`: Find and Replace
   - `Ctrl g`: Go to Line
   - `Ctrl Shift c`: Open New External Terminal
 
 - Custom
-  - `Windows Shift \`: Split Editor
-  - `Windows \`: Split Terminal
+  - `Windows Shift \`: Split Editor ?
+  - `Windows \`: Split Terminal ?
   - `Ctrl Enter`: Git - Open File
   - `Ctrl n`: New file
   - `Ctrl Alt s`: Save Without Formatting
@@ -32,7 +42,7 @@
   - `Cmd Shift u`: OUTPUT 콘솔 토글
   - `Option Shift a`: 블록 주석
   - `Cmd 방향키`: 커서 끝
-  - `Shift Option Drag` : 마우스 드래그
+  - `Shift Option Drag` : 마우스 드래그 선택
   - `Option Click` : 멀티 커서
   - `Ctrl g`: Go to Line
   - `Cmd Shift c`: Open New External Terminal

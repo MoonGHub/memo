@@ -1,5 +1,7 @@
 # OS - ESXI
 
+### Linux 시스템에 VMware Tools 설치
+
 ### 🦋 **L2** vs **L3**
 
 - **L2**: Data link layer

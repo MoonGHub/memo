@@ -38,6 +38,8 @@
 - killall
 - pkill
 - pgrep
+- systemctl
+- snap
 
 ---
 
@@ -50,7 +52,19 @@
 
 ---
 
-## LVM(Logical Volume Manager) 볼륨 사이즈 확장
+### 🦋 **service** vs **systemctl**
+
+최근 리눅스 버전에서는 init데몬 대신에 systemd데몬을 사용하여 프로세스를 관리
+
+- `service`: init데몬 사용\
+  사용법)
+  - `service 서비스명 status`
+  - `service 서비스명 start`
+- `systemctl`: systemd데몬 사용
+  사용법)
+  - `systemctl status 서비스명`
+
+### 🦋 LVM(Logical Volume Manager) 볼륨 사이즈 확장
 
 ---
 
@@ -60,31 +74,21 @@
 
 ```shell
 apt update
-apt install net-tools
-
-4. sudo apt install apt-transport-https ca-certificates curl software-properties-common
-5. curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-6. sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-7. sudo apt update
-8. apt-cache policy docker-ce
-docker-ce:
-  Installed: (none). —> 도커가 아직 설치 안됨
-9. sudo apt install docker-ce
-10. sudo systemctl status docker
-
-
+apt upgrade
+apt install curl net-tools
 ```
 
 - 기타 Command
   - `sudo passwd root`: Root계정 패스워드 설정
   - `sudo su` or `sudo -`: Root계정 전환(설치 직후는 패스워드 설정이 필요)
-  -
+
+---
 
 ### 🦋 SSH 접속
 
 - Lightsail
   1. 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
-  2. ssh -i /Users/moong/Downloads/LightsailDefaultKey-ap-northeast-2.pem ubuntu@3.35.129.200
+  2. `ssh -i pem파일경로 ubuntu@3.35.129.200`
 
 ### 🦋 **apt** vs **yum**
 
@@ -106,3 +110,21 @@ docker-ce:
 
 `grep root /etc/passwd`: root사용자에 대한 정보 확인\
 `cat /etc/shells`: 현재 사용 가능한 쉘 확인
+
+### 🦋 background 실행 및 foreground, background 전환
+
+background로 실행\
+`명령어 &`: background 실행 - 끝에 `&`를 붙여줌
+
+background로 전환
+
+1. `ctrl z`: 중지 상태로 변경
+2. `jobs`
+3. `bg %[jobs의 task number]`\
+   ex) `bg %2`
+
+foreground로 전환
+
+1. `jobs`
+2. `fg %[jobs의 task number]`\
+   ex) `fg %1`
