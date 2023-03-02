@@ -76,11 +76,13 @@
 apt update
 apt upgrade
 apt install curl net-tools
+apt-get update && apt-get install apt-file -y && apt-file update && apt-get install vim -y
 ```
 
 - 기타 Command
   - `sudo passwd root`: Root계정 패스워드 설정
   - `sudo su` or `sudo -`: Root계정 전환(설치 직후는 패스워드 설정이 필요)
+  - `uname -a` 또는 `uname -r`: 커널 버전 확인
 
 ---
 
@@ -128,3 +130,8 @@ foreground로 전환
 1. `jobs`
 2. `fg %[jobs의 task number]`\
    ex) `fg %1`
+
+### 🦋 재부팅 및 종료
+
+재부팅: `sudo reboot` 또는 `sudo shutdown -r now`\
+종료: `sudo shutdown -h now`

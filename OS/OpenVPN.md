@@ -43,4 +43,20 @@
 
 1. `https://OpenVPN호스트 IP:943/admin` 접속
 2. Configuration > Network Settings
-3. 서버 프로토콜(TCP 또는 UDP) Port 및 웹 서버 접속 포트 변경
+3. VPN Server섹션에서 서버 프로토콜(TCP 또는 UDP) 및 포트 변경\
+   => OpenVPN Connect를 사용하여 외부에서 접속하는 포트
+4. Admin Web Server에서 포트 변경\
+   => 웹 콘솔 접속 포트
+
+### 🦋 웹 콘솔 로그인 락 해제 방법
+
+[참고](https://openvpn.net/faq/how-do-i-unlock-users-that-are-locked-out-now/)
+
+```shell
+cd /usr/local/openvpn_as/scripts/
+./sacli --key "vpn.server.lockout_policy.reset_time" --value "1" ConfigPut
+./sacli start
+sleep 2
+./sacli --key "vpn.server.lockout_policy.reset_time" ConfigDel
+./sacli start
+```

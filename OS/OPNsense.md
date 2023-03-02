@@ -3,6 +3,10 @@
 - 초기 ID/PWD
   - ID: root
   - PWD: opnsense
+- 설치 위치 경로 및 설정 파일
+  - /usr/local/etc/
+  - /usr/local/etc/haproxy
+  - /usr/local/etc/haproxy.conf
 
 ### 🦋 Shell(8) 인스톨러 실행
 
@@ -17,7 +21,7 @@
 ### 🦋 포트 추가(OPT1)
 
 1. Firewall > Rules > OPT1 > Add
-2. Default로 설정된 값들로 바로 저장\
+2. Default로 설정된 값들로 바로 저장(아웃바인드 허용)
 
 ### 🦋 웹 관리 콘솔 접속 제한(포트)
 
@@ -26,15 +30,39 @@
 
 ### 🦋 플러그인 추가
 
-System > Firmware > Plugins\
+System > Firmware > Plugins
 
 - 설치 후 새로고침 시, Services에 표시
 
+### 🦋 NAT(Network Address Translation)설정
+
+Firewall > NAT > Port Forward > add(방화벽 자동 등록됨)
+
+- Interface: WAN\
+   IPv4/TCP
+- Source: all
+- Destination: This Firewall\
+   port range: HTTP\
+   Redirect target IP: 내부망 서버 GW IP
+
 ### 🦋 리버스 프록시 설정 - HAProxy
 
-- 시작 에러(확인: `service haproxy status` 및 `service haproxy start`)
-  1. ㅁㅁ
-  2. ㄴㄴㄴ
+1. Real Servers 등록
+   - FQDN or IP: WAS IP
+2. Virtual Services > Backend Pools 등록
+   - Servers: 1.번의 서버
+3. Rules & Checks > Conditions 등록
+   - Condition type: Host starts with
+   - Host Prefix: 도메인 이름
+4. Rules & Checks > Rules 등록
+   - Use backend pool: 2.번의 백엔드 풀
+5. Virtual Services > Public Services 등록
+   - Listen Addresses: 1.번의 IP:포트
+   - Select Rules: 3.번의 규칙
+
+- 시작 에러(WARNING: failed to start haproxy)
+  1. `service haproxy status` 및 `service haproxy start`으로 먼저 실행
+  2. `haproxy -d -f /usr/local/etc/haproxy.conf`으로 상세 에러 확인
 
 ### 🦋 SSL 발급 및 설정 - ACME Client
 

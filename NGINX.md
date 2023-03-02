@@ -1,5 +1,11 @@
 # NGINX
 
+- 설치 위치 경로 및 설정 파일
+  - /etc/nginx/
+  - /etc/nginx/nginx.conf
+  - /etc/nginx/conf.d/default.conf
+  - /usr/share/nginx/html
+
 ## Command
 
 - `nginx -s reload`

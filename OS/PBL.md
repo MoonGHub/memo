@@ -9,3 +9,18 @@
 
 `alias lerna="yarn lerna"`
 를 ~/.bashrc에 추가
+
+### 🦋 에러: E: Unable to locate package vim
+
+```shell
+apt-get update
+apt-get install apt-file
+apt-file update
+apt-get install vim
+```
+
+또는
+
+```shell
+apt-get update && apt-get install apt-file -y && apt-file update && apt-get install vim -y
+```
