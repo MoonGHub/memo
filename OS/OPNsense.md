@@ -1,96 +1,135 @@
 # OS - OPNSense
 
-- 초기 ID/PWD
-  - ID: root
-  - PWD: opnsense
+## 설치
+
+1. Shell(8) - 인스톨러 실행(`opnsense-installer`)
+   - ID: root
+   - PWD: opnsense
+2. Assign interfaces(1) - WAN과 LAN을 지정
+3. Set interface IP address(2) - 지정한 인터페이스에 IP및 서브넷 마스크 설정
+
 - 설치 위치 경로 및 설정 파일
   - /usr/local/etc/
   - /usr/local/etc/haproxy
   - /usr/local/etc/haproxy.conf
 
-### 🦋 Shell(8) 인스톨러 실행
-
-`opnsense-installer`
-
----
+<br />
 
 ## 웹 관리 콘솔에서의 설정
 
-크롬 브라우저에서 실행
+**크롬 브라우저에서 실행**
 
-### 🦋 포트 추가(OPT1)
+### 포트 추가(OPT1)
 
-1. Firewall > Rules > OPT1 > Add
-2. Default로 설정된 값들로 바로 저장(아웃바인드 허용)
+1.  Firewall > Rules > OPT1 > Add
+2.  Default로 설정된 값들로 바로 저장(아웃바인드 허용)
 
-### 🦋 웹 관리 콘솔 접속 제한(포트)
+### 웹 관리 콘솔 접속 제한(포트)
 
-1. System > Settings > Administration
-2. Listen Interfaces에서 설정
+1.  System > Settings > Administration
+2.  Web GUI > Listen Interfaces에서 설정
 
-### 🦋 플러그인 추가
+### NAT(Network Address Translation)설정
 
-System > Firmware > Plugins
+Firewall > NAT
 
-- 설치 후 새로고침 시, Services에 표시
+- 포트 포워딩(> Port Forward > add - 방화벽도 자동 등록됨)
+  - Interface: WAN\
+     IPv4/TCP
+  - Source: all
+  - Destination: This Firewall\
+     port range: IN 포트 지정\
+     Redirect target IP: NAT IP\
+     Redirect target port: NAT port
 
-### 🦋 NAT(Network Address Translation)설정
+<br />
 
-Firewall > NAT > Port Forward > add(방화벽 자동 등록됨)
+## 플러그인
 
-- Interface: WAN\
-   IPv4/TCP
-- Source: all
-- Destination: This Firewall\
-   port range: HTTP\
-   Redirect target IP: 내부망 서버 GW IP
+**플러그인 추가(System > Firmware > Plugins)**\
+(설치 후 새로고침 시, Services에 표시)
 
-### 🦋 리버스 프록시 설정 - HAProxy
+### HAProxy - 리버스 프록시 설정
 
-1. Real Servers 등록
-   - FQDN or IP: WAS IP
-2. Virtual Services > Backend Pools 등록
-   - Servers: 1.번의 서버
-3. Rules & Checks > Conditions 등록
-   - Condition type: Host starts with
-   - Host Prefix: 도메인 이름
-4. Rules & Checks > Rules 등록
-   - Use backend pool: 2.번의 백엔드 풀
-5. Virtual Services > Public Services 등록
-   - Listen Addresses: 1.번의 IP:포트
-   - Select Rules: 3.번의 규칙
+1.  Real Servers 등록
+    - FQDN or IP: WAS IP
+    - Port: 접속 port
+    - Verify SSL Certificate 체크 해제
+2.  Virtual Services > Backend Pools 등록
+    - Servers: 1.번의 서버
+3.  Rules & Checks > Conditions 등록
+    - Condition type: Host starts with 또는 Host contains
+    - Host Prefix 또는 Host contains: 도메인 이름
+4.  Rules & Checks > Rules 등록
+    - Select conditions: 3.번의 조건
+    - Execute function: Use specified Backend Pool
+    - Use backend pool: 2.번의 백엔드 풀
+5.  Virtual Services > Public Services 등록
+    - Listen Addresses: 외부 접속 IP:Port
+    - Select Rules: 3.번의 규칙
 
 - 시작 에러(WARNING: failed to start haproxy)
-  1. `service haproxy status` 및 `service haproxy start`으로 먼저 실행
-  2. `haproxy -d -f /usr/local/etc/haproxy.conf`으로 상세 에러 확인
+  1.  `service haproxy status` 및 `service haproxy start`으로 먼저 실행
+  2.  `haproxy -d -f /usr/local/etc/haproxy.conf`으로 상세 에러 확인
 
-### 🦋 SSL 발급 및 설정 - ACME Client
+### ACME Client - SSL 발급 및 HAproxy 설정
 
-Services > ACME Client >
+1.  Settings > Settings
+    - Enable Plugin 체크
+    - Auto Renewal 체크
+2.  Settings > Update Schedule\
+    갱신 자동 스케줄 추가(자동으로 추가되어 있음)
+    - enabled 체크
+3.  Accounts > Accounts > add
+    - Name
+    - E-Mail Address
+    - ACME CA: Let's Encrypt
+4.  Automations > Automations > add\
+    Restart HAProxy 추가
+5.  Challenge Types > Challenge Types > add\
+    지원하지 않는 DNS를 사용중으로 HTTP-01타입을 사용
+    - Name: HTTP-01
+    - Challenge Type: HTTP-01
+    - HTTP Service: HAProxy HTTP Frontend Integration(OPNsense plugin)
+    - Enable Auto-Configuration: 체크
+    - HAProxy Frontends: HAProxy에서 백엔드 풀이 등록되어있는 public service
+6.  Certificates > Certificates > add
+    - Common Name: 도메인 이름
+    - Alt Names: 사용 할 서브 도메인들을 추가...? 일단 공백
+    - ACME Account: 3.의 계정
+    - Challenge Type: 5.의 타입
+    - Key Length: ec-384
+    - Automations: 4.의 자동화
+    - DNS Alias Mode: Automatic Mode (uses DNS lookups)
+7.  인증서 발급에 성공 되었으면, 5.에서 등록한 HAProxy의 public service의 설정을 변경
+    - Enable SSL offloading 체크
+    - SSL Offloading > Certificates: 6.에서 발급된 인증서를 등록
 
-1. Settings > Settings > Enable Plugin [x]
-2. Settings > Update Schedule\
-   갱신 자동 스케줄 추가(자동으로 추가되어 있음)
-3. Accounts > Accounts > add\
-    아래의 값 입력 후, 저장
-   - Name
-   - E-Mail Address
-4. Automations > Automations > add\
-   Restart HAProxy 추가
-5. Challenge Types > Challenge Types > add
-   - Name: Duck_Challenge
-   - DNS Service: DuckDNS\
-   - DNS Sleep Time: 120\
-   - API Token: duckdns.org에 로그인하여 토큰 복사
-6. Certificates > Certificates > add
-   - Common Name: 기본 도메인 추가
-   - Alt Names: 사용 할 서브 도메인들을 추가
-   - ACME Account: 추가한 계정 선택\
-   - Challenge Type: 추가한 타입 선택
-   - Key Length: ec-384
-   - Automations: 추가한 값
-   - DNS Alias Mode: Automatic Mode (uses DNS lookups)
+### HAProxy - http to https 리다이렉트 설정
+
+1. NAT 포트포워딩 설정을 추가(방화벽은 자동으로 추가 됨)
+   - WAN(all, all) -> Destination(This Firewall, 80) -> NAT(HAProxy public service의 리스닝 IP, 80)
+   - WAN(all, all) -> Destination(This Firewall, 443) -> NAT(HAProxy public service의 리스닝 IP, 443)
+2. HAProxy > 백엔드 풀이 설정된 public service의 리스닝 포트를 443으로 변경
+3. Rules & Checks > Conditions > add
+   - Name: Traffic_is_HTTP
+   - Condition type: Traffic is HTTP
+4. Rules & Checks > Rules > add
+   - Name: redirect_https
+   - Select conditions: 3.에서 추가한 Traffic_is_HTTP
+   - Execute function: http-request redirect
+   - HTTP Redirect: **scheme https code 301**
+5. Virtual Services > Public Services > add
+   - Name: ridirect_to_https
+   - Listen Addresses: GW IP:80
+   - Rules > Select Rules: 4.에서 추가한 redirect_https
+
+<br />
+
+---
+
+### 🦋 HAProxy 서브 도메인 추가
 
 ### 🦋 IPS(침입탐지시스템) 활성화
 
-### 🦋 내부망(NAT) 원격접속
+### 🦋 내부(NAT)망 원격접속
