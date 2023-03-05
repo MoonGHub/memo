@@ -14,6 +14,8 @@
   - [ETC](GIT/ETC.md)
   - [Grammar](GIT/Grammar.md)
   - [MD](GIT/MD.md)
+- Graphic Tools
+  - [AI](Graphic-Tools/AI.md)
 - IDE
   - [IntelliJ](IDE/IntelliJ.md)
   - [VSCode](IDE/VSCode.md)
