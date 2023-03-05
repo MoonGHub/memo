@@ -3,11 +3,28 @@
 ## Shortcut
 
 - `Ctrl Cmd Space`: 이모티콘
-- `Shift Cmd .`: 숨김 파일 토글
+- `Ctrl Cmd f`: 전체화면 토글\
+- `Cmd Shift .`: 숨김 파일 토글
+- `Cmd shift 3`: 화면 전체 캡쳐
+- `Cmd shift 4`: 화면 부분 캡쳐
+- `shift 드래그`: 좌우 스크롤
+- `Cmd ,`: 환경설정
+- `Cmd down`: 폴더 진입
+- `Cmd i`: 파일/폴더 정보
+- `Space`: 파일 미리보기
+- `Ctrl Space`: 키보드 국가 변환
+- `Ctrl Shift r`: 일본어 한자 재변환
 
----
+<br />
 
-### 🦋 Terminal 꾸미기
+## Terminal
+
+### Commands
+
+- `open library`\
+   해당 위치의 library폴더를 finder로 오픈
+
+### 꾸미기
 
 **실리콘 맥의 경우, brew사용 시 Prefix로 `arch -arm64` 추가**
 
@@ -22,6 +39,19 @@
 6. `brew install zsh-syntax-highlighting`
 7. **~/.zshrc** 내 아래 추가\
    `source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`
+
+<br />
+
+## chrome
+
+### Shortcut
+
+- `Cmd Shift f`: 전체화면에서 툴바 토글
+- `Cmd Option up`: 주소창 토글
+
+---
+
+## ETC
 
 ### 🦋 D2Coding 폰트 설치
 

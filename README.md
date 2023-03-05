@@ -14,6 +14,8 @@
   - [ETC](GIT/ETC.md)
   - [Grammar](GIT/Grammar.md)
   - [MD](GIT/MD.md)
+- Graphic Tools
+  - [AI](Graphic-Tools/AI.md)
 - IDE
   - [IntelliJ](IDE/IntelliJ.md)
   - [VSCode](IDE/VSCode.md)
@@ -35,7 +37,10 @@
   - [Windows](OS/Windows.md)
 - Python
 - React
+  - [Grammar](React/Grammar.md)
   - [PBL](React/PBL.md)
+  - [Storybook](React/Storybook.md)
+  - [TypeScript](React/TypeScript.md)
   - [Webpack](React/Webpack.md)
 - React-Native
   - [Build](React-Native/Build.md)
