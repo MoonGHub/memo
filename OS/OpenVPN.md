@@ -1,6 +1,6 @@
 # OS - OpenVPN
 
-### 🦋 설치
+### 🦋 설치(2.8.5)
 
 1. OpenVPN Access Server 설치 파일 다운로드(OVA)
    - [링크](https://as-portal.openvpn.com/get-access-server)

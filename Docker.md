@@ -10,6 +10,8 @@ DockerFile > Image > Container
 3. `docker info` 또는 `systemctl status docker` 또는 `snap services`
 4. `apt install docker-compose`
 
+<br />
+
 ## Command
 
 ### 생성
@@ -81,6 +83,8 @@ DockerFile > Image > Container
   clientimages이름으로 이미지 생성(태그지정 마지막에 적어야함)
 - `docker run --name clientcontainer -d -p 3000:80 clientimages`
 
+<br />
+
 ---
 
 ## docker-compose
@@ -100,6 +104,8 @@ DockerFile > Image > Container
 - `docker-compose exec 컨테이너이름 명령어`
 - `docker-compose logs 컨테이너이름 -f`
   - -f: 팔로잉
+
+## ETC
 
 ### Question
 

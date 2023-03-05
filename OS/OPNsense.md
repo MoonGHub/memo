@@ -1,6 +1,6 @@
 # OS - OPNSense
 
-## 설치
+## 설치(23.1 - 23.1.1_2)
 
 1. Shell(8) - 인스톨러 실행(`opnsense-installer`)
    - ID: root
@@ -48,6 +48,9 @@ Firewall > NAT
 
 **플러그인 추가(System > Firmware > Plugins)**\
 (설치 후 새로고침 시, Services에 표시)
+
+- os-acme-client - 3.15
+- os-haproxy - 4.1
 
 ### HAProxy - 리버스 프록시 설정
 
@@ -127,6 +130,8 @@ Firewall > NAT
 <br />
 
 ---
+
+## ETC
 
 ### 🦋 HAProxy 서브 도메인 추가
 

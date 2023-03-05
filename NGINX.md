@@ -10,6 +10,8 @@
 
 - `nginx -s reload`
 
+<br />
+
 ## default.conf
 
 ```conf
@@ -29,5 +31,7 @@ server {
   }
 }
 ```
+
+<br />
 
 ## nginx.conf

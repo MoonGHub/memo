@@ -68,7 +68,7 @@
 
 ---
 
-## Ubuntu
+## Ubuntu(22.04.1 live server amd64)
 
 설치 후, 업데이트 및 필요 패키지 설치
 
