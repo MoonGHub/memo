@@ -56,7 +56,9 @@
   - `Cmd b`: 함수/클래스/변수 사용 된 곳 이동
   - `Option F7`: 사용 된 곳 전체 표시
   - `Shift Enter`: 아래 행에 입력
-  - `Ctrl Enter` : Generator창 오픈
+  - `Ctrl Enter`: Generator창 오픈
+  - `Option Option down/up`: 커서 여러개 생성
+  - `Cmd Shift u`: 대소문자 변환
 
 - Custom(**Preference > Keymap**)
   - `Cmd + \`: split right split and move right(분할 및 오른쪽으로 이동)
