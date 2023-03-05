@@ -37,7 +37,10 @@
   - [Windows](OS/Windows.md)
 - Python
 - React
+  - [Grammar](React/Grammar.md)
   - [PBL](React/PBL.md)
+  - [Storybook](React/Storybook.md)
+  - [TypeScript](React/TypeScript.md)
   - [Webpack](React/Webpack.md)
 - React-Native
   - [Build](React-Native/Build.md)
