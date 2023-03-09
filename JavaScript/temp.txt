@@ -1,0 +1,3271 @@
+document.querySelector("#content").innerHTML=`
+  <div>
+    ${이렇게 사용}
+  </div>
+`;
+
+<body><div data-product-id="G123">Guitar</div>
+a = document.querySelector('div')
+console.log(a.dataset.productId)    //"G123" , IE 11 미만에서는 지원하지 않는다
+  -> document.querySelector('div').getAttribute('data-product-id') // 'G123'
+
+엘리먼트 삭제
+element.parentNode.removeChild(element);
+
+Element.classList
+		//.add('~')
+		//.remove('~')
+		//.toggle('~')
+Element.className
+	//.readOnly
+	//.rowSpan
+	//.colSpan
+	//.userMap
+	//.frameBorder
+	//.htmlFor
+	//.maxLength 
+Element.id
+Element.tagName
+
+Element.getElementsByClassName
+Element.getElementsByTagName
+Element.querySelector
+Element.querySelectorAll
+
+Element.getAttribute(name)
+Element.setAttribute(name, value)
+Element.hasAttribute(name);
+Element.removeAttribute(name);
+
+var li = document.createElement('li')
+var t = document.createTextNode('Str')
+li.appendChild(t)
+
+Node.childNodes
+Node.firstChild
+Node.lastChild
+Node.nextSibling	//다음 형제
+Node.previousSibling	// 전 형제
+Node.contains(본인포함 자식요소)       
+Node.hasChildNodes()
+
+Node.nodeType	
+	// Node.ELEMENT_NODE -> 1
+Node.nodeName
+
+Node.nodeValue
+Node.textContent
+
+Node.appendChild()
+	// insertBefore(요소, 대상)
+Node.removeChild()
+
+Node.replaceChild(요소, 대상)
+
+요소.outerHTML
+	// 자신(요소)을 포함한 HTML
+
+요소.insertAdjacentHTML('옵션',요소)
+		//Element
+		//Text
+옵션 : beforebegin, afterbegin, beforeend, afterend
+
+target.previousElementSibling.textContent;
+element.innerHTML   // HTML파싱으로 속도가 조금 느림
+element.innerText   // 숨김요소, script, style 노반환
+element.textContent // xss방지 가능, 숨김요소, script, style 반환
+
+textNode.nodeValue
+textNode.data
+
+textNode.appendData(data);
+textNode.deleteData(시작인덱스, 갯수);
+textNode.insertData(시작인덱스, data);
+textNode.replaceData(시작, 갯수, data);
+textNode.substringData(시작, 갯수);
+
+window.pageYOffset
+window.scrollTo(가로,세로);
+window.innerWidth
+window.innerHeight
+screen.width
+screen.height
+
+Node.getBoundingClientRect()
+Node.offsetParent
+Node.clientWidth
+node.clientHeight
+
+event.stopPropagation()
+event.preventDefault()
+event.altKey
+event.ctrlKey
+event.shiftKey
+event.type
+
+event.currentTarget // 이벤트를 단 타겟
+event.target	// 실제 타겟
+
+event.clientX
+event.clientY
+	// 마우스 좌표
+
+이벤트 contextmenu : 우클릭 시
+
+element.cloneNode(true)
+	// element를 내부까지(true) 복사
+
+event.code ->
+Space
+ArrowRight
+ArrowLeft
+ArrowDown
+ArrowUp
+
+**브라우저 객체 (BOM)
+window
+ document	// DOM객체
+ frames[]	// iframe 요소들 반환
+ history	//back(), forward(), length
+ location
+ navigator
+ screen
+
+-window 속성
+closed
+innerHeight
+innerWidth
+length
+name
+outerHeight
+outerWidth
+parent
+screenLeft
+screenTop
+screenX
+screenY
+top
+
+메서드
+alert
+blur	// 포커스 제거
+clearInterval
+clearTimeout
+close
+confirm
+focus
+moveBy		//현재기준으로
+moveTo(x,y)
+open("URL", "새 창 이름", "새 창 옵션")
+	옵션 ex) "width=350, height=350, location=no, scrollbars=no"
+prompt
+resizeBy	// 현재 기준으로
+resizeTo(x,y)
+setInterval
+clearInterval
+setTimeout
+clearTimeout
+stop
+
+-location객체의 속성, 메소드
+href
+hash	// #에 명시된 값
+host, hostname, protocol
+search	// 쿼리(요청값) 반환
+reload()
+
+-navigator
+속성
+cookieEnabled
+appName		// 브라우저 이름 ex) Netscape
+appCodeName	// 브라우저 코드명 ex)Mozilla
+product
+appVersion
+userAgent
+platform
+language
+online		// 온라인 상태여부
+메서드
+javaEnabled()
+
+-history객체의 속성, 메소드
+back()
+forward()
+go(숫자)	// ex) -2면 2단계 이전 사이트 이동
+length		// 방문기록 개수
+
+-screen의 속성
+width		// 화면 너비값
+height
+availWidth
+availHeight	// 작업 표시줄을 제외한 화면 높잇값
+colorDepth	// 모니터가 표현 가능한 컬러 bit
+
+**문서객체 (DOM)
+document
+ forms[]
+ anchors[]
+ layers[]
+ images[]
+
+document 메서드
+-element선택
+getElementById(...)
+getElementsByTagName(...)	// HTMLCollection(인덱스접근이지만 배열이 아님)로 반환
+getElementsByClassName(...)	// NodeList 반환
+querySelector()
+querySelectorAll()
+
+-element 요소변경
+innerHTML = ...;
+attribute = ...;
+setAttribute(attr, value);
+style.property = ...;
+
+-요소 추가, 삭제
+document.createElement("p")
+	createTextNode("...")	-> "..."
+	removeChild(...)
+	appendChild(...)	//마지막 삽입 
+	replaceChild(새것, 대상)
+	write(...)	
+element.appendChild();
+부모요소.insertBefore(넣을요소,기준요소(부모바로아래자식));
+
+ex)
+var list = document.getElementById("list");
+var x = list.removeChild(list.childNodes[0]);
+
+var item = document.getElementById("list");
+item.parentNode.removeChild(item);
+
+*HTML객체 찾기  263P
+document.body  ->  <body>
+document.cookie  ->  document의 쿠키 반환
+document.images  ->  모든 <img>
+document.lastModified  ->  갱신 날짜와 시간
+
+*클래스 추가 삭제
+element.classList.add( 'someclass' );
+element.classList.add( 'someclass1', 'someclass2' );
+element.classList.remove( 'someclass' );
+element.classList.remove( 'someclass1', 'someclass2' );
+element.classList.contains( 'someclass' );
+element.classList.contains( 'someclass1', 'someclass2' );
+element.classList.toggle( 'someclass' );
+
+*이벤트
+onload, onunload -> 페이지를 열거나 닫을 때 발생
+onchange -> 요소의 값이 바뀌면 발생	// 입력폼에서는 요소.value로 가져옴
+element.addEventListener('keyup',function(){..});	`//하나씩밖에 등록안됨
+object.removeEventListener("event", func);	// 해당이벤트에 동일 함수를 줘야함 
+
+*DOM 노드(요소) 탐색
+element.firstChild.nodeValue; 		// 태그로 노드를 나눔
+element.childNodes[0].nodeValue;	// 태그로 노드를 나눔
+	ex) .1..< .. /> .2..  ->  [".1..", "<.. />", ".2.."] 
+
+document.body 	// 문서 본문
+document.documentElement	// 문서 전체
+
+@@form객체
+document.forms -> form컬렉션
+formObject.elements
+
+document.form이름.input이름.value
+document.form이름.reset()
+document.form이름.submit()
+
+document.myForm.action="URL경로";
+document.myForm.method="post";
+document.myForm.submit();
+	//버튼으로 post&파라미터 보내자 -> input type="hidden" 또는 버튼태그에 value로 넘김
+
+location.reload();
+window.location.href="사이트URL"	// 뒤로가기 가능
+location.replace('사이트URL');		// 뒤로가기 불가(덮어씌움)
+
+*HTML5 제약 조건검증
+input태그 속성에 max, min, maxlength 등 ..
+->  태그요소.checkValidity()	-> true or false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+★fun.call(thisArg[, arg1[, arg2[, ...]]])
+	//   this 객체가 기존 함수를 호출할 때 할당될 수 있습니다
+- 객체의 생성자 연결에 call 사용
+function Product(name, price) {
+  this.name = name;
+  this.price = price;
+
+  if (price < 0) {
+    throw RangeError('Cannot create product ' +
+                      this.name + ' with a negative price');
+  }
+}
+
+function Food(name, price) {
+  Product.call(this, name, price);
+  this.category = 'food';
+}
+
+
+- 익명 함수 호출에 call 사용
+var animals = [
+  { species: 'Lion', name: 'King' },
+  { species: 'Whale', name: 'Fail' }
+];
+
+for (var i = 0; i < animals.length; i++) {
+  (function(i) {
+    this.print = function() {
+      console.log('#' + i + ' ' + this.species
+                  + ': ' + this.name);
+    }
+    this.print();
+  }).call(animals[i], i);
+}
+
+
+-함수 호출 및 'this'를 위한 문맥 지정에 call 사용
+function greet() {
+  var reply = [this.animal, 'typically sleep between', this.sleepDuration].join(' ');
+  console.log(reply);
+}
+
+var obj = {
+  animal: 'cats', sleepDuration: '12 and 16 hours'
+};
+
+greet.call(obj);  // cats typically sleep between 12 and 16 hours
+
+- 인수 지정 없이 함수 호출에 call
+
+var sData = 'Wisen';            
+function display(){
+  console.log('sData value is %s ', this.sData);
+	//첫번째 인자를 전달하지 않으면, this의 값은 전역 객체에 바인딩됩니다
+}
+
+display.call();  // sData value is Wisen
+
+★Object.defineProperty(obj, prop, descriptor)
+	//객체에 직접 새로운 속성을 정의하거나 이미 존재하는 속성을 수정한 후 그 객체를 반환합니다.
+ex)
+const object1 = {};
+Object.defineProperty(object1, 'property1', {
+
+  value: 42,
+
+  writable: false
+});object1.property1 = 77;
+// throws an error in strict mode
+
+
+console.log(object1.property1);
+// expected output: 42
+
+
+// __proto__ 사용
+var obj = {};
+var descriptor = Object.create(null); // 상속받은 속성 없음
+// 기본으로 열거 불가, 설정 불가, 변경 불가
+descriptor.value = 'static';
+Object.defineProperty(obj, 'key', descriptor);
+
+// 명시적
+Object.defineProperty(obj, 'key', {
+  enumerable: false,		// for...in 루프나 Object.keys() 에서 노출될지 말지
+  configurable: false,
+  writable: false,
+  value: 'static'
+});	// delete o.p; -> false
+
+// 같은 객체를 재활용하기
+function withValue(value) {
+  var d = withValue.d || (
+    withValue.d = {
+      enumerable: false,
+      writable: false,
+      configurable: false,
+      value: null
+    }
+  );
+  d.value = value;
+  return d;
+}
+Object.defineProperty(obj, 'key', withValue('static'));
+
+// Object.freeze가 존재하면
+// 속성의 추가/제거 방지
+// (value, get, set, enumerable, writable, configurable)  
+(Object.freeze || Object)(Object.prototype);
+
+
+var o = {}; // 새로운 객체를 생성한다.
+
+// 데이터 속성기술로 defineProperty를 이용해 속성을 추가한다
+Object.defineProperty(o, 'a', {
+  value: 37,
+  writable: true,
+  enumerable: true,
+  configurable: true
+});
+// 'a'속성이 o 객체에 존재하고 값은 37이다
+
+// 데이터 접근기술로 defineProperty를 이용해 속성을 추가한다
+var bValue = 38;
+Object.defineProperty(o, 'b', {
+  get: function() { return bValue; },
+  set: function(newValue) { bValue = newValue; },
+  enumerable: true,
+  configurable: true
+});
+o.b; // 38
+
+★Object.create(proto[, propertiesObject])	// 두번째 매개로 defineProperty형식같은 
+			//// 기본으로 writable, enumerable 또는 configurable 속성은 false:
+var o;
+
+// 프로토타입이 null인 객체 생성
+o = Object.create(null);
+
+
+o = {};
+// 위는 아래와 같습니다:
+o = Object.create(Object.prototype);
+
+-----
+// Shape - 상위클래스
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+}
+
+// 상위클래스 메서드
+Shape.prototype.move = function(x, y) {
+  this.x += x;
+  this.y += y;
+  console.info('Shape moved.');
+};
+
+// Rectangle - 하위클래스
+function Rectangle() {
+  Shape.call(this); // super 생성자 호출.
+}
+
+// 하위클래스는 상위클래스를 확장
+Rectangle.prototype = Object.create(Shape.prototype);	// Shape.prototype에 정의된 함수 사용위함(move)
+Rectangle.prototype.constructor = Rectangle;
+
+var rect = new Rectangle();
+
+console.log('Is rect an instance of Rectangle?', rect instanceof Rectangle); // true
+console.log('Is rect an instance of Shape?', rect instanceof Shape); // true
+rect.move(1, 1); // Outputs, 'Shape moved.'
+
+-여러 객체에서 상속하고 싶은 경우엔 mixin
+
+function MyClass() {
+  SuperClass.call(this);
+  OtherSuperClass.call(this);
+}
+
+MyClass.prototype = Object.create(SuperClass.prototype); // 상속
+mixin(MyClass.prototype, OtherSuperClass.prototype); // mixin
+	// mixin 같은 함수의 예는 jQuery.extend()
+MyClass.prototype.myMethod = function() {
+  // 기능 수행
+};
+
+
+★strict 모드 - 에러가 나지 않고 미연에 방지하고자 코드를 섬세하게 체크
+<-> "느슨한 모드(sloppy mode)"
+
+1. 기존에는 조용히 무시되던 에러들을 throwing합니다.
+2. JavaScript 엔진의 최적화 작업을 어렵게 만드는 실수들을 바로잡습니다. 가끔씩 엄격 모드의 코드는 비-엄격 모드의 동일한 코드보다 더 빨리 작동하도록 만들어집니다.
+3. 엄격 모드는 ECMAScript의 차기 버전들에서 정의 될 문법을 금지합니다.
+{} 괄호로 묶여진 블럭문에는 적용되지 않습니다
+ex)
+"use strict"; or 'use strict';
+
+function strict() {
+    // 모듈이기때문에 기본적으로 엄격합니다
+}
+export default strict;
+
+
+
+
+
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ES6
+ES6 === ES2015
+
+var a = 0o10; // ES6: 8진수
+
+*block scope
+-> 반응형으로 콜백함수로 변수를 참조하도록 할 시 참조 할 당시의 환경(변수)을 저장해야함
+var i;
+for (i = 0; i < 10; i++) {
+  (function(j) {		// 클로저
+    setTimeout(function() {
+      console.log(j);
+    }, 100);
+  })(i);
+}
+//메모리를 위해 참조를 없애서 메모리를 release시켜야함
+
+또는 
+var 키워드 대신 let 키워드로 바꿔줌
+var li = document.querySelectorAll("li");
+for(let i=0; i<li.length; i++){
+  li[i].addEventListener("click",function(){
+    console.log(i+"번째 클릭");
+  })
+}
+
+★Object.assign
+(IE지원 X)
+Object.assign(target, ...sources)
+Object.assign은 타킷 객체로 소스 객체의 프로퍼티를 복사한다. 
+이때 소스 객체의 프로퍼티와 동일한 프로퍼티를 가진 타켓 객체의 프로퍼티들은 소스 객체의 프로퍼티로 덮어쓰기된다.
+리턴값으로 타킷 객체를 반환한다
+
+// Copy
+const obj = { a: 1 };
+const copy = Object.assign({}, obj);
+console.log(copy); // { a: 1 }
+// Merge
+const o1 = { a: 1 };
+const o2 = { b: 2 };
+const o3 = { c: 3 };
+const merge1 = Object.assign(o1, o2, o3);
+console.log(merge1); // { a: 1, b: 2, c: 3 }
+console.log(o1);     // { a: 1, b: 2, c: 3 }, 타겟 객체가 변경된다
+// Merge
+const o4 = { a: 1 };
+const o5 = { b: 2 };
+const o6 = { c: 3 };
+const merge2 = Object.assign({}, o4, o5, o6);
+console.log(merge2); // { a: 1, b: 2, c: 3 }
+
+★constructor()
+
+
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ES6+
+*생략부호( 나머지, 펼침, 해체할당 연산자 )
+-나머지
+function request(url, options, callback){	//매개 초과 시
+	var args = Array.prototype.slice.call(arguments, request.length)
+	var url = args[0]
+	var callback = args[2]
+	//..
+}
+
+-->
+function (url, options, ...callbacks){
+	var callback1 = callbacks[0]
+	var callback2 = callbacks[1]
+	//..
+}
+
+-해체할당
+function(url, options, ...[error, success]){
+	if(!url) return error(new Error('oppps'))
+	//...
+	success(data)
+}
+
+-펼침
+arr1.push(...arr2)
+array2 = [...array1, x, y, z]
+var d = new Date(...dates)
+
+////// ES5에서는 배열을 함수의 인자로 사용 -> apply() 함수를 사용
+ex)
+function request(url, options, callback) { ...}
+var requestArgs = ['http ..', {...}, function(){...}]
+request.apply(null, requestArgs)
+
+==>
+request.(...requestArgs)
+
+★apply
+
+func.apply(thisArg, [argsArray])
+
+// thisArg: 함수 내부의 this에 바인딩할 객체
+// argsArray: 함수에 전달할 argument의 배열
+
+대표적인 용도는 arguments 객체와 같은 유사 배열 객체에 배열 메소드를 사용하는 경우
+ var arr = Array.prototype.slice.apply(arguments); // arguments.slice
+  // var arr = [].slice.apply(arguments);
+
+★call
+call() 메소드의 경우, apply()와 기능은 같지만 apply()의 두번째 인자에서 배열 형태로 넘긴 것을 각각 하나의 인자로 넘긴다.
+Person.apply(foo, [1, 2, 3]);
+
+Person.call(foo, 1, 2, 3);
+
+
+
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.doSomething = function (callback) {
+  if (typeof callback == 'function') {
+    callback.call(this);
+  }
+};
+
+function foo() {
+  console.log(this.name);	// 기본적으로 this는 window를 가르킴
+}
+
+var p = new Person('Lee');
+p.doSomething(foo);  // 'Lee'
+
+
+
+★bind
+
+ES5에 추가된 Function.prototype.bind
+함수를 실행하지 않기 때문에 명시적으로 함수를 호출할 필요가 있다.
+
+
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.doSomething = function (callback) {
+  if (typeof callback == 'function') {
+    // callback.call(this);
+    // this가 바인딩된 새로운 함수를 호출
+    callback.bind(this)();		// this가 바인딩된 새로운 함수를 리턴 -> 명시적 함수호출
+  }
+};
+
+function foo() {
+  console.log('#', this.name);
+}
+
+var p = new Person('Lee');
+p.doSomething(foo);  // 'Lee'
+
+★
+생성자함수는 대문자로
+arguments.callee는 호출된 함수의 이름
+
+
+★
+실행 컨텍스트는 실행 가능한 코드가 실행되기 위해 필요한 환경
+
+전역 코드 : 전역 영역에 존재하는 코드
+Eval 코드 : eval 함수로 실행되는 코드
+함수 코드 : 함수 내에 존재하는 코드
+
+
+
+
+★클로저
+ var box = document.querySelector('.box');
+    var toggleBtn = document.querySelector('.toggle');
+
+    var toggle = (function () {
+      var isShow = false;
+
+      // ① 클로저를 반환
+      return function () {
+        box.style.display = isShow ? 'block' : 'none';
+        // ③ 상태 변경
+        isShow = !isShow;
+      };
+    })();
+
+    // ② 이벤트 프로퍼티에 클로저를 할당
+    toggleBtn.onclick = toggle;
+
+
+
+
+var l = document.querySelectorAll("li")
+
+l.forEach((e,i)=>{
+  e.addEventListener('click',function(){
+    console.log(i)
+  })
+})
+
+★
+array.fill(value, start, end)
+
+
+
+★프로토타입
+Function.prototype.method = function (name, func) {
+  // 생성자함수의 프로토타입에 동일한 이름의 메소드가 없으면 생성자함수의 프로토타입에 메소드를 추가
+  // this: 생성자함수
+  if (!this.prototype[name]) {
+    this.prototype[name] = func;
+  }
+};
+
+function Person(name) {
+  this.name = name;
+}
+
+Person.method('setName', function (name) {
+  this.name = name;
+});
+
+Person.method('getName', function () {
+  return this.name;
+});
+
+------------------
+*의사 클래스 패턴 상속
+var Parent = (function () {
+  // Constructor
+  function Parent(name) {
+    this.name = name;
+  }
+
+  // method
+  Parent.prototype.sayHi = function () {
+    console.log('Hi! ' + this.name);
+  };
+
+  // return constructor
+  return Parent;
+}());
+
+// 자식 생성자 함수
+var Child = (function () {
+  // Constructor
+  function Child(name) {
+    this.name = name;
+  }
+
+  // 자식 생성자 함수의 프로토타입 객체를 부모 생성자 함수의 인스턴스로 교체.
+  Child.prototype = new Parent(); // ②
+
+  // 메소드 오버라이드
+  Child.prototype.sayHi = function () {
+    console.log('안녕하세요! ' + this.name);
+  };
+
+  // sayBye 메소드는 Parent 생성자함수의 인스턴스에 위치된다
+  Child.prototype.sayBye = function () {
+    console.log('안녕히가세요! ' + this.name);
+  };
+
+  // return constructor
+  return Child;
+}());
+
+var child = new Child('child'); // ①
+
+
+*프로토타입 패턴 상속
+// 부모 생성자 함수
+var Parent = (function () {
+  // Constructor
+  function Parent(name) {
+    this.name = name;
+  }
+
+  // method
+  Parent.prototype.sayHi = function () {
+    console.log('Hi! ' + this.name);
+  };
+
+  // return constructor
+  return Parent;
+}());
+
+// create 함수의 인수는 프로토타입이다.
+var child = Object.create(Parent.prototype);
+child.name = 'child';
+
+child.sayHi();  // Hi! child
+
+console.log(child instanceof Parent); // true
+
+
+
+
+★프로토타입 패턴 상속, 모듈화
+var Person = function() {
+  var name;
+
+  var F = function(arg) { name = arg ? arg : ''; };
+
+  F.prototype = {
+    getName: function() {
+      return name;
+    },
+    setName: function(arg) {
+      name = arg;
+    }
+  };
+
+  return F;
+}();
+
+var me = new Person('Lee');
+
+★ 네이티브 객체 = ECMAScript 명세에 정의된 객체
+	//Object, String, Number, Function, Array, RegExp, Date, Math
+
+// 객체리터럴을 사용하는 것이 바람직하다.
+var o = {};
+
+★에러(error) 객체
+try {
+  // foo();
+  throw new Error('Whoops!');
+} catch (e) {
+  console.log(e.name + ': ' + e.message);
+}
+
+Error 이외에 Error에 관련한 객체는 아래와 같다.
+EvalError
+InternalError
+RangeError
+ReferenceError
+SyntaxError
+TypeError
+URIError
+
+
+★심볼(Symbol) 타입
+ECMAScript 6(Javascript 2015) 에서 추가된 유일하고 변경 불가능한(immutable) 원시 타입으로 Symbol 객체는 원시 타입 Symbol 값을 생성한다.
+
+
+★호스트 객체
+window, XmlHttpRequest, HTMLElement 등의 DOM 노드 객체와 같이 호스트 환경에 정의된 객체를 말한다. 
+
+
+
+----------------------------------------------------------------------------------------------------------------
+★★★★★★★★★js
+int x = 5;
+printf("x = %d\n", x);
+
+★
+프로퍼티 키 first-name에는 반드시 따옴표를 사용해야 하지만 first_name에는 생략 가능
+ex)  'first-name' , first_name
+
+★
+for-in 문은 객체의 문자열 키(key)를 순회하기 위한 문법. 배열에는 사용하지 않는 것이 좋다. 이유는 아래와 같다.
+1.객체의 경우, 프로퍼티의 순서가 보장되지 않는다. 그 이유는 원래 객체의 프로퍼티에는 순서가 없기 때문
+2.배열 요소들만을 순회하지 않는다.
+-> es6  for-of 
+
+★immutable value vs. mutable value
+Boolean
+null
+undefined
+Number
+String
+Symbol
+원시 타입 이외의 모든 값은 객체(Object) 타입이며 객체 타입은 변경 가능한 값(mutable value)이다
+
+var user = {
+  name: 'Lee',
+  address: {
+    city: 'Seoul'
+  }
+};
+
+var myName = user.name; // 변수 myName은 string 타입이다, user.name이 원시타입, user이 객체타입
+
+★불변 데이터 패턴
+객체의 방어적 복사(defensive copy)
+Object.assign(target, ...sources)
+ex)
+// Copy
+const obj = { a: 1 };
+const copy = Object.assign({}, obj);
+console.log(copy); // { a: 1 }
+console.log(obj == copy); // false
+
+// Merge
+const o1 = { a: 1 };
+const o2 = { b: 2 };
+const o3 = { c: 3 };
+
+const merge1 = Object.assign(o1, o2, o3);
+
+console.log(merge1); // { a: 1, b: 2, c: 3 }
+console.log(o1);     // { a: 1, b: 2, c: 3 }, 타겟 객체가 변경된다!
+
+// Merge
+const o4 = { a: 1 };
+const o5 = { b: 2 };
+const o6 = { c: 3 };
+
+const merge2 = Object.assign({}, o4, o5, o6);
+
+console.log(merge2); // { a: 1, b: 2, c: 3 }
+console.log(o4);     // { a: 1 }
+ES6에서 추가된 메소드이며 Internet Explorer는 지원하지 않는다.
+
+★caller 프로퍼티
+caller 프로퍼티는 자신을 호출한 함수를 의미한다.
+function bar() {
+  return 'caller : ' + bar.caller;
+}
+
+
+★타입을 반환
+function getType(target) {
+  return Object.prototype.toString.call(target).slice(8, -1);
+}
+★★★★★★★★★es5
+★strict mode
+전역에 적용한 strict mode는 스크립트 단위로 적용된다
+ <script>
+    'use strict';
+  </script>
+  <script>
+    x = 1; // 에러가 발생하지 않는다.
+    console.log(x); // 1
+  </script>
+
+*strict mode가 발생시키는 에러
+암묵적 전역 변수
+변수, 함수, 매개변수의 삭제
+매개변수 이름의 중복
+with 문의 사용
+일반 함수의 this // 일반 함수를 호출하면 this에 undefined가 바인딩
+
+★★★★★★★★★es6
+
+★
+var student = {
+  name: 'Lee',
+  score: 90
+}
+
+// Object.prototype.hasOwnProperty()
+console.log(student.hasOwnProperty('name')); // true
+
+
+@@비동기 
+
+async function logTodoTitle() {
+  try {
+    var user = await fetchUser();  // fetchUser, fetchTodo는 통신함수  
+    if (user.id === 1) {
+      var todo = await fetchTodo();
+      console.log(todo.title); // delectus aut autem
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+★ 비동기 처리 메서드가 꼭 프로미스 객체를 반환해야 await가 의도한 대로 동작
+프로미스는 “자바스크립트 비동기 처리를 위한 객체“
+async - await 사용 않할 시, 콜백함수 또는 .then()을 사용해야 함
+.then()에서 리턴 시 해당 값을 다시 promise에 담아서 리턴
+
+getData(function (tableData) {
+  console.log(tableData); // 함수 생성 전달
+});
+
+
+new Promise();  // Pending(대기)
+new Promise(function (resolve, reject) {    // Fulfilled(이행) --> then()사용 가능
+  resolve();
+});
+new Promise(function (resolve, reject) {    // Fulfilled(이행) --> then()사용 가능
+  reject();   // Reject 실패
+});
+
+// reject()의 결과 값 Error를 err에 받음
+function getData() {
+  return new Promise(function (resolve, reject) {
+    reject(new Error("Request is failed"));
+  });
+}
+
+getData().then().catch(function (err) {
+  console.log(err); // Error: Request is failed
+});
+// then의 두번 째 콜백은 reject만 잡아냄, error는 catch로 잡아야함
+
+
+객체를 배열화(ES5)
+객체안에 length와 인덱스를 키로 가지고 있어야 함
+var obj = {
+  0:"first",
+  1:"second",
+  length:2
+}
+console.log([].slice.call(obj));    //  length만큼 키값(인덱스, 없는놈도) 대응 밸류로 배열을 만들어 반환
+[].forEach.bind(obj)(function(val){ 
+  console.log(val);
+});     // length만큼 키값(인덱스)이 존재하는 밸류만 
+
+const value = false || "앞이 false면 이것이 주입됨";
+
+스프레드 연산자
+const o1 = { x: 1, y: 2 };
+const o2 = { ...o1, z: 3 };
+console.log(o2);    // 객체 o1는 변화 없음
+
+for (let [key, value] of Object.entries(object1)) {
+  console.log(`${key}: ${value}`);
+}
+
+
+★★★★★★★★★React
+
+화살표 함수, createClass() -> this 자동 바인딩
+
+
+
+
+개행 이어쓰기 할 때 \(역슬래쉬) 사용
+변수명 첫 글자 : $, _, 영문자
+★
+자바스크립트는 ES6의 let, const를 포함하여 모든 선언(var, let, const, function, function*, class)을 호이스팅(Hoisting)한다
+
+*async
+웹페이지 파싱과 외부 스크립트 파일의 다운로드가 동시에 진행된다. 
+스크립트는 다운로드 완료 직후 실행된다. IE9 이하 버전은 지원하지 않는다.
+
+*defer
+웹페이지 파싱과 외부 스크립트 파일의 다운로드가 동시에 진행된다.
+ 스크립트는 웹페이지 파싱 완료 직후 실행된다. 
+IE9 이하 버전에서 정상적으로 동작하지 않을 수 있다.
+ex)
+<script async src="extern.js"></script>
+<script defer src="extern.js"></script>
+
+
+args = [1,2,3,4];
+function arrFunc(arg1, arg2[ arg3 ...]){
+    return ...;
+}
+arrFunc.apply(null, args);      //  인자들을 받는 함수 일 경우, 이렇게 배열로 전달 가능
+Math.min.apply(null, args);
+
+testFunc = (a,b) => ( { result : a + b} );      // 객체 리턴 시 괄호!
+
+arg.find(predi)     // 만족하는 값
+arg.findIndex(predi)    // 만족하는 값의 인덱스
+arg.some(predi)     // 하나라도 만족 시 true
+arg.every(predi)    // 모든 값을 만족 시 true
+arr.slice([begin[, end]])   // -지정 가능,  slice(2,-1) 는 세번째부터 끝에서 두번째 요소까지, 원본 영향없음
+array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
+    // 시작(start,-가능)부터 지정 갯수(deleteCount)를 자르고, 원본배열에 item들을 추가
+    // splice(-3,2) 는 뒤에서 세번째 요소부터 두개까지
+    // 원본배열에서 삭제됨
+[].push()	// 뒤에 넣기
+[].pop()	// 뒤에서 뽑기
+[].shift()	// 앞에서 뽑기
+[].unshift()	// 앞에 넣기
+[1,2,3,4].join('-')
+	// "1-2-3-4"
+
+let arr = new Array(40) // empty로 할당됨
+arr.fill(1)
+	// 배열 전체 1 대입(빈 매개 -> undefined)
+let arr = new Array(10).fill().map((v,i)=>i)
+	// empty는 순회가 안됨, undefined는 됨
+
+
+String.substring(시작, 끝)
+String.substr(시작, 길이)
+String.startsWith(str)
+String.endsWith(str)
+String.includes(str)
+
+Object.assign     // 첫 매개의 원본에 영향을 미침
+Object.create     // obj복제
+Object.entries
+Object.defineProperty	객체의 필드를 정의하는 함수
+Object.getPrototypeOf	인자로 넘어오는 객체의 프로토타입을 추출한다.
+Object.keys	인자로 넘어오는 객체의 키를 배열로 반환한다.
+Object.getOwnPropertyNames	프로토타입 체이닝에 걸려있는 필드를 제외하고 객체가 직접 들고 있는 필드의 key를 배열형태로 반환한다.
+Object.freeze	객체를 얼린다라는 표현, 즉 불변(immutable)으로 만든다.    // isFrozen
+  //  하지만 객체 내부의 객체(Nested Object)는 변경가능하다.
+  -->내부 객체까지 변경 불가능하게 만들려면 Deep freeze를 하여야 한다.
+function deepFreeze(obj) {
+  const props = Object.getOwnPropertyNames(obj);
+
+  props.forEach((name) => {
+    const prop = obj[name];
+    if(typeof prop === 'object' && prop !== null) {
+      deepFreeze(prop);
+    }
+  });
+  return Object.freeze(obj);
+}
+
+
+Math.min(1,2,3);
+Math.max(1,2,3);
+1 + undefined // NaN (undefined → NaN)
+
+new Array(1,2,3)      //
+new Set([1,2,3])      // has, add, delete
+new Map([['a', 1], ['b', 2], ['c', 3]]);  // keys, values, entries 
+  // set, get
+new WeakSet()
+new WeakMap()
+참조가 있는 값만 저장 가능(배열, 객체, 함수)
+
+*정규 표현식(RegExp) 객체
+var 변수 = /패턴/플래그;		// i:대소문자 구별않함, g: 전체문자열(발견시 중지)
+var 변수 = new RegExp("패턴", "플래그");
+-메소드 
+search()	->  str.search(/java/i); // 찾은 인덱스 반환
+replace()	->  str.replace(/java/i,"HTML5");
+test()		->  regPtn.test(str);	//true or false
+exec()		->  regPtn.exec(str);	// 일치 문자열 반환
+match()		->  str.match(regPtn);	// 일치 문자열 반환(여러개면 배열로)
+\w -> 모든문자
+\W -> 대소문자,숫자 _를 제외한 모든 문자
+\d -> 숫자
+\D -> 숫자를 제외한 모든 문자
+\s -> 공백문자(공백, 탭, 줄바꿈 등)
+\S -> 공백문자를 제외한 모든 문자
+p{n} -> p가 n개인 문자열
+n+ -> 적어도 n개 이상, // ?? n개의 문자열을 찾음
+n* -> 0개이상, //?? n개가 포함된 문자열을 찾음
+n? -> n이 0또는 1회있는 문자열
+[0-9] -> 0~9중의 하나
+[a-z] -> a~z중 하나
+[qwer] -> 네 문자중 하나
+(qwer) -> "qwer"
+* -> 0개 이상
++ -> 1개 이상
+? -> 0개 or 1개
+{m, n} -> m회 이상 n회 이하
+
+
+*Array객체의 메소드
+slice
+join	// 하나의 문자열로, 구분자 매개로 줘도댐
+concat	// 두 배열을 결합
+toString
+splice	// 지정된 배열값을 추가 또는 삭제, (start index, delete conunt, 추가할 요소, 추가할 요소,...) 
+	start부터 count만큼 지우고 추가, 지운배열 리턴
+shift	// 배렷 첫 요소 삭제
+unshift	// 배열 첫 요소에 추가
+pop	// 배열 마지막요소 삭제
+push	// 배열 마지막요소에 추가
+reverse
+indexOf	// 없으면 -1
+sort
+arr.sort(function(a, b){
+	return a-b;});	// 오름차순 정렬
+arr.sort(function(a, b){
+	return 0.5 - Math.random()});	// 랜덤 배치
+객체의 속성과 메서드는 delete 연산자로 삭제가능
+ex) delete myCar.color;		// 인덱스 요소는 그대로, 값만 undefined
+
+*String객체의 메소드
+charAt(n)
+concat("문자열")
+indexOf("문자",n)	// n이 주어지면 인덱스n부터 검색
+lastIndexOf("문자")	// 끝부터 검색
+charCodeAt(n)
+match("문자열")		// 없으면 null
+replace("문자1","문자2")	// 원본은 그대로, 새문자열을 반환
+	// (/java/g, "javaScript")  ->  일치한 모든 문자열을 변경, i는 대소문자 구분안하도록
+search('문자')
+slice(n,m)	// (7,13) -> 인덱스 7부터 12까지, (-12,-6) -> 끝에서 12번째부터 끝에서 6번째까지
+split('separator')	// separator로 나누어 문자열배열 리턴
+substring(n,m)		// (7,13) -> 인덱스 7부터 인덱스 12까지
+substr(n,m)		// (7,6) -> 인덱스 7부터 6개 문자열
+toLowerCase()
+toUpperCase()
+toString()
+valueOf()
+
+*Date객체 분홍책 178P참고
+now.setSeconds(now.getSeconds()+1);
+
+*내장 함수
+encodeURI("...")	// 영문,숫자,일부기호제외, 문자를 유니코드값으로 인코딩
+encodeURIComponent("...") 	// 영문,숫자제외, 문자를 유니코드로
+decodeURI("...")	
+decodeURIComponent("...")
+parseInt(String[, nBase])	// 정수로 변경, nBase는 몇진수? 8진수 -> 8,  ex) 5.12 -> 5, 15px -> 15
+parseFloat("...")
+String(값)	// 5 -> "5"
+Number("...")	// "5" -> 5
+Boolean(값)	// 5 -> true, null -> false
+eval("...")	// 전달 문자열을 자바스크립트 문장으로 인식하여 처리
+isFinite(...);	//유한수인가?
+isNaN(...);	//숫자가 아닌가?
+var str = String(123);		// "123"
+var num = Number("123");	// 123
+var num = parseInt("123");	// 123
+document.write(typeof str);	// str의 자료형을 보여줌
+escape()	// 16진수 아스키코드로 변경
+unescape()	// ISO-Latin-1로 변경
+call()		// 함수.call(...) -> 함수기능을 사용하여 매개이용(this같은게 매개를 가르키게됨)
+apply()		// Math.max.apply(null,[3,4,5]); -> 배열로 이용( 배열메소드에는 max()가 없어서 이렇게 이용)
+
+
+
+
+지연평가 ex)
+const array = ["9", "91", "95", "96", "99"];
+const x = array.slice().reduce((acc, curr, i, arr) => {  // notice the "slice(0)"랑 동일
+ if (i === 2) arr.splice(0); // 검색 대상 배열을 없애버림으로 종료시킴
+ return (acc += curr);
+}, "");
+
+간단 groupBy... 좀 더 찾아보자
+var groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+var t = new Object();
+t['att1']="attr1";
+t['att2']="attr2";
+
+
+var myCar = {company: "Lamborghini", model: "Lamborghini Veneno Roadster", year: 2014};
+delete myCar.company;
+"company" in myCar; // false를 반환합니다.
+
+console.log(typeof a === undefined)
+
+비동기 ex)
+function square(a) {
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve(a * a);
+    }, 500);
+  });
+}
+var list = [2, 3, 4];
+new Promise(function(resolve) {
+  (function recur(res) {
+    if (list.length == res.length) return resolve(res);
+    square(list[res.length]).then(function(val) {
+      res.push(val);
+      recur(res);
+    });
+  })([]);
+}).then(console.log);     // 2 -> 3-> 4 -> 결과 
+
+_.go(list,
+  _.map(square),
+  _.map(square),
+  _.map(square),
+  console.log);
+function _go(arg) {
+  var fns = _rest(arguments);
+  return _pipe.apply(null, fns)(arg);
+}
+참고 : https://github.com/indongyoo/functional-javascript/blob/master/%EC%9D%B8%ED%94%84%EB%9F%B0-%EB%8F%99%EC%98%81%EC%83%81-%EA%B0%95%EC%9D%98-%EC%98%88%EC%A0%9C/js/_.js
+
+
+ symbol
+심볼은 주로 이름의 충돌 위험이 없는 유일한 객체의 프로퍼티 키(property key)를 만들기 위해 사용한다. 
+심볼은 Symbol 함수를 호출해 생성한다. 이때 생성된 심볼 값은 다른 심볼 값들과 다른 유일한 심볼 값이다
+// 심볼 key는 이름의 충돌 위험이 없는 유일한 객체의 프로퍼티 키
+var key = Symbol('key');
+console.log(typeof key); // symbol
+var obj = {};
+obj[key] = 'value';
+console.log(obj[key]); // value
+
+##**중요꽝꽝**##
+for문은 객테[Symbol.iterator]()을 따름  -> iterable객체만 순환 가능(Array, Map, Set, DOM객체(노드포함), )
+[1,2,3][Symbol.iterator]().next().value()
+generator -> iterator 반환
+function *gen(){      // 제너레이터는 *붙여서 선언
+  yield 1;
+  yield 2;
+  yield 3;
+  return 100;     // done이 true면서 값 100 을 마지막에 반환, for문으로는 안나옴
+}
+let iter = gen();
+iter[Symbol.iterator]() == iter;     // true
+
+제너레이터 ex)
+  function* infinity(i = 0) {
+    while (true) yield i++;
+  }
+  function* limit(l, iter) {
+    for (const a of iter) {
+      yield a;
+      if (a == l) return;
+    }
+  }
+  function* odds(l) {
+    for (const a of limit(l, infinity(1))) {
+      if (a % 2) yield a;
+    }
+  }
+  for (const a of odds(40)) console.log(a);
+
+iterator 사용법 -> for...of, 전개연산자, 구조분해 
+console.log(odd(5));
+console.log([...odd(10), ...odd(20)]);
+const [head, ...rest] = odd(20);
+
+range = function *(l){
+  let i= -1;
+  while(++i<l){ 
+    console.log("도는중");  // iterator는 순회할 때 마다 코드가 평가됨 
+    yield i;
+  }
+}
+for( i of range(5)){
+  console.log(i) 
+};    //iterator는 순회할 때 마다 코드가 평가됨 
+
+
+( true && (<div />))    -> es6, true시 뒷 코드 실행
+( false || (<div />))   -> es6, false시 뒷 코드 실행
+false
+undefined
+null
+0, -0
+NaN(1 + undefined)
+’’ (빈문자열)         // -> false반환
+
+setInterval -> clearInterval
+setTimeout -> clearTimeout
+
+ 	//순수 JS에서는(ES6+) 백틱(`)과 ${varName}(템플릿 리터럴) 사용
+	// -> '문자열 내용 ${dateTimeNow}'
+
+componentDidMount(){
+ this._getMovies();
+}
+_getMovies = async () => {
+ const movies = await this._callApi()
+ this.setState({
+  movies
+ })
+}	// 비동기로 실행
+
+@@통신
+var xhr = new XMLHttpRequest();
+xhr.open('GET','./~.html');
+xhr.onreadystatechange = function(){
+ if(xhr.readyState ===4 && xhr.status ===200) { console.log(xhr.responseText) }
+ }
+xhr.send();
+4 : 통신이 끝났음
+200 : 성공
+
+xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+xhr.send('data1=123&data2=456');
+
+const list1 = ['apple','orange']
+const list2 = [].concat(list1, 'banana');   // es6?
+
+func.apply(null, arr)
+--> null.func(arr)
+
+const newObj = Object.setPrototypeOf( 타켓, 추가 )
+	// 타겟에 추가, 타겟반환 (* 타겟의 __proto__로 추가)
+
+Object.prototype : 생성자 
+Object.__proto__ : 상위 객체의 생성자(prototype)
+
+export default function a(){ ... }
+ --> import a from '~'
+export function a(){...}
+ --> import {a}
+*export default const ~ 하면 에러
+ -> const ~
+ -> export default ~
+	// 나눠서 ㄱㄱ 
+
+// 기명 함수 표현식(named function expression)
+var namedFunc = function multiply(a, b) {
+  return a * b;
+};
+// 익명 함수 표현식(anonymous function expression)
+var anonymousFunc = function(a, b) {
+  return a * b;
+};
+
+console.log(namedFunc.name);     // "multiply"
+console.log(anonymousFunc.name); // "anonymousFunc"
+
+function foo() {}
+console.log(foo.length); // 0, 매개변수 갯수
+
+for(var i in array){
+            console.log(array[i].name+'/'+array[i].link);
+        }		// 배열인 경우 인덱스로 이용한다...
+for(var attr in obj){ ... }	// 객체일 경우 속성명으로 사용 
+
+*객체 생성자
+function 함수명(매개 ..){
+	this.속성명 = 값;
+	// this.함수 = function(){...}	프로토타입으로 자원활용
+}
+함수명.prototype.함수 = function(){ this.속성명 ... }	// 공용함수 등록
+var 참조변수 = 함수명;
+--> var 참조변수 = { 속성명:값, 함수: function(){..} }
+
+*프로토타입 // 모든 객체는 프로토타입에서 속성과 메서드를 상속받음
+ -> 생성자 외부에 메서드를 정의 
+객체명.prototype.메서드or 변수 = function() {... } or 값;
+ -> 메서드만 공유
+
+-링크 : 프로토타입 객체 멤버에 접근 가능( 상속 기능 구현)
+classical방식 - new사용
+ex) 
+function Car(m){ this.model = m || "Benz"; }
+function childCar(Model){}
+childCar.prototype = new Car();
+var myCar = new childCar("BMW");
+
+prototypical방식 - 리터럴객체와 Object.create()사용 , 선호됨
+ '부모객체' 생성 -> var 자식객체 = Object.create('부모객체');
+		자식객체.변수 or 메서드 추가
+
+*try - catch
+ catch(err)
+  err.message;
+
+ throw "strrr";	// console.log(err) -> strrr
+
+error객체의 속성
+name
+ RangeError - 범위를 벗어난 숫자
+ ReferenceError - 잘못된 참조
+ SyntaxError - 구문 오류
+ TypeError - 형식 오류
+ URIError - encode URI()의 오류
+message
+
+	// React는 document에 리스너 연결함 -> 좀더 빠름
+document.removeEventListener('mouseover', getEventListeners(document).mouseover[0].listener, false)
+
+// getFoo is property which isn't enumerable
+var myObj = Object.create({}, {
+  getFoo: {
+    value: function () { return this.foo; }
+  } 
+});
+myObj.foo = 1;
+console.log(Object.keys(myObj)); // console: ['foo']
+
+@@ 중첩 객체 스프레드 연산
+a = {'c':11,
+  'd':22}
+a.f={
+  'c':44,
+  'd':55
+}
+console.log({...a, c:1234,  f:{...a.f, d:5678}})
+
+
+
+
+
+@@커스텀 이벤트(customEvent)
+-IE11 이상
+//const evt = new CustomEvent('@click')
+const evt = new CustomEvent('@click', {detail: 'some data'})
+document.dispatchEvent(evt)
+document.querySelector('a').addEventListener('@click', evt => {
+  evt.detail // 'some data'
+})
+-IE11 미만
+const evt = document.createEvent('CustomEvent')
+evt.initCustomeEvent('@click', true, false, 'some data')    //이벤트명, 버블(bubble)?, 취송가능여부(cancelable)?, 전달할 데이터(detail)
+document.dispatchEvent(evt)
+
+
+
+@성능테스트 시 
+console.time('이름일치');
+동작코드;
+console.timeEnd('이름일치');
+  // 이름일치 : 시간ms    으로 나옴
+
+performance.now()
+new Date()
+	// 시간 체크 
+
+
+
+<hr> 수평선 표시
+<!-- html주석 -->	// 주석내 실행O
+<%-- JSP 주석 --%>	// 주석내 실행X 
+스크립트<% %>, 선언문<%! %> 내에서 자바주석 사용가능
+<br> 줄바꿈
+<h2> h2글꼴로 출력 </h2>
+
+<form method="post" action="ifTestPro.jsp">
+숫자입력 : <input type="text" name="number">		// number에 text타입의 값 입력
+<input type="submit" value="입력완료">		// "입력완료"의 버튼 -> ifTestPro.jsp로 넘김, 제어도 넘김
+</form>			// 사용자로부터 입력, post -> 입력 값이 HTTP body를 통해 action의 속성값으로 이동
+
+<%
+int number = Integer.parseInt(request.getParameter("number"));
+%> 		// 받은 페이지
+
+<b> 굵게 </b>
+
+<select name="local">
+<option value="서울">서울</option>
+<option value="경기">경기</option>
+</select>	// 콤보상자
+
+<input type="radio" name="localNum" value="0" checked> 0권역<br>
+<input type="radio" name="localNum" value="1" > 1권역<br>
+<input type="radio" name="localNum" value="2" > 2권역<br>
+// 라디오버튼
+
+&nbsp		특수문자 : 공백
+
+<table>
+<tr>
+ <td colspan="2">상단</td>
+</tr>
+<tr>
+ <td>좌측</td>
+ <td>중앙의 내용</td>
+</tr>
+<tr>
+ <td colspan="2">하단</td>
+</tr>
+</table>
+
+
+
+
+**에러처리 web.xml **
+
+<error-page>
+ <error-code>404</error-code>
+ <location>/error/404code.jsp</location>
+</error-page>
+
+<script>
+ alert("~~");
+ location.href="~~.jsp";
+ history.go(-1);
+</script>		// ??
+
+
+
+**버튼 이동**
+<input type="button" value="이동"
+onclick="javascript:location.href='http://~~/~'"/>
+
+**버튼 뒤로**
+<input type="button" value="뒤로 이동"
+onclick="javascript:history.back()"/>
+
+<script>
+자바 스크립트 코드
+</script>
+
+
+창 크기
+<script>
+var width=document.body.clientWidth;
+var height=document.body.clientHeight;
+window.addEventListener("resize", function(event) {
+width = document.body.clientWidth 
+height = document.body.clientHeight
+})
+</script>
+
+
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★HTML
+시맨틱 태그 : 의미를 가진 태그
+header
+nav
+section - article
+aside
+footer - address(우편,이메일)
+
+<body>의 속성 중
+alink=링크 후 문자색
+vlink=방문 후 문자색
+<u></u>			// 밑줄
+<del></del>		// 글자에 중앙 선 긋기
+<hr> 수평선 표시
+<b> 굵게 </b>
+<p>			// 한 줄 띄우기
+<p> ... </p> 			// paragraph, 하나의 문단 
+<pre> ... </pre> 		// 작성한 그대로 표현(엔터,띄어쓰기)
+<mark> ... </mark>		// css로 쉽게 마킹 할 때
+<strong> 진하게 + 강조 </strong>
+<em> 이탤릭 + 강조 </em>
+<b> 진하게 </b>
+<time datetime="2012-01-01"> ...</time> 날짜정보로 인식
+
+<link rel="stylesheet" href="~.css"/>
+
+<select name="local">
+  <option value="서울">서울</option>
+  <option value="경기">경기</option>
+</select>	// 콤보상자
+
+<input type="radio" name="localNum" value="0" checked> 0권역<br>
+<input type="radio" name="localNum" value="1" > 1권역<br>
+<input type="radio" name="localNum" value="2" > 2권역<br>
+// 라디오버튼
+
+*entity code
+&nbsp;  -> 공백
+&copy;	-> @
+&mdash;
+&ldquo;
+
+
+<dl>		// 정의 리스트
+<dt>...</dt>	// 정의 용어
+<dd>...</dd>	// 정의 설명
+</dl>
+
+조건부 주석
+<!--[if condition]>
+ HTML 코드
+<![endif]-->
+
+ <!--[if lt IE 8]> ...<![endif]-->			//미만
+ <!--[if lte IE 8]> ...<![endif]-->		//이하
+<!--[if gt IE 8]><!--> ... <!--<![endif]-->
+
+a태그 속성
+target="_blank" 	// 새탭
+title="ddd"		// 툴팁
+앵커			// 페이지 내에서 이동
+도착 : a의 name속성 표기
+출발 : href="#[name속성]"
+
+img태그의 속성
+alt -이미지 대신 표시되는 설명
+title - 툴팁
+usemap="#eventmap"	-한 이미지안에 여러 링크연결
+<map name="eventmap">		
+	<area shape="rect" coords="0,0,500,500" href="..." target="_blank" />
+	<area shape="rect" coords="500,500,1000,1000" href="..." />
+</map>
+
+video, audio태그 : 멀티미디어 태그
+태그 내 
+<source src="gate.mp4"> 화질상 유료
+<source src="gate.ogv"> 화질하 무료
+<source src="gate.webm"> 화질상 무료
+width
+height
+[controls]
+[preload]
+[autoplay]
+[loop]
+
+form태그 내
+<fieldset>
+<legend>영역 제목</legend>
+<label for="ddd"> 아이디 </label> <input type="text" size="10" id="ddd">
+</fieldset>
+
+table태그
+tr : 행
+th : 열의 제목
+td : 내용	-> colspan, rowspan
+
+input태그 
+type속성 값 : text,password, tel, email, 
+	number 화살표있는칸이됨, min, max, step
+	range - 슬라이드
+	radio	- id동일, 한개
+	checkbox	- id동일, 여러개
+	time	
+	month,week
+	submit
+	reset
+
+[readonly]
+placeholder="000-0000-0000"
+[autofocus]
+maxLength="11"
+[required]	-	무조건 입력
+
+textarea태그
+cols="40"
+rows="3"
+
+<.. onclick="함수();" />
+	// onclick="document.getElementById('img').src='~.jpg'"
+<.. onmouseover="함수()" />
+onclick="func(this)" 로 전달 해야함;
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★JavaScript
+체인 불가
+개행 이어쓰기 할 때 \(역슬래쉬) 사용
+변수명 첫 글자 : $, _, 영문자
+
+*원시타입 : string, number, boolean, null, undefined, symbol(에크마 6에서 추가)
+*래퍼객체 : String, Number, Boolean, Symbol
+	// 원시 -> 임시 래퍼객체는 참조가 끝나면 객체의 기능 소멸
+*내장객체 : String, Date, Array, Math, RegExp(Regular Expressions), Function, Object
+
+*내장 함수
+encodeURI("...")	// 영문,숫자,일부기호제외, 문자를 유니코드값으로 인코딩
+encodeURIComponent("...") 	// 영문,숫자제외, 문자를 유니코드로
+decodeURI("...")	
+decodeURIComponent("...")
+parseInt(String[, nBase])	// 정수로 변경, nBase는 몇진수? 8진수 -> 8,  ex) 5.12 -> 5, 15px -> 15
+parseFloat("...")
+String(값)	// 5 -> "5"
+Number("...")	// "5" -> 5
+Boolean(값)	// 5 -> true, null -> false
+eval("...")	// 전달 문자열을 자바스크립트 문장으로 인식하여 처리
+isFinite(...);	//유한수인가?
+isNaN(...);	//숫자가 아닌가?
+var str = String(123);		// "123"
+var num = Number("123");	// 123
+var num = parseInt("123");	// 123
+document.write(typeof str);	// str의 자료형을 보여줌
+escape()	// 16진수 아스키코드로 변경
+unescape()	// ISO-Latin-1로 변경
+call()		// 함수.call(...) -> 함수기능을 사용하여 매개이용(this같은게 매개를 가르키게됨)
+apply()		// Math.max.apply(null,[3,4,5]); -> 배열로 이용( 배열메소드에는 max()가 없어서 이렇게 이용)
+
+
+**브라우저 객체 (BOM)
+window
+ document	// DOM객체
+ frames[]	// iframe 요소들 반환
+ history	//back(), forward(), length
+ location
+ navigator
+ screen
+
+-window
+1. 전역변수는 윈도우 객체의 속성
+2. 전역함수는 윈도우 객체의 메서드
+윈도우 객체의 변수생성으로 전역 생성가능
+
+속성
+closed
+innerHeight
+innerWidth
+length
+name
+outerHeight
+outerWidth
+parent
+screenLeft
+screenTop
+screenX
+screenY
+top
+
+메서드
+alert
+blur	// 포커스 제거
+clearInterval
+clearTimeout
+close
+confirm
+focus
+moveBy		//현재기준으로
+moveTo(x,y)
+open("URL", "새 창 이름", "새 창 옵션")
+	옵션 ex) "width=350, height=350, location=no, scrollbars=no"
+prompt
+resizeBy	// 현재 기준으로
+resizeTo(x,y)
+setInterval
+clearInterval
+setTimeout
+clearTimeout
+stop
+
+-location객체의 속성, 메소드
+href
+hash	// #에 명시된 값
+host, hostname, protocol
+search	// 쿼리(요청값) 반환
+reload()
+
+-navigator
+속성
+cookieEnabled
+appName		// 브라우저 이름 ex) Netscape
+appCodeName	// 브라우저 코드명 ex)Mozilla
+product
+appVersion
+userAgent
+platform
+language
+online		// 온라인 상태여부
+메서드
+javaEnabled()
+
+-history객체의 속성, 메소드
+back()
+forward()
+go(숫자)	// ex) -2면 2단계 이전 사이트 이동
+length		// 방문기록 개수
+
+-screen의 속성
+width		// 화면 너비값
+height
+availWidth
+availHeight	// 작업 표시줄을 제외한 화면 높잇값
+colorDepth	// 모니터가 표현 가능한 컬러 bit
+
+
+**문서객체 (DOM)
+document
+ forms[]
+ anchors[]
+ layers[]
+ images[]
+
+
+document 메서드
+-element선택
+getElementById(...)
+getElementsByTagName(...)	// HTMLCollection(인덱스접근이지만 배열이 아님)로 반환
+getElementsByClassName(...)	// NodeList 반환
+querySelector()
+querySelectorAll()
+
+-element 요소변경
+innerHTML = ...;
+attribute = ...;
+setAttribute(attr, value);
+style.property = ...;
+
+
+-요소 추가, 삭제
+document.createElement("p")
+	createTextNode("...")	-> "..."
+	removeChild(...)
+	appendChild(...)	//마지막 삽입 
+	replaceChild(새것, 대상)
+	write(...)	
+element.appendChild();
+부모요소.insertBefore(넣을요소,기준요소(부모바로아래자식));
+
+ex)
+var list = document.getElementById("list");
+var x = list.removeChild(list.childNodes[0]);
+
+var item = document.getElementById("list");
+item.parentNode.removeChild(item);
+
+*HTML객체 찾기  263P
+document.body  ->  <body>
+document.cookie  ->  document의 쿠키 반환
+document.images  ->  모든 <img>
+document.lastModified  ->  갱신 날짜와 시간
+
+*시계 시간 설정!
+최초 시간을 서버에서 받아오고 
+var now = new Date(받아온 시간);
+1초마다 setInterval안에서
+now.setSeconds(now.getSeconds()+1);
+
+*클래스 추가 삭제
+element.classList.add( 'someclass' );
+element.classList.add( 'someclass1', 'someclass2' );
+element.classList.remove( 'someclass' );
+element.classList.remove( 'someclass1', 'someclass2' );
+element.classList.contains( 'someclass' );
+element.classList.contains( 'someclass1', 'someclass2' );
+element.classList.toggle( 'someclass' );
+
+
+*이벤트
+onload, onunload -> 페이지를 열거나 닫을 때 발생
+onchange -> 요소의 값이 바뀌면 발생	// 입력폼에서는 요소.value로 가져옴
+element.addEventListener('keyup',function(){..});	`//하나씩밖에 등록안됨
+object.removeEventListener("event", func);	// 해당이벤트에 동일 함수를 줘야함 
+
+태그의 속성으로 등록 -> onclick="func()"
+스크립트로 등록 -> object.onclick = func(){ ... };
+리스너로 등록 -> object.addEventListener("click",func(), useCapture);	//같은 이벤트에 중복가능
+	//3번째 인자는 이벤트 버블링, 이벤트 캡쳐를 true? false?
+
+*DOM 노드(요소) 탐색
+element.firstChild.nodeValue; 		// 태그로 노드를 나눔
+element.childNodes[0].nodeValue;	// 태그로 노드를 나눔
+	ex) .1..< .. /> .2..  ->  [".1..", "<.. />", ".2.."] 
+
+document.body 	// 문서 본문
+document.documentElement	// 문서 전체
+
+document.forms -> form컬렉션
+formObject.elements
+
+document.form이름.input이름.value
+document.form이름.reset()
+document.form이름.submit()
+
+document.myForm.action="URL경로";
+document.myForm.method="post";
+document.myForm.submit();
+	//버튼으로 post&파라미터 보내자 -> input type="hidden" 또는 버튼태그에 value로 넘김
+
+document.form_name.input_name.value="값";
+
+★★★★★★★★내장객체 메서드
+
+*Array객체의 메소드
+slice
+join	// 하나의 문자열로, 구분자 매개로 줘도댐
+concat	// 두 배열을 결합
+toString
+splice	// 지정된 배열값을 추가 또는 삭제, (start index, delete conunt, 추가할 요소, 추가할 요소,...) 
+	start부터 count만큼 지우고 추가, 지운배열 리턴
+shift	// 배렷 첫 요소 삭제
+unshift	// 배열 첫 요소에 추가
+pop	// 배열 마지막요소 삭제
+push	// 배열 마지막요소에 추가
+reverse
+indexOf	// 없으면 -1
+sort
+arr.sort(function(a, b){
+	return a-b;});	// 오름차순 정렬
+arr.sort(function(a, b){
+	return 0.5 - Math.random()});	// 랜덤 배치
+객체의 속성과 메서드는 delete 연산자로 삭제가능
+ex) delete myCar.color;		// 인덱스 요소는 그대로, 값만 undefined
+
+*String객체의 메소드
+charAt(n)
+concat("문자열")
+indexOf("문자",n)	// n이 주어지면 인덱스n부터 검색
+lastIndexOf("문자")	// 끝부터 검색
+charCodeAt(n)
+match("문자열")		// 없으면 null
+replace("문자1","문자2")	// 원본은 그대로, 새문자열을 반환
+	// (/java/g, "javaScript")  ->  일치한 모든 문자열을 변경, i는 대소문자 구분안하도록
+search('문자')
+slice(n,m)	// (7,13) -> 인덱스 7부터 12까지, (-12,-6) -> 끝에서 12번째부터 끝에서 6번째까지
+split('separator')	// separator로 나누어 문자열배열 리턴
+substring(n,m)		// (7,13) -> 인덱스 7부터 인덱스 12까지
+substr(n,m)		// (7,6) -> 인덱스 7부터 6개 문자열
+toLowerCase()
+toUpperCase()
+toString()
+valueOf()
+
+*Date객체 분홍책 178P참고
+
+*정규 표현식(RegExp) 객체
+var 변수 = /패턴/플래그;		// i:대소문자 구별않함, g: 전체문자열(발견시 중지)
+var 변수 = new RegExp("패턴", "플래그");
+-메소드 
+search()	->  str.search(/java/i); // 찾은 인덱스 반환
+replace()	->  str.replace(/java/i,"HTML5");
+test()		->  regPtn.test(str);	//true or false
+exec()		->  regPtn.exec(str);	// 일치 문자열 반환
+match()		->  str.match(regPtn);	// 일치 문자열 반환(여러개면 배열로)
+
+\w -> 모든문자
+\W -> 대소문자,숫자 _를 제외한 모든 문자
+\d -> 숫자
+\D -> 숫자를 제외한 모든 문자
+\s -> 공백문자(공백, 탭, 줄바꿈 등)
+\S -> 공백문자를 제외한 모든 문자
+p{n} -> p가 n개인 문자열
+n+ -> 적어도 n개 이상, // ?? n개의 문자열을 찾음
+n* -> 0개이상, //?? n개가 포함된 문자열을 찾음
+n? -> n이 0또는 1회있는 문자열
+[0-9] -> 0~9중의 하나
+[a-z] -> a~z중 하나
+[qwer] -> 네 문자중 하나
+(qwer) -> "qwer"
+* -> 0개 이상
++ -> 1개 이상
+? -> 0개 or 1개
+{m, n} -> m회 이상 n회 이하
+
+
+★★★★★★★★
+
+암묵적 전역 변수
+x = 1;
+console.log(x); // 1
+변수 선언 시 var 키워드를 생략할 수 있다. 이때 변수는 전역 변수가 된다. 
+이러한 변수를 암묵적 전역 변수(implicit global)라 한다..
+
+1 + undefined // NaN (undefined → NaN)
+
+false로 평가되는 Falsy 값이다.
+false
+undefined
+null
+0, -0
+NaN
+’’ (빈문자열)
+
+'Cat' && 'Dog' // 'Dog'
+'Cat' || 'Dog' // 'Cat'
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // start ...
+})
+
+* 즉시 실행 함수
+	// 최초 한번만 호출 -> 초기화
+(function () {
+  // ...
+}());
+
+(function () {
+  // ...
+})();
+
+
+*클로저  : 전역변수, 지역변수  ->  로컬변수?
+	// 중첩함수 -> 내부 함수가 외부함수의 환경을 기억
+var add = (function(){ var counter = 0; 
+	return function() {return counter += 1;}
+	})();
+
+var str = a || b;	// a의 값이 없으면(false) -> b 
+
+var arr = ["1", 2, false];
+var friends = new Array();
+friends[0] = "이름0";
+friends[1] = "이름1";
+var fruits = new Array("att1","att2");
+var array01 = [ [1,2,3], [4,5,6] ];	//2차원배열
+array01[0][1]	-> 2
+
+숫자가 0 또는 NaN -> false
+문자가 빈문자 -> false
+1 + undefined -> NaN
+
+document.createElement('section');
+->
+HTML5Shiv.js	-> HTML5 크로스브라우징 해주는넘
+	//cross platform : 여러 종류의 플랫폼에서 동작가능
+t.setAttribute('href','http://naver.com');
+t.style.color='red';
+t.style.backgroundColor="red";
+document.querySelector(' ... ').addEventListener('click',function(){...});
+var x = document.getElementById("input_id").value;
+
+var result = confirm("ok?");		// true or false
+location.reload();
+window.location.href="사이트URL"	// 뒤로가기 가능
+location.replace('사이트URL');		// 뒤로가기 불가(덮어씌움)
+
+-name 프로퍼티
+// 기명 함수 표현식(named function expression)
+var namedFunc = function multiply(a, b) {
+  return a * b;
+};
+// 익명 함수 표현식(anonymous function expression)
+var anonymousFunc = function(a, b) {
+  return a * b;
+};
+
+console.log(namedFunc.name);     // multiply
+console.log(anonymousFunc.name); // 
+
+function 함수명(){
+	arguments[i];	// 매개변수 없이 매개받기
+}
+함수명(데이터1,데이터2,데이터3);	// arguments에 배열로 저장
+
+function sum() {
+  if (!arguments.length) return 0;
+
+  // arguments 객체를 배열로 변환
+  var array = Array.prototype.slice.call(arguments);
+  return array.reduce(function (pre, cur) {
+    return pre + cur;
+  });
+}
+
+// ES6
+// function sum(...args) {
+//   if (!args.length) return 0;
+//   return args.reduce((pre, cur) => pre + cur);
+// }
+
+function foo() {}
+console.log(foo.length); // 0, 매개변수 갯수
+
+
+var t = new Object();
+t['att1']="attr1";
+t['att2']="attr2";
+
+for(var i in array){
+            console.log(array[i].name+'/'+array[i].link);
+        }		// 배열인 경우 인덱스로 이용한다...
+for(var attr in obj){ ... }	// 객체일 경우 속성명으로 사용 
+
+*객체 생성자
+function 함수명(매개 ..){
+	this.속성명 = 값;
+	// this.함수 = function(){...}	프로토타입으로 자원활용
+}
+함수명.prototype.함수 = function(){ this.속성명 ... }	// 공용함수 등록
+var 참조변수 = 함수명;
+--> var 참조변수 = { 속성명:값, 함수: function(){..} }
+
+*프로토타입 // 모든 객체는 프로토타입에서 속성과 메서드를 상속받음
+ -> 생성자 외부에 메서드를 정의 
+객체명.prototype.메서드or 변수 = function() {... } or 값;
+ -> 메서드만 공유
+
+-링크 : 프로토타입 객체 멤버에 접근 가능( 상속 기능 구현)
+classical방식 - new사용
+ex) 
+function Car(m){ this.model = m || "Benz"; }
+function childCar(Model){}
+childCar.prototype = new Car();
+var myCar = new childCar("BMW");
+
+prototypical방식 - 리터럴객체와 Object.create()사용 , 선호됨
+ '부모객체' 생성 -> var 자식객체 = Object.create('부모객체');
+		자식객체.변수 or 메서드 추가
+
+*try - catch
+ catch(err)
+  err.message;
+
+ throw "strrr";	// console.log(err) -> strrr
+
+error객체의 속성
+name
+ 값-의미
+ RangeError - 범위를 벗어난 숫자
+ ReferenceError - 잘못된 참조
+ SyntaxError - 구문 오류
+ TypeError - 형식 오류
+ URIError - encode URI()의 오류
+message
+
+*HTML5 제약 조건검증
+input태그 속성에 max, min, maxlength 등 ..
+->  태그요소.checkValidity()	-> true or false
+
+
+*async
+웹페이지 파싱과 외부 스크립트 파일의 다운로드가 동시에 진행된다. 
+스크립트는 다운로드 완료 직후 실행된다. IE9 이하 버전은 지원하지 않는다.
+
+*defer
+웹페이지 파싱과 외부 스크립트 파일의 다운로드가 동시에 진행된다.
+ 스크립트는 웹페이지 파싱 완료 직후 실행된다. 
+IE9 이하 버전에서 정상적으로 동작하지 않을 수 있다.
+ex)
+<script async src="extern.js"></script>
+<script defer src="extern.js"></script>
+
+
+ symbol
+심볼은 주로 이름의 충돌 위험이 없는 유일한 객체의 프로퍼티 키(property key)를 만들기 위해 사용한다. 
+심볼은 Symbol 함수를 호출해 생성한다. 이때 생성된 심볼 값은 다른 심볼 값들과 다른 유일한 심볼 값이다
+// 심볼 key는 이름의 충돌 위험이 없는 유일한 객체의 프로퍼티 키
+var key = Symbol('key');
+console.log(typeof key); // symbol
+var obj = {};
+obj[key] = 'value';
+console.log(obj[key]); // value
+
+
+*js파일 용량 표시
+window.onload = function(){
+	document.getElementById("dd").addEventListener('change',function(e){
+		var p = document.createElement('p');
+		p.innerHTML="용량 : " + (document.getElementById("dd").files[0].size)+"바이트 입니닷 ㅎㅎ ";
+					// 파일 속성 -> name, size, type
+		document.body.appendChild(p);
+	});
+};
+
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★jQuery - 1
+문서객체 불러진 뒤 선택자 사용해야함 ->
+$(document).ready(function(){ ... });	// $(function(){...});
+$(function(){
+  (function($){
+	start...;
+  })(jQuery);
+})
+
+$(document.body) or $('body') or $("body")
+$('li', this)	// 모든 li중에 선택된(this) 요소
+$('li', '...')	// 모든 li중에 ...요소가 부모로 있는 요소만
+
+#list li:eq(2) 		// equal, 인덱스가 2인 선택자
+#list li:gt(1)		// 1보다 큰 엘리먼트
+#list li:lt(2)		// 2보다 작은 엘리먼트
+#list li:even		// 홀수, 인덱스가 아님, 첫번째 , 세번째..
+#list li:odd		// 짝수, 인덱스가 아님
+#list li:first		// li중 제일 위 first하나만 
+#list li:first-child	// li중 first 모두, #list 하위요소중 li가 첫 번째로 와야함
+#list li:last
+li:first-of-type	// li중 첫 번째 요소들만 선택, 실제 li엘리먼트 기준으로 체크
+li:last-of-type		// li중 마지막 요소들만 선택
+li:last-of-type(2)	// 마지막에서 두번째 잇는 요소들
+#list li:nth-child(3)	// 3번째 요소
+#list li:nth-child(3n)	// 3배수 요소들
+$(":type 속성값")	// type 속성값(또는 적용된 속성값) 
+	-> text, password, 
+	-> visible, hideen, selected, checked, animated
+$("요소:contains(텍스트)")	// '텍스트'라는 텍스트를 포함하는 요소
+$("요소1:has(요소2)")	// 요소2를 포함하는 요소1만 선택
+$("요소1:not(:first)")	// 첫 번째 요소 제외
+$("li:not(:has('span'))")
+$("li:not(\"#ii\")").css('color','blue'); 또는 
+$('li:not("#ii")').css('color','blue'); 
+* css 적용 시 속성명은 그냥쓰고(- 포함 시 ''로 ) 값이 문자 일 경우 ''로 사용
+
+$("요소","상위요소").on( ...)	// 상위요소에 포함된 요소에 on..
+$.each($(this), function(i, o){
+	$("button", o).on(...);
+});
+
+[attr]
+[attr*="bc"]		// 속성명 attr의 값이 bc를 포함하는 요소
+[arrt^="f"]		// attr 속성값이 f로 시작하는 요소
+[attr$="h"]		// attr 속성에 h로 끝나는 요소
+
+$("#a").find(".b").css('..','..').end()
+// id가 a인 요소의 자식요소중 class가 b인 요소를 찾음
+// css적용 후 마지막 트래버싱(탐색,find -> ".b")한 전 단계로 돌아감("#a")
+$(document.body).find('*');	// 모든 요소 선택, 하위요소도 포함
+children은 바로 아래요소만 선택, find는 모든 하위요소 선택
+
+*객체 편집 메서드
+요소.before("새 요소");	
+요소.after("새 요소");	// 해당 요소 다음에 추가
+요소.append("<div />", ..., ...) // 해당요소 안의 끝에 추가	<-> .prepend
+요소.remove() // 해당 요소 지움
+요소.clone(true or false)	// true -> 하위요소까지 모두 복제
+요소.empty()	// 요소의 하위내용 모두 삭제
+요소.replaceWith("새 요소")
+요소.wrap("새 요소")
+요소.wrapAll("새 요소")
+요소.unwrap()	// 선택한 부모요소 삭제(태그만 삭제, 텍스트는 그대로)
+
+
+
+요소.children().first().next().prev() 	// 요소의 자식중 첫번째 요소에서 다음요소의 이전 요소
+요소.parent
+요소.filter(":first")		//선택된 요소들중 첫번째
+요소.siblings()		// 요소의 형제엘리먼트 전부(자신제외)
+요소.nextAll()		// 요소의 다음 형제엘리먼트 전부
+요소1.add(요소2)		// 요소1셋에 요소2셋을 더함
+요소.closest('div')	// 요소의 부모들중 가장가까운 div요소
+요소.prevUntil('요소')	// 선택한 요소 전까지
+요소.nextUntil('요소')
+요소.slice(2,4)		// 2번 인덱스부터 4인덱스전 (3)까지 선택
+
+요소.is(":visible")	// true or false
+요소.get(0).style.color="#f00";		// get(0)사용 시 DOM방식 스타일 사용가능 
+
+
+$("p").text($(this).val());
+요소.val(function(i,origin){ ... return ...}); 	i는 인덱스 origin은 원래 값
+$("span").html("focus"); // span의 내용 변경 , focus <-> blur
+	// text는 태그를 제외한 내용만, html은 태그도 표시
+요소.attr("속성명","값")
+	- attr은 html에 작성한 속성의 값 그대로를 취급할 경우 사용
+	- prop은 js로써 취급할 경우 사용(어떠한 처리가 되어서 설정됨)
+		-> 상태 속성값을 가져오거나, 설정
+요소.prop("checked")	// true or false
+요소.prop("checked",true)
+요소.prop("selectedIndex")
+
+요소.addClass("class값")
+요소.removeClass("class값")
+요소.toggleClass("class값")
+요소.hasClass("class값")
+
+*(위치)수치조작(css, 스크롤)
+요소.height();
+요소.width();
+요소.innerWidth();	// 요소크기 + 패딩 합친값
+요소.outerWidth();	// 요소크기 + 패딩 + 보더값 
+요소.position().left or top or right or bottom	// 상위 요소 기준 값 반환만
+요소.offset().left or top	// 문서기준 반환만
+$(window).scrollLeft();
+$(window).scrollTop();
+$(window).scrollTop(1000);
+$(window).scroll( function(){ $(this)...} );
+
+
+*이벤트 등록 메서드
+-로딩 이벤트
+$(window).load(function(){...})		- 연동된 소스(iframe,img,video)의 로딩 후 이벤트 발생
+$(document).ready(function(){...})	- 문서객체의 로딩(HTML에 전체 요소 로딩, 소스로딩이 아님) 후 이벤트 발생
+error()
+
+요소.on('옵션1 옵션2 옵션3 ...',function(){...});	// 제이슨 가능
+옵션 : click, dblclick, mouseout, mouseover, mousedown, mouseup
+	mouseenter, mouseleave, mousemove, scroll,
+	focus, focusin, focusout, blur, change, 
+	keydown(모든 키 코드, 한글안댐), keyup, keypress(기능 키 제외)
+모두 단독 이벤트로 등록가능. ex) 요소.click(function(){...})
+*mouseover : 대상 요소에 올라가야댐  <--> mouseout
+ mouseenter : 대상이 포함된 범위  <--> mouseleave
+
+*마우스 이벤트객체 e의 속성
+-> pageX, pageY(스크롤포함),  clientX, clientY (스크롤 무시)
+   screenX, screenY (모니터기준), layerX, layerY (요소기준으로)
+   button(왼쪾 0, 휠 1, 오른쪽 2)
+
+*키보드 이벤트객체 e의 속성
+-> keyCode, altKey ( true or false), ctrlKey, shiftKey
+ 37="LEFT", 38="TOP", 39="RIGHT", 40="BOTTOM"
+
+*전체 이벤트객체 e의 속성, 메소드
+ target		// 이벤트가 전파된 마지막 요소
+ cancelBubble	// 이벤트 전파차단함?(기본 false)
+ stopPropagation()	// 이벤트의 전파를 차단
+ preventDefault()	// 기본 이벤트 차단
+
+요소.hover(function(){ 오버 ...}, function(){ 아웃...});
+
+요소.단독 이벤트 등록 메서드();		// 이벤트 강제발생
+요소.trigger('이벤트종류');		// 강제발생!
+요소.off('제거할 이벤트');
+
+$("a").on('click',function(e){
+	//...
+	//return false;		// 기본 이벤트 차단!
+	e.preventDefault();	// 링크페이지로 이동하는 기본 이벤트 차단
+	...
+}
+
+*포커스 이벤트 - 마우스 이벤트 대응
+ mouseover - focus
+ mouseout - blur
+
+요소.data({"key": 값})	// (모든요소?) 저장가능 
+대상요소.on("이벤트",function(){
+	대상요소.index(this);
+});
+
+
+*이벤트 등록 메서드
+on()		// 동적, 정적 	
+bind()		// 2개 이상
+delegate()	//  선택요소의 	하위요소에 등록, 동적
+one()	// 이벤트 1회 발생, 자동해제, 동적, 정적
+
+*라이브 이벤트 등록  
+->  클래스를 통한 요소에 이벤트 등록하고 
+    클래스를 나중에 추가하더라도 적용!
+$(document | "대상 상위요소").on("종류", "대상요소", function(){ $(this)... }); //$(this)는 대상요소이다
+$(document | "대상 상위요소").delegate("대상요소", "종류", function(){ ...});
+$("대상요소").one("종류", function(){ ...});	// 동적은 on이랑 같음
+
+*이벤트 해제
+대상요소.off("이벤트 종류");	// 정적
+대상요소의 상위요소.off("이벤트 종류", 대상요소);
+대상요소.unbind("이벤트 종류");
+대상요소의 상위요소.undelegate("이벤트 대상", "이벤트 종류");
+
+$(e.target).val()	// 이벤트를 발생시킨 요소
+
+
+*애니메이션
+요소.fadeOut([1000,가속도,function - 생략가능])	// 영역도 숨김, 
+	가속도-> swing(느리,빠르,느리)-디폴트, linear(일정속도)
+요소.hide()		// 영역도 숨김
+요소.slideUp()		// 영역도 숨김
+요소.show()
+요소.fadeIn()		
+요소.slideDown()	
+요소.toggle()		// hide(), show()
+요소.fadeToggle()	// fadeIn(), fadeOut()
+요소.slideToggle()	// slideUp(), slideDown()
+요소.fateTo()		// 불투명도,  가속도대신 투명도
+
+$(this).css({'margin-left':'+=10'});		// '+=10%'
+	.css({fontSize : 변수 + 'px'});
+
+요소.animate({스타일}, 시간, 가속도, 콜백함수);
+
+$("div").animate({ opacity:'0.5',height:'toggle'});	// height가 0됨 
+
+*애니메이션 동작 제어
+요소.stop();	// 진행중 애니메이션만 정지 후 나머지 큐 실행,
+요소.stop(clearQueue, finish);	// 둘다 false, finish: 진행중인 애니메이션 완료시점으로
+요소.stop(false, true);		// 종료시점에서 멈추고, 남은 큐 실행
+요소.delay(시간)		// 외부에서 사용 시 큐로 추가됨
+요소.queue(function(){ ...	// queue() 큐의 함수를 배열로 반환 or 큐에 정의함수 추가 , 이후(대기) 애니메이션 취소
+	$(this).dequeue();	// 이후(대기) 애니메이션 동작 하도록
+});				// 
+--> 외부에서 queue() 큐에 대기중 함수(실행중 포함) 배열로 반환, 사용 시 안멈춤, 
+--> 외부에서 queue(function{...}) 사용시 큐에 추가, 안멈춤
+요소.clearQueue()	// 현재 실행 중 제외한 큐내용 삭제
+요소.finish()	// 큐의 함수 모두 실행한 완료시점으로 이동
+요소.is(":animated")
+
+
+$.noConflict(); 			// 사용시 $ 사용 불가, jQuery로 사용해야함
+var jq = $.noConflict();
+jq("#div").click(function(){ ... });	// 충돌방지 -> $를 jq로 사용
+
+function($){...}			// 파라미터로 $를 넘겨 함수내 $ 사용
+
+(function ($) {
+  // all JS code here
+})(jQuery);
+
+
+요소.each(function(index, obj){ ... })
+$.each(요소, function(index, obj){ $(this) ... })
+$.map( arr, function(obj, index){ ... return obj;})
+$.grep( arr, function(obj, index) { ... return true;})
+$.inArray(data, Array, start index)
+$.isArray(object)
+$.merge(Array1, Array2)
+요소.index(지정 요소)
+
+
+
+*Ajax : Asynchronous JavaScript and XML
+메소드
+ load()		//외부 콘텐츠를 가져올 때 사용
+ $.ajax()	// $.post(), $.get(), $.getJSON()을 하나로 합친 것
+ $.post()	// post방식 전송, 받기
+ $.get()	// get방식 전송, 받기
+ $.getJSON()	// get방식 전송, JSON으로 받기
+ $.getScript()	// Ajax를 이용해 외부 자바스크립트 불러옴
+	ex) 버튼클릭 -> $.getScript("~.js");
+ .ajaxStop(function(){ ... })	//	응답요청이 완료되었을 때
+ .ajaxSuccess(function(){ ... })	// ajax 요청이 성공적 완료되면
+ ajaxComplete(function(){ ... })	// Ajax 통신 완료되면
+
+
+요소.load(url,data,콜백함수)	// 요청 할 url, 전송 할 data
+$("#div1").load("~~.txt #p1");	// #div1 요소에 삽입
+
+$.ajax({
+	url: "전송페이지",
+	type: "전송방식(get,post)",
+	data: "데이터",
+	dataType: "요청한 데이터 형식(html, xml, json, text, jsonp)",
+	success: function(data){ .. },
+	error: function(){ .. }
+});
+$.ajax()의 옵션 : 
+	async(기본 true), 
+	beforeSend(요청 전 함수실행 이벤트핸들러),
+	cache(요청페이지를 캐시저장? 기본 true),
+	complete(Ajax 완료 후 함수실행 이벤트 핸들러),
+	contentType(전송할 데이터 타입, 기본값 ...ㅎ)
+	data, dataType, error, success, type, url
+	timeout(통신시간 제한, 밀리초),
+	username(HTTP 액세스 시 인증 필요할 경우)
+
+*Ajax전송데이터를 위한 가공 메서드
+	요소.serialize();	// 입력요소(form) --> name1=vaule1 & ... 쿼리스트링으로
+	요소.serializeArray();	// 입력요소(form) --> 배열객체로 반환, [{name1:value1}..]
+	$.param(obj);		// 제이슨형식 객체를 name1=value1 & ... 쿼리스트링으로
+	JSON.parse('{"name":"value", ...}')	// 문자열->객체
+	JSON.stringify({"name":"value", ...})	// 객체 -> 문자열
+
+	
+$.get("~~.asp",function(data,status){
+	alert("d : " + data + " : s : " + status); });
+
+$.post("~~.asp", {name : " ~ ", city : " ~ "},
+	function(data,status){
+	    alert("d : " + data + " : s : " + status); });
+
+xml로 data를 받을 시 $(data).find("ㅎㅎ");
+*도메인이 다른 경우 AJAX사용 시 오류 ! (동일 출처 원칙, 서버스크립트 사용!)
+
+JSONP는 교차 도메인 서버간의 데이터를 요청,응답하는 방법
+
+*jQuery 플러그인(Plug-in) : 여러 기능들의 라이브러리
+-저작권 종류
+자유 수정 가능 : MIT, BSD, Apache, Public Domain, Free
+수정 시 부분 공개 : LGPL, MPL
+
+*쿠키는 하나의 도메인당 최대 20개 생성 가능, 최대 4KB까지 저장
+
+*플러그인 제작
+$.fn.extends()		// 직접 제작한 함수를 jQuery에 확장
+
+$.fn.extends({
+	함수명 : function( 매개1, 매개2, ..){
+	  $(this);	// 플러그인을 적용한 요소
+	  ..
+	}
+});
+또는 
+$.fn.확장 함수명 = function( 매개1, 매개2,...){ ... }
+
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★jQuery - 2
+
+
+$("A + B")	-> A의 다음형제 B (바로다음형제 하나만)
+$("A ~ B")	-> A의 다음부터 형제인 B모두 선택
+$("요소:first") -> 요소 중 처음째 선택(하나만)
+$("요소:first-child") -> "요소:내가첫째인가?" - 부모기준 첫째만(첫째 해당안되면 선택X) (여러개)
+$("요소:first-of-type")	-> 처음째 자식들 모두
+$("요소:nth-child(n)")	-> 모든 요소중 n번째마다
+$("요소:nth-of-type(n)")  -> 부모요소기준으로 n번째인 요소모두
+$("요소:even")	-> 짝수인덱스
+$("요소:odd")	-> 홀수인덱스
+$("요소:only-child") 	->  부모기준 요소 하나만 자식인것만 하나선택
+$("요소:only-of-type")	->  부모기준 요소 하나만 자식인것 모두선택
+$("요소:eq(n)")	->  인덱스 n 요소
+$("요소:gt(n)")	->  인덱스 n보다 큰 인덱스를 가진 요소들
+$("요소:lt(n)") ->  인덱스 n보다 작은 인덱스를 가진 요소들
+$("요소:not(n)")  -> 인덱스 n를 제외한 모든 요소
+$("[attr]")	-> attr를 가진 요소
+$("[attr|=val]")  ->  attr이 val이거나 val-을 포함해야함
+$("[attr=val]")
+$("[attr~=val]")	-> attr이 val인 요소 모두 (~없어도 되지않낭.)
+$("[attr*=val]")	-> 단어 val를 포함하는 attr를 가진 모든 요소
+
+$("요소:enabled")
+$("요소:disabled")
+$("요소:selected")
+$("요소:checked")
+$("요소:animated")
+$("요소:focus")
+$("요소:contains(txt)")	-> 지정 문자열을 포함하는 요소
+$("요소:has(p, span)")	-> 지정된 요소중 하나 이상을 가진 가진 요소
+$("요소:empty")		-> 하위요소,텍스트 없는 요소
+$("요소:hidden")
+$("요소:visible")
+
+요소.index()	// 부모요소 기준으로 몇번째 인덱스인가 
+요소.text()
+요소.html()
+요소.val()
+요소.attr()
+
+
+form이벤트
+submit
+change
+select
+focus
+blur
+focusin
+focusout
+
+브라우저 이벤트
+resize
+scroll
+
+바인딩 이벤트
+on
+off(이벤트, 자식요소, 전달데이터, 함수, 맵)
+one
+trigger()	 -> 바인딩된 모든 이벤트를 트리거
+trigger(이벤트, [data])
+	-> on에서 function(event, data){..}
+triggerHandler  ->  바인딩된 모든 함수들을 트리거
+
+요소.on(이벤트, 자식요소, 전달데이터 {키:데이터}, function, 이벤트맵(이벤트:함수))
+	-> on에서 function(event){ event.data.키 ... }
+
+*event 속성
+currentTarget	// 이벤트 발생시킨 대상요소? 버블링 단계의 현재 dom요소(dom element로 반환)
+	e.currentTarget.innerHTML
+data		
+delegateTarget
+namespace
+pageX		// 문서 왼/위 가장자리 기준으로 마우스 포인터 위치 반환
+pageY		// 문서 왼/위 가장자리 기준으로 마우스 포인터 위치 반환
+relatedTarget
+result
+target		// 이벤트 발생시킨 대상요소 
+timeStamp	// 1970/1/1 이후의 밀리 초를 반환
+type		// 이벤트의 종류 
+which
+
+$("li").each(function(i){
+    $(this).on('click',{x:i},function(e){
+      console.log($(this).index()+":"+e.data.x);
+    });
+  });
+
+
+*애니메이션
+요소.animate({ style }, speed, easing, callback);
+	//default: speed -> 400m, easing -> swing
+요소.delay(milliseconds)
+요소.stop(stopAll, goToEnd)
+hide
+show
+->toggle
+fadeIn
+fadeOut
+->fadeToggle
+fadeTo(밀리초,투명도)
+
+slideDown
+slideUp
+slideToggle
+
+clearQueue	// 큐에서 아직 실행되지 않은 항목 제거
+dequeue	// 큐에서 함수 하나를 제거 후 다음 실행(하나 건너뜀)
+finish	// 모든 큐를 한번에 실행 , 종료
+queue	//선택 요소의 대기중 함수들 반환, 
+
+letterSpacing
+wordSpacing
+line-height
+
+요소.height()	//요소크기
+요소.width()
+요소.innerHeight()	// 패딩포함
+요소.outerHeight()	// 보더포함
+
+요소.height(function(index, currentheight));
+	// index : 요소의 인덱스 위치, currentheight: 현재 높이
+ex) 요소.height(function(i,h){ return h+10; });
+
+요소.offset()	// 문서기준 좌표(속성 : top, left), 설정시 {top:..,left:..}
+요소.offsetParent()	// 최초위치의 부모요소 반환(html)
+요소.position()		//부모요소의 상대적 위치 반환
+$(document).scrollLeft()
+$(document).scrollTop()
+
+스크롤 이동
+window.scrollTo(x, 요소.offsetTop)	// 문서기준
+
+요소.css(property, function(index,currentValue));
+	//currentValue -> 10px 이따구로 나오니 잘라야함
+
+요소.attr	// 값을 HTML에서 가져옴
+요소.prop
+
+addClass(classname, function(index,currentclass));
+	//addClass("aa bb");	-> 여러개 가능
+after
+append		
+appendTo	
+before
+clone		// 복사본을 삽입
+insertAfter
+insertBefore
+prepend
+prependTo
+
+요소.clone(true or false);
+	true : 이벤트 핸들러도 복사
+	false 기본 ..
+
+detach()	// 선택 요소 제거(데이터, 이벤트 유지)
+	// var x = 요소.detach() -> 내용 저장 
+empty()		// 모든 자식노드와 내용 제거
+remove()	// 선택 요소(데이터, 이벤트 포함) 제거
+removeClass
+removeAttr
+removeProp
+toggleClass
+unwrap()
+
+요소.replaceWith(content[, function(index)]);
+
+wrap
+wrapAll
+wrapInner
+
+parent		//바로 위 부모 하나
+parents
+요소.parentsUntil(대상요소,선택요소들)	// 요소부터 대상요소전까지 선택요소들만 선택
+closest
+
+jQuery에서
+map().get()	-> 배열로 나옴
+.join(split)	-> 배열을 split으로 나누어 문자열로 반환
+
+children	//바로 아래 자식 하나
+find
+contents	// 바로 아래 자식들 반환(텍스트, 주석 노드 포함)
+filter("a")		// 선택된 요소들중 a태그 요소들을 찾아 반환
+
+siblings()	// 모든 형제요소
+next
+nextAll
+nextUntil
+prev
+prevAll
+prevUntil
+
+*필터링
+first		// 선택된 요소들중 첫 번째
+last		// 선택된 요소들중 마지막
+eq		// 선택된 요소중 인덱스 번호만	(-도 가능)
+filter(criteria, function(index))		// 조건일치만
+	//function
+not		// 조건 불일치만
+
+$("div","li")	-> li안에 div가 있는 div요소만 선택
+요소에도 slice가능
+
+*그룹
+요소1.add(요소2).css({...})	// 요소1과 요소2가 동시에 css효과 적용됨(애니메이션도, ui라이브러리 포함)
+
+요소.each(function(index, element));	//element는 this와 같음
+요소.has(하위요소)	//하위요소를 가진 요소들을 선택
+요소.is(체킹)		// 체킹요소와 1개 이상 일치면 true
+
+*ajax
+브라우저 내정객체 XMLHttpRequest(웹서버에 데이터 요청)
+-> HttpRequest send -> 서버에서 처리 -> 페이지로 응답 -> 처리, 수정
+자바스크립트로 구현 -> 559P
+
+POST방식은 크기제한이 없음
+
+403 -> 접근 거부
+
+
+$.ajax()
+$.ajaxSetup()	// 향후 $.ajax 요청에 대한 설정 ({ name: value, ...})
+
+$.ajax()의 속성
+url
+data
+type	// GET,POST
+dataType	// 서버로부터 응답받을 데이터의 형식
+success		//콜백함수, 매개result -> 응답받을 데이터
+error
+complete	// 콜백함수 후 실행할 함수
+
+핵심 메서드
+get()		// 보통 서버에서 일부 데이터를 가져오는데 	
+getScript()
+post()		// 데이터를 캐시하지 않아 요청과 함꼐 데이터를 보내는데 사용
+load()	//데이터요청 , 해당하는 HTML코드 수정
+	// 요소.load(url, data, function(response, tatus, xhr));	//async:false
+	// ex) 요소.load("url #p1");	// url의 id=p1의 내용을 요소의 html로 삽입
+	// response : 호출이 성공하면 결과내용 
+	// statusTxt : 통화 상태 ( success, error )
+	// xhr : XMLHttpRequest 객체
+
+ex)
+$.get(" url", function(data){ ... });
+$.post(url, data, function(data, status, xhr), dataType);
+
+
+*JSON ( JavaScript Object Notation ) -> js 객체 표기법으로된 텍스트
+JSON.stringify(obj)	-> 객체(배열도 가능)를 텍스트로
+JSON.parse(str)		-> 텍스트(배열도 가능)를 객체로
+	// JSON.parse('{ key : val ...}')
+ 
+형식 : ~.json
+MIME : application/json
+
+localStorage.setItem(키, 값);
+localStorage.getItem(키);
+
+var jO = { "key":["arr1","arr2"] }
+var jO = { "key":{"k1":"va1"} }
+jO.key
+jO["key"]
+
+for(x in jO){ .. x는 Key이다 }
+	-> { jO[x] }
+
+delete jO.key;	// 속성 지우기, 
+	// 배열도 delete로 지울 수 있음 
+	-> delete arr[1]; 	// 인덱스로
+
+
+document.write('&lt;write in document&gt;', '<br>');
+
+let tag = '<strong>let value using tag</strong>';
+document.write(tag, '<br>');
+
+Boolean(null);      //false
+//false --> 0, null, '', undefined
+
+typeof false;           // 'boolean'
+typeof 100;             // 'number'
+typeof 'text';          // 'string'
+typeof { x: 1, y: 2 };    // 'object'
+typeof [1, 2, 3, 4];    // 'object'
+typeof function () { };    // 'function'
+
+// 생성자 함수의 인스턴스, 클래스, 상속 확인은 instanceof 사용
+let A = function () { };
+a = new A();
+console.log(a instanceof A)         // true
+console.log(a.constructor == A)     // true
+
+'123' + '421'   // 123421
+10 == '10';      // true
+10 === '10';     // false
+
+5 & 3;      // 1 -> ...00001
+5 | 3;      // 7 -> ...00111
+//5 -> ...00101
+//3 -> ...00011 
+
+
+0b11;       // 2진수(binary)
+0o11;       // 8진수(octal)
+11;
+0x11;       // 16진수(hexadecimal)
+
+// prompt('question', 'default');
+// confirm('confirm');
+// alert('alert');
+
+switch (1) {
+    case 1:
+        console.log('1');
+        break;
+    case 2:
+        console.log('2');
+        break;
+    case 3:
+        console.log('3');
+        break;
+}
+
+
+let func3 = function () {
+    arguments;              // 파라미터를 모두 배열로 가져옴
+}
+
+    (function (p1, p2) {
+        console.log('즉시실행함수');
+        console.log(`${p1}, ${p2}`);
+    }(1, 2));
+
+
+function Func4(a) {
+    const innerValue = 100;
+
+    this.a = a;
+    this.func1 = function () {
+        console.log('외부용', this.a, innerValue);
+    }
+
+    function func2() {
+        console.log('내부용: Func4 객체 생성', innerValue);
+    }
+
+    (function () {
+        func2();
+    }());               // this 바인딩 안됨
+}
+let obj1 = new Func4(10);
+obj1.func1();
+
+
+class Func5 {
+    constructor(a) {
+        const innerValue = 100;
+
+        this.a = a;
+        this.func1 = function () {
+            console.log('외부용', this.a, innerValue);
+        }
+
+        function func2(_this) {
+            console.log('내부용: Func5 객체 생성', innerValue, _this.a);
+        }
+
+        (function () {
+            func2(this);
+        }.bind(this)());        // this 바인딩 됨
+    }
+
+    func3() {
+        console.log(this.a)     // innerValue, func2 접근 불가, 
+    }
+}
+let obj2 = new Func5(10);
+obj2.func1();
+obj2.func3();
+
+
+// 프로토타입(객체 생성자 함수)
+class Func6 {
+    constructor(num) {
+        this.num = num;
+    }
+}
+
+Func6.prototype.func1 = function() {
+    console.log('공유 함수');
+}
+
+Func6.prototype.func2 = (function() {
+    console.log('Func6 프로토 객체 생성');
+}());
+let obj3 = new Func6(10);
+
+
+// 상속은 obj.__proto__ = obj 를 사용
+// 클래스인 경우 extends를 사용
+class Person {
+    constructor(name) {
+        this.name = name;
+    }
+}
+class Man extends Person {
+    constructor(name) {
+        super(name);
+        this.gender = 'male';
+    }
+}
+let man1 = new Man('moong');
+console.log(man1.name, man1.gender);
+
+
+function func7() {
+    try {
+        // ...
+    } catch (position) {
+        return false;
+    }
+
+    try {
+        throw 'generate error'
+    } catch (position) {
+        // ...
+    } finally {
+        // ...          // 무적권 실행 
+    }
+
+    throw new Error('error');
+}
+
+function f8() {
+    try {
+        console.log(0);
+        throw "bogus";
+    } catch (position) {
+        console.log(1);
+        return true; // this return statement is suspended
+        // until finally block has completed
+        console.log(2); // not reachable
+    } finally {
+        console.log(3);
+        return false; // overwrites the previous "return"
+        console.log(4); // not reachable
+    }
+    // "return false" is executed now
+    console.log(5); // not reachable
+}
+f8(); // alerts 0, 1, 3; returns fals
+
+/* 
+DOMContentLoaded - HTML 이 모두 로드되고, DOM 트리가 완성되었지만, 외부 리소스(img etc) 가 아직 로드되어지지 않았을 때
+    <body onload="func()">
+load - 브라우저에 모든 리소스(img, style, script, etc) 가 로드되었을 때
+beforeunload / unload - 페이지를 떠날 때
+*/
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+});
+
+window.onload = function () {
+    // ....
+}
+
+/* 
+캡처링 : 상위 요소에서 하위로 이벤트 실행
+버블링 : 하위 요소에서 상위로 이벤트 실행
+이벤트 진행 순서 : document -> html -> body -> element ... -> body -> html -> document
+
+이벤트 파라미터
+    .stopPropagation();     // 버블링 중단, 상위 요소의 이벤트 막기
+    .preventDefault();      // 기본 동작을 중지
+    마우스
+    .pageX
+    .pageY
+    키보드
+    .
+    .
+    발생 위치
+    .
+    .
+
+*/
+document.onclick = () => console.log('click1');     // 버블링만 지원
+document.addEventListener('click', (e) => {
+    console.log('click2');
+    console.log(`x: ${e.pageX}, y: ${e.pageY}`);
+}, false);    // true:캡처링, false:버블링
+//
+
+let reg1 = /^1[-+].*(good)$/;
+reg1.test('1- middle good');            // true
+
+let reg2 = /\d{3}-[123]{3}/;
+console.log(reg2.test('123-123'));      // true
+console.log(reg2.test('999-111'));      // true
+console.log(reg2.test('333-444'));      // false
+
+
+
+/* 요청&응답&쿠키
+GET /index.html HTTP/1.1 
+Host: www.example.org
+Cookie: name=value; name2=value2
+Accept: ...
+
+HTTP/1.1 200 OK
+Content-type: text/html
+Set-Cookie:name=value
+Set-Cookie:name2=value2; Expires=Wed, 날짜~
+...
+*/
+
+document.cookie = 'name1=' + encodeURIComponent('이름1') + '; max-age=' + (60 * 60 * 24 * 365);
+document.cookie = 'name2=' + encodeURIComponent('이름2') + '; max-age=' + (60 * 60 * 24 * 365);
+// 유효기간은 초단위로 설정, 하나씩 등록
+// 삭제는, 유효 기간을 재설정해 브라우저측에서 지우게함
+if ('이름2' === decodeURIComponent(
+    document.cookie.split('; ').find(e => e.startsWith('name2')).split('=')[1]
+)) console.log('내 쿠키 발견!');
+
+
+navigator.geolocation.getCurrentPosition((position) => {
+    console.log(position.coords.latitude);     // 위도
+    console.log(position.coords.longitude);    // 경도
+});
+
+
+// 일반 함수 : 호이스팅 호출가능
+// var는 호이스팅 되지만 undefined
+// const과 let은 TDZ(Temporal Dead Zone)으로 에러
+
+// Computed property
+let a = 1;
+let b = {
+    [a]: 1,
+    [1 + 1]: 2,
+};
+let c = Object.assign({ 3: 3 }, b, { 4: 4 });
+console.log(c['4']);         // 키가 문자형으로 변환
+
+
+// 심볼
+const id1 = Symbol('id');
+const id2 = Symbol('id');
+const func = Symbol('func');
+console.log(id1.description);           // id
+console.log(id1 == id2, id1 === id2)    // false false
+const user = {
+    name: 'mg',
+    age: 10,
+    [id1]: 'ID1 mg',
+    [id2]: 'ID2 mg',
+    [func]: () => { }
+};
+console.log(user[id1], user[id2]);      // ID1 mg ID2 mg
+console.log(Object.entries(user))       // Symbol은 표시안됨, for in에도 안뜸
+
+console.log(Object.getOwnPropertySymbols(user)) // Symbol만 표시됨
+console.log(Reflect.ownKeys(user))      // 키를 포함한 심볼 표시
+
+// 전역심볼
+const id1 = Symbol.for('id');
+const id2 = Symbol.for('id');
+console.log(id1 == id2, id1 === id2)   // true true
+console.log(Symbol.keyFor(id1))         // id
+
+// Destructuring assignment, 구조 분해 할당
+let [a, b, c = 3] = [1, 2];
+let d = 4, e = 5;
+[d, e] = [e, d];
+
+let man = { name: 'mg', age: 10 };
+let { name: myName, age: myAge, human: myHuman = true } = man;       // 새 변수이름으로 할당
+console.log(myName, myAge, myHuman);
+
+// Rest parameters
+function func(...rest) {
+    console.log(rest);
+};
+func(1, 2, 3, 4);
+
+// Spread syntax
+let a = [1, 2, 3];
+let b = { 1: 1, 2: 2, 3: 3 };
+console.log(...a);
+console.log({ ...b });
+
+
+/* this
+
+일반 함수 : 생성자 함수, 객체의 메소드를 제외하고 전역을 가르킴
+    function A(){
+        this.func = function(){
+            this
+        }
+    }
+    A.prototype.func2 = function(){this}
+* addEventListener는 currentTarget에 바인딩 되어서, 콜백 함수의 this도 바인딩됨 
+
+화살표 함수 : 상위 스코프를 가르킴, 선언 후 바인딩 안됨
+
+ */
+
+// call : this를 지정, 매개를 직접 받음
+function callTest(arg1, arg2) {
+    this.arg1 = arg1;
+    this.arg2 = arg2;
+    console.log(this);
+};
+callTest.call({ name: 'name' }, 1, 2)
+callTest.call({ name: 'name' }, ...[1, 2])
+
+// apply : this를 지정, 매개를 배열로 받음
+function applyTest(arg1, arg2) {
+    this.arg1 = arg1;
+    this.arg2 = arg2;
+    console.log(this);
+};
+applyTest.apply({ name: 'name' }, [1, 2])
+
+// bind : this를 지정한 함수를 반환
+function t() {
+    console.log(this)
+}
+t.bind({ name: 'mg' })()
+
+
+// Promise
+const pr = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        // resolve('ok');
+        reject(new Error('error'));
+    }, 2000);
+});
+/* 
+pr.then(
+    function(result){ 
+        console.log(result);
+    },
+    function(err){
+        console.log(err);
+    }
+)
+ */
+pr.then(
+    function (result) {
+        console.log(result);
+    }
+).catch(
+    function (err) {
+        console.log(err);
+    }
+).finally(
+    function () {
+        console.log('끝');
+    }
+)
+// promise.all([pr1(), pr2(), ...]).then((res)=>{...});
+// 모든 pr이 실행 후 then이 실행됨
+
+
+// 시간 테스트
+console.time('test');
+let num = 0;
+for (let index in Array(10000).fill()) {       // 0~9999
+    num += parseInt(index);
+}
+console.log(num)
+console.timeEnd('test');
+
+// async안에서 await사용 가능 - promise에만 적용가능
+function receiveName() {
+    return new Promise((res, err) => {
+        setTimeout(() => {
+            return res('moong');
+        }, 2000);
+    });
+}
+
+async function getName() {
+    let result = await receiveName();
+    return result;
+}
+
+// getName().then(result => {
+//     console.log(result)
+// });
+
+async function printName(){
+    try {
+        let myName = await getName();
+        console.log(myName);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+printName();
+
+
+// generator
+function* ge1() {
+    for (let num of [...Array(100)].map((e, i) => i + 1)) {      // 1~100
+        yield num;
+    }
+}
+
+let count = 0;
+for (let num of ge1()) {
+    count += num;
+}
+
+console.log(count);
+
+function* g2() {
+    let num = 0;
+    while (true) {
+        yield num++;
+    }
+}
+// yield* gene 로 다른 generator을 호출 가능 

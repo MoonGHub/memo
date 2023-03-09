@@ -9,6 +9,11 @@ document
 .scrollHeight // 문서의 실제 크기반환
 .scrollWidth
 .cookie // 쿠키 값은 인코딩을 해주자, 문자열로 저장됨,
+.forms
+
+- forms[index] 또는 document[form name]
+- document[form name][input name]
+- forms[form name] .... ?
 
 element
 .style
@@ -31,7 +36,8 @@ this.removeEventListener('mouseover', arguments.callee);
 .childNodes[num]
 .parentNode
 요소제어
-.appendChild(ele)
+.append // 무조건 엘리먼트만 가능
+.appendChild(ele) //문자 노드 삽입 가능
 .
 .
 .

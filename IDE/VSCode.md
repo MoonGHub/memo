@@ -1,8 +1,9 @@
 # IDE - VSCode
 
-### 🦋 언어 변경
+### 🦋 Command Palette
 
-Command Palette > `Configure Display Language`
+- `Configure Display Language`: 언어 변경
+- `Color Theme`: 테마 변경
 
 ---
 

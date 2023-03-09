@@ -1,0 +1,216 @@
+ReactDom은 모든 값을 렌더링 하기전에 이스케이프시킴(문자열로 변환) --> XXS(cross-site-scripting)공격 방지
+
+react-router와 react-router-dom의 차이 :
+react-router는 코어까지 들어있는 master 브랜치에 있는 라이브러리 입니다.
+그리고 react-router-dom은 그 중에서 DOM이 인식할 수 있는 컴포넌트들만 뺀 라이브러리 입니다.
+
+  // useState의 state가 변경 시 해당 컴포넌트(자기자신)가 재렌더링 됨, 같은 값 입력 설정 시 렌더안됨
+  // setState(구)는 render()함수를 재 호출함
+
+@@구버전
+willMount -> render -> didMount
+WillReceiveProps -> should -> WillUpdate -> render -> DidUpdate
+
+* componentDidCatch(err,info){ ... }
+*setState(null) -> state 업데이트 안함, 컴포너트 업데이트 안함
+
+this.setState(data, callback)	// data를 state에 병합 -> render() 호출 -> callback (비동기)
+
+this.setState({
+      [name]: value         // name이라는 변수의 텍스트값 사용 가능 
+    });
+객체 초기화 구문은 계산된 속성명(computed property name)도 지원합니다. 
+각괄호 [] 안에 식을 넣을 수 있고, 식이 계산되고 그 결과가 속성명으로 사용      -> es6
+
+var partialState = {};
+partialState[name] = value;
+this.setState(partialState);    -> es5
+
+
+ReactDOM.render(<input value="hi" />, mountNode);          // 리액트에서 onChange 없이 value만 지정 시 read-only로 됨
+setTimeout(function() {
+  ReactDOM.render(<input value={null} />, mountNode);
+}, 1000);
+
+
+function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}        // FancyBorder의 자식컴포넌트 그대로 전달, 파라미터에서 {children, ...rest} 가능
+    </div>
+  );
+}
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">
+        {props.left}
+      </div>
+      <div className="SplitPane-right">
+        {props.right}
+      </div>
+    </div>
+  );
+}
+function App() {
+  return (
+    <SplitPane
+      left={
+        <Contacts />
+      }
+      right={
+        <Chat />
+      } />
+  );
+}
+
+
+import React, { Fragment } from 'react';        // 접근성 높이기 위해 Fragment를 div대신 사용, props 미사용 시 <> </> 도 가능
+
+
+<label htmlFor="namedInput">Name:</label>       // 리액트에서는 for말고 htmlFor을 사용
+<input id="namedInput" type="text" name="name"/>
+
+
+<input
+    type="text"
+    ref={this.setTextInputRef}       // (예를 들어`this.textInput`)에 저장하기 위해 `ref` 콜백을 사용합니다.
+/>
+function CustomTextInput(props) {
+  // textInput은 ref 어트리뷰트를 통해 전달되기 위해서
+  // 이곳에서 정의되어야만 합니다.
+  let textInput = React.createRef();
+  function handleClick() {
+    textInput.current.focus();
+  }
+  return (
+    <div>
+      <input
+        type="text"
+        ref={textInput} />
+      <input
+        type="button"
+        value="Focus the text input"
+        onClick={handleClick}
+      />
+    </div>
+  );
+}
+상태비저장 컴포넌트는 propTypes, defaultProps를 가질 수 있음
+function Link(props){ return ... }
+Link.propTypes = { ... }
+Link.defaultProps = { ... }
+
+상태비저장 컴포넌트는 엘리먼트 참조(refs)를 사용 할 수 없다
+	// React 컴포넌트로 감싸면 사용 가능
+
+
+코드 분할(Next.js 지원)
+import { add } from './math';
+console.log(add(16, 26));
+->
+import("./math").then(math => {
+  console.log(math.add(16, 26));
+});
+https://webpack.js.org/guides/code-splitting/
+https://www.zerocho.com/category/Webpack/post/58ad4c9d1136440018ba44e7
+
+const { lazy, Suspense } = React;
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
+    // React 컴포넌트를 포함하며 default export를 가진 모듈로 결정되는 Promise로 반환
+function MyComponent() {
+  return (
+    <div>
+     <MyErrorBoundary>  
+        // 로딩 실패 시 에러표시
+      <Suspense fallback={<div>Loading...</div>}>   // 로딩중 올 ㅋ
+        <OtherComponent />                    
+        //렌더링 될 때 OtherComponent를 포함한 번들을 자동으로 불러, lazy는 Suspense하위에서 불러야함
+      </Suspense>
+     </MyErrorBoundary>
+    </div>
+  );
+}
+
+로딩화면, 코드분할 + 라우터
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+const Home = lazy(() => import('./routes/Home'));
+const About = lazy(() => import('./routes/About'));
+const App = () => (
+  <Router>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Switch>
+        <Route exact path="/" component={Home}/>
+        <Route path="/about" component={About}/>
+      </Switch>
+    </Suspense>
+  </Router>
+);
+
+export가 많을 시
+// ManyComponents.js
+export const MyComponent = /* ... */;
+export const MyUnusedComponent = /* ... */;
+// MyComponent.js
+export { MyComponent as default } from "./ManyComponents.js";
+// MyApp.js
+import React, { lazy } from 'react';
+const MyComponent = lazy(() => import("./MyComponent.js"));
+
+*컴포넌트에서 모든 속성 전달
+return <h1 {...this.props}> Hello world!! </h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@css 스타일 적용(카멜표기법)
+let font = { fontSize : '10px' }
+<span style={ font }> ... </span>
+또는
+<span style={{ fontSize : '10px' }}> ... </span>
+
+@@React DOM의 유틸리티 함수
+ReactDOM.findDOMNode()
+
+@@리액트 스토어 ( 리덕스 대체 )
+1. 스토어 파일 생성
+const Store = React.createContext(null);
+export default Store;
+
+2. 적용(store에 value로 state를 전달)
+<Store.Provider value={this.state}>
+ <App />
+</Store.Provider>
+
+3. 사용할 곳에서 Store 임포트 후 <Store.Consumer> 사용
+<Store.Consumer>
+ {store => JSON.stringify(store)}	
+</Store.Consumer>
+	// 무조건 함수가 와야함, store에 value값이 전달
+
+4. 함수와 state는 constructor(props){ ... } 안에다 넣음 , 클래스가 생성될때 provider가 값을 얻음
+ 함수도 state로 넣어서 한번에 provider의 value로 전달
+
+
+

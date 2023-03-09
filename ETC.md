@@ -98,3 +98,14 @@
 - `UTC`: Coordinated Universal Time - 협정 세계시(영국 런던기준),
 - `KST`: 한국 표준시(UTC +9)
 - `MS949`: 한글 확장 완성형 문자집합(일본어, 중국어 등에도 사용)
+- `XML`: eXtensible Markup Language, 확장성 마크업 언어
+- `RSS`: Really Simple Syndication, 초간편 배포, XML기반의 콘텐츠 배급 포맷
+- `ECMA`: European Computer Manufacturers Association\
+  - ECMAScript(ES)는 자바스크립트를 이루는 코어(Core) 스크립트 언어
+  - ES5는 2009년에 ES6은 2015에 제작
+- `SVG`: Scalable Vector Graphic, 웹을 위한 벡터 기반 그래픽
+  - Canvas는 비트맵 그래픽
+- `TCP`: Transmission Control Protocol
+- `UDP`: User Datagram Protocol
+- `URL`(Uniform Resource Locator): 서버가 제공하는 파일들의 위치
+- `URI`(Uniform Resource Identifier): URL로부터 자원을 식별, HTTP프로토콜, 호스트명, port번호 등 제외함
