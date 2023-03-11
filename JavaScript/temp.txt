@@ -1,403 +1,7 @@
-document.querySelector("#content").innerHTML=`
-  <div>
-    ${이렇게 사용}
-  </div>
-`;
-
-<body><div data-product-id="G123">Guitar</div>
-a = document.querySelector('div')
-console.log(a.dataset.productId)    //"G123" , IE 11 미만에서는 지원하지 않는다
-  -> document.querySelector('div').getAttribute('data-product-id') // 'G123'
-
-엘리먼트 삭제
-element.parentNode.removeChild(element);
-
-Element.classList
-		//.add('~')
-		//.remove('~')
-		//.toggle('~')
-Element.className
-	//.readOnly
-	//.rowSpan
-	//.colSpan
-	//.userMap
-	//.frameBorder
-	//.htmlFor
-	//.maxLength 
-Element.id
-Element.tagName
-
-Element.getElementsByClassName
-Element.getElementsByTagName
-Element.querySelector
-Element.querySelectorAll
-
-Element.getAttribute(name)
-Element.setAttribute(name, value)
-Element.hasAttribute(name);
-Element.removeAttribute(name);
-
-var li = document.createElement('li')
-var t = document.createTextNode('Str')
-li.appendChild(t)
-
-Node.childNodes
-Node.firstChild
-Node.lastChild
-Node.nextSibling	//다음 형제
-Node.previousSibling	// 전 형제
-Node.contains(본인포함 자식요소)       
-Node.hasChildNodes()
-
-Node.nodeType	
-	// Node.ELEMENT_NODE -> 1
-Node.nodeName
-
-Node.nodeValue
-Node.textContent
-
-Node.appendChild()
-	// insertBefore(요소, 대상)
-Node.removeChild()
-
-Node.replaceChild(요소, 대상)
-
-요소.outerHTML
-	// 자신(요소)을 포함한 HTML
-
-요소.insertAdjacentHTML('옵션',요소)
-		//Element
-		//Text
-옵션 : beforebegin, afterbegin, beforeend, afterend
-
-target.previousElementSibling.textContent;
-element.innerHTML   // HTML파싱으로 속도가 조금 느림
-element.innerText   // 숨김요소, script, style 노반환
-element.textContent // xss방지 가능, 숨김요소, script, style 반환
-
-textNode.nodeValue
-textNode.data
-
-textNode.appendData(data);
-textNode.deleteData(시작인덱스, 갯수);
-textNode.insertData(시작인덱스, data);
-textNode.replaceData(시작, 갯수, data);
-textNode.substringData(시작, 갯수);
-
-window.pageYOffset
-window.scrollTo(가로,세로);
-window.innerWidth
-window.innerHeight
-screen.width
-screen.height
-
-Node.getBoundingClientRect()
-Node.offsetParent
-Node.clientWidth
-node.clientHeight
-
-event.stopPropagation()
-event.preventDefault()
-event.altKey
-event.ctrlKey
-event.shiftKey
-event.type
-
-event.currentTarget // 이벤트를 단 타겟
-event.target	// 실제 타겟
-
-event.clientX
-event.clientY
-	// 마우스 좌표
-
-이벤트 contextmenu : 우클릭 시
-
-element.cloneNode(true)
-	// element를 내부까지(true) 복사
-
-event.code ->
-Space
-ArrowRight
-ArrowLeft
-ArrowDown
-ArrowUp
-
-**브라우저 객체 (BOM)
-window
- document	// DOM객체
- frames[]	// iframe 요소들 반환
- history	//back(), forward(), length
- location
- navigator
- screen
-
--window 속성
-closed
-innerHeight
-innerWidth
-length
-name
-outerHeight
-outerWidth
-parent
-screenLeft
-screenTop
-screenX
-screenY
-top
-
-메서드
-alert
-blur	// 포커스 제거
-clearInterval
-clearTimeout
-close
-confirm
-focus
-moveBy		//현재기준으로
-moveTo(x,y)
-open("URL", "새 창 이름", "새 창 옵션")
-	옵션 ex) "width=350, height=350, location=no, scrollbars=no"
-prompt
-resizeBy	// 현재 기준으로
-resizeTo(x,y)
-setInterval
-clearInterval
-setTimeout
-clearTimeout
-stop
-
--location객체의 속성, 메소드
-href
-hash	// #에 명시된 값
-host, hostname, protocol
-search	// 쿼리(요청값) 반환
-reload()
-
--navigator
-속성
-cookieEnabled
-appName		// 브라우저 이름 ex) Netscape
-appCodeName	// 브라우저 코드명 ex)Mozilla
-product
-appVersion
-userAgent
-platform
-language
-online		// 온라인 상태여부
-메서드
-javaEnabled()
-
--history객체의 속성, 메소드
-back()
-forward()
-go(숫자)	// ex) -2면 2단계 이전 사이트 이동
-length		// 방문기록 개수
-
--screen의 속성
-width		// 화면 너비값
-height
-availWidth
-availHeight	// 작업 표시줄을 제외한 화면 높잇값
-colorDepth	// 모니터가 표현 가능한 컬러 bit
-
-**문서객체 (DOM)
-document
- forms[]
- anchors[]
- layers[]
- images[]
-
-document 메서드
--element선택
-getElementById(...)
-getElementsByTagName(...)	// HTMLCollection(인덱스접근이지만 배열이 아님)로 반환
-getElementsByClassName(...)	// NodeList 반환
-querySelector()
-querySelectorAll()
-
--element 요소변경
-innerHTML = ...;
-attribute = ...;
-setAttribute(attr, value);
-style.property = ...;
-
--요소 추가, 삭제
-document.createElement("p")
-	createTextNode("...")	-> "..."
-	removeChild(...)
-	appendChild(...)	//마지막 삽입 
-	replaceChild(새것, 대상)
-	write(...)	
-element.appendChild();
-부모요소.insertBefore(넣을요소,기준요소(부모바로아래자식));
-
-ex)
-var list = document.getElementById("list");
-var x = list.removeChild(list.childNodes[0]);
-
-var item = document.getElementById("list");
-item.parentNode.removeChild(item);
-
-*HTML객체 찾기  263P
-document.body  ->  <body>
-document.cookie  ->  document의 쿠키 반환
-document.images  ->  모든 <img>
-document.lastModified  ->  갱신 날짜와 시간
-
-*클래스 추가 삭제
-element.classList.add( 'someclass' );
-element.classList.add( 'someclass1', 'someclass2' );
-element.classList.remove( 'someclass' );
-element.classList.remove( 'someclass1', 'someclass2' );
-element.classList.contains( 'someclass' );
-element.classList.contains( 'someclass1', 'someclass2' );
-element.classList.toggle( 'someclass' );
-
-*이벤트
-onload, onunload -> 페이지를 열거나 닫을 때 발생
-onchange -> 요소의 값이 바뀌면 발생	// 입력폼에서는 요소.value로 가져옴
-element.addEventListener('keyup',function(){..});	`//하나씩밖에 등록안됨
-object.removeEventListener("event", func);	// 해당이벤트에 동일 함수를 줘야함 
-
-*DOM 노드(요소) 탐색
-element.firstChild.nodeValue; 		// 태그로 노드를 나눔
-element.childNodes[0].nodeValue;	// 태그로 노드를 나눔
-	ex) .1..< .. /> .2..  ->  [".1..", "<.. />", ".2.."] 
-
-document.body 	// 문서 본문
-document.documentElement	// 문서 전체
-
-@@form객체
-document.forms -> form컬렉션
-formObject.elements
-
-document.form이름.input이름.value
-document.form이름.reset()
-document.form이름.submit()
-
-document.myForm.action="URL경로";
-document.myForm.method="post";
-document.myForm.submit();
-	//버튼으로 post&파라미터 보내자 -> input type="hidden" 또는 버튼태그에 value로 넘김
-
-location.reload();
-window.location.href="사이트URL"	// 뒤로가기 가능
-location.replace('사이트URL');		// 뒤로가기 불가(덮어씌움)
-
-*HTML5 제약 조건검증
-input태그 속성에 max, min, maxlength 등 ..
-->  태그요소.checkValidity()	-> true or false
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-★fun.call(thisArg[, arg1[, arg2[, ...]]])
-	//   this 객체가 기존 함수를 호출할 때 할당될 수 있습니다
-- 객체의 생성자 연결에 call 사용
-function Product(name, price) {
-  this.name = name;
-  this.price = price;
-
-  if (price < 0) {
-    throw RangeError('Cannot create product ' +
-                      this.name + ' with a negative price');
-  }
-}
-
-function Food(name, price) {
-  Product.call(this, name, price);
-  this.category = 'food';
-}
-
-
-- 익명 함수 호출에 call 사용
-var animals = [
-  { species: 'Lion', name: 'King' },
-  { species: 'Whale', name: 'Fail' }
-];
-
-for (var i = 0; i < animals.length; i++) {
-  (function(i) {
-    this.print = function() {
-      console.log('#' + i + ' ' + this.species
-                  + ': ' + this.name);
-    }
-    this.print();
-  }).call(animals[i], i);
-}
-
-
--함수 호출 및 'this'를 위한 문맥 지정에 call 사용
-function greet() {
-  var reply = [this.animal, 'typically sleep between', this.sleepDuration].join(' ');
-  console.log(reply);
-}
-
-var obj = {
-  animal: 'cats', sleepDuration: '12 and 16 hours'
-};
-
-greet.call(obj);  // cats typically sleep between 12 and 16 hours
-
-- 인수 지정 없이 함수 호출에 call
-
-var sData = 'Wisen';            
-function display(){
-  console.log('sData value is %s ', this.sData);
-	//첫번째 인자를 전달하지 않으면, this의 값은 전역 객체에 바인딩됩니다
-}
-
-display.call();  // sData value is Wisen
-
-★Object.defineProperty(obj, prop, descriptor)
-	//객체에 직접 새로운 속성을 정의하거나 이미 존재하는 속성을 수정한 후 그 객체를 반환합니다.
-ex)
-const object1 = {};
-Object.defineProperty(object1, 'property1', {
-
-  value: 42,
-
-  writable: false
-});object1.property1 = 77;
-// throws an error in strict mode
-
-
-console.log(object1.property1);
-// expected output: 42
-
-
 // __proto__ 사용
 var obj = {};
 var descriptor = Object.create(null); // 상속받은 속성 없음
+
 // 기본으로 열거 불가, 설정 불가, 변경 불가
 descriptor.value = 'static';
 Object.defineProperty(obj, 'key', descriptor);
@@ -3269,3 +2873,46 @@ function* g2() {
     }
 }
 // yield* gene 로 다른 generator을 호출 가능 
+
+
+●var cloneDeep = require('lodash.clonedeep');
+ // const _ = require('lodash'); 
+●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●
+●for in 반복문 : 객체의 모든 열거 가능한 속성에 대해 반복
+●for of 반복문 : [Symbol.iterator] 속성을 가지는 컬렉션 전용
+●let numArray = Array.from({length:n}, (v,i) => i+1);
+●깊은 복사
+function copyObj(obj){
+    let coppiedObj = {}
+    for(let key in obj){
+        if(typeof obj[key] == "object" && obj[key] != null){
+            coppiedObj[key] = copyObj(obj[key]);
+        }else {
+            coppiedObj[key] = obj[key];
+        }
+    }
+    return coppiedObj;
+}
+●BigInt
+Number 와 함께 연산할 수 없고, BigInt끼리만 연산 가능하다.
+또한 max,min,abs등 Math객체의 함수들도 사용할 수 없다.
+BigInt배열의 sort의 경우, 직접 구현해야함
+let sum = 0n;
+let sum = BigInt(0);
+●입출력
+const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+ws.write(result + '\n');
+ws.end();
+●반올림
+var testnum = 99.9876543;
+testnum.toFixed(0); // 100 출력
+testnum.toFixed(5); // 99.98765 출력
+●배열을 문자열으로 
+Array.toString();  //콤마생성
+Array.join(); // 단순합침
+●배열에 배열 합치기
+Array.concat(Array);
+●계단만들기
+for(let i = n; i > 0; i--){
+            console.log(Array(i-1).fill(" ").concat(new Array(n-i+1).fill("#")).join(""));
+        }

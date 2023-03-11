@@ -31,3 +31,13 @@ Roles
 > - JSON 데이터 자동 변환
 
 ## jQuery ajax
+
+<br />
+
+---
+
+## Response status codes
+
+- 200: OK
+- 404: Not Found
+- 500: Internal Server Error

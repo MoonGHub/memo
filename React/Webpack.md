@@ -21,3 +21,9 @@
 - file-loader
 - url-loader
 - mini-css-extract-plugin
+
+<br />
+
+## devtool
+
+![webpack_devtool](../assets/webpack_devtool.png)
