@@ -77,18 +77,26 @@
 
 ## Boolean
 
+<br />
+
 ## RegExp
 
 - test(str) // true or false
+
+<br />
 
 ## Date
 
 - getDate()
 - toLocaleDateString()
 
+<br />
+
 ## Function
 
 - prototype // 부모(상속) 지정
+
+<br />
 
 ## XMLHttpRequest // xhr는 크로스 도메인 문제를 해결 못함?
 
@@ -113,26 +121,101 @@
 .responseXML
 .status
 
+<br />
+
 ## JSON
 
 - parse(str)
 
+<br />
+
 ## Object
 
 - propertyIsEnumerable(att) // 해당 속성이 존재하며 for/in으로 열거가능판단 false or true
-- assign(obj...) // 첫 인수의 객체로 합쳐서, 첫 인수를 반환
+- assign(target, ...sources)\
+  첫 인수의 객체로 합쳐서(덮어씌움), 첫 인수를 반환
 - keys(obj) // [] 반환
 - values(obj) // [] 반환
 - entries(obj) // [[]] 반환
 - fromEntries(arr)
 - defineProperty
 
+  ```js
+  function withValue(value) {
+    var d =
+      withValue.d ||
+      (withValue.d = {
+        enumerable: false,
+        writable: false,
+        configurable: false,
+        value: null,
+      });
+    d.value = value;
+
+    return d;
+  }
+
+  Object.defineProperty(obj, "key", withValue("static"));
+  ```
+
+  - enumerable\
+    열거(for...in 또는 Object.keys 등)
+  - configurable\
+    설정
+  - writable\
+    변경
+  - value
+  - get\
+    함수의 리턴 값으로 value를 대신하여 해당 key값을 반환
+  - set
+
+- create
+- freeze
+
 ## Function
 
-.call(thisArg[, arg1[, arg2[, ...]]])
-// this 객체가 기존 함수를 호출할 때 할당될 수 있습니다, - 객체의 생성자 연결에 call 사용,
+- apply
+
+  > func.apply(thisArg, [argsArray])
+
+  - thisArg: 함수 내부의 this에 바인딩할 객체
+  - argsArray: 함수에 전달할 argument의 배열
+
+  ```js
+  function request(url, options, callback) {...}
+  var requestArgs = ['http ..', {...}, function(){...}];
+
+  request.apply(null, requestArgs);
+  // request.(...requestArgs)와 동일
+
+  Array.prototype.slice.apply(arguments);
+  // arguments.slice()와 동일
+
+  [].slice.apply(arguments);
+  // arguments.slice()와 동일
+  ```
+
+- call
+
+  > func.call(thisArg, ...arg);
+
+  - apply()와 기능은 같지만 apply()의 두번째 인자에서 배열 형태로 넘긴 것을 각각 하나의 인자로 넘긴다.
+
+  ```js
+  Person.apply(foo, [1, 2, 3]);
+  Person.call(foo, 1, 2, 3);
+  ```
+
+  ```js
+  function MyClass() {
+    SuperClass.call(this);
+    OtherSuperClass.call(this);
+  }
+  ```
+
+- bind
 
 ## Array
 
-- Array.prototype.some
-- Array.prototype.every
+- some
+- every

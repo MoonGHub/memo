@@ -59,6 +59,7 @@
   - `Ctrl Enter`: Generator창 오픈
   - `Option Option down/up`: 커서 여러개 생성
   - `Cmd Shift u`: 대소문자 변환
+  - `Option F1 + 1`: 해당 파일의 위치를 좌측패널에서 포커싱
 
 - Custom(**Preference > Keymap**)
   - `Cmd + \`: split right split and move right(분할 및 오른쪽으로 이동)

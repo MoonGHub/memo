@@ -45,3 +45,47 @@
   사용 비추천
 - `npm deprecate`\
   출시 된 패키지를 deprecate 적용
+
+--
+
+<br />
+
+## Yarn
+
+[참고](https://yarnpkg.com/cli/install)
+
+### Yarn Berry
+
+`yarn set version berry`
+
+적용 후, 생성 된 **.yarnrc.yml**에 `nodeLinker: pnp` 추가
+
+```shell
+# pnp를 사용 시, cannot find module Error 해결을 위함
+yarn add @yarnpkg/sdks -D
+yarn dlx @yarnpkg/sdks vscode
+```
+
+### 패키지 관리
+
+- `yarn add`
+- `yarn remove`
+- `yarn upgrade`
+  > `yarn berry`의 경우에는 `yarn up`
+
+### 워크스페이스
+
+- `yarn workspace {app_name} {command | script_command}`\
+  ex)
+
+  ```shell
+  yarn workspace dayfly dev
+  # dayfly프로젝트의 dev script를 실행
+
+  yarn workspace dayfly add react-day-picker
+  # dayfly프로젝트에 react-day-picker 추가
+  ```
+
+<br />
+
+##
