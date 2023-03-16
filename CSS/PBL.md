@@ -49,6 +49,11 @@ CSS 라이브러리 참고 사이트
 - `flex-wrap: wrap;`\
   부모 크기 오버시 아래에 정렬
 
+### Table
+
+- `table-layout: fixed;`\
+  테이블의 내부 요소가 커져도 th 및 td 크기를 고정 시킴
+
 <br />
 
 ## 배경
@@ -85,6 +90,13 @@ CSS 라이브러리 참고 사이트
 <br />
 
 ## 폰트
+
+- 생략 표시(텍스트 길이가 부모요소보다 커질 경우)
+
+  ```css
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ```
 
 ### EM
 
