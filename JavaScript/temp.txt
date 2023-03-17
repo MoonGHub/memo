@@ -3,7 +3,6 @@
 ES5에 추가된 Function.prototype.bind
 함수를 실행하지 않기 때문에 명시적으로 함수를 호출할 필요가 있다.
 
-
 function Person(name) {
   this.name = name;
 }
