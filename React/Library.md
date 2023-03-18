@@ -83,7 +83,7 @@
        // ...
        "packageManager": "pnpm@7.29.2",
        "workspaces": ["apps/**/*", "libs/**/*", "tools/**/*"]
-       ///
+       // ...
      }
      ```
 
