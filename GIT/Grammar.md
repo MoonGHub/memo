@@ -194,4 +194,5 @@
 
 ### 캐쉬 삭제
 
-- `git rm -r --cached .`
+- `git rm --cached .`
+  - -r: 원격저장소 지정

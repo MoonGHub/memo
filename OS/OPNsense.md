@@ -133,8 +133,22 @@ Firewall > NAT
 
 ## ETC
 
-### 🦋 HAProxy 서브 도메인 추가
+### IPS(침입탐지시스템) 활성화
 
-### 🦋 IPS(침입탐지시스템) 활성화
+[참고](https://docs.opnsense.org/manual/ips.html)
+
+1. Services > Intrusion Detection > Administration
+2. 모두 체크
+   - Enabled : IDS 활성화(탐지만)
+   - IPS mode : IPS 모드 활성화(차단)
+   - Promiscuous mode : 모든 트래픽을 감시
+3. 추가 설정
+   - Pattern matcher: HyperScan
+   - Interfaces: WAN보호할 인터페이스(기본적으로 외부와 연결된 인터페이스)
+4. Download 탭에서 Download & Update Rules 후, 모두 활성화
+5. Rules 탭에서 필요한 부분을 Drop룰로 변경
+6. Schedule 탭에서 cron(System > Settings > Cron) 업데이트 활성화
+
+### 🦋 HAProxy 서브 도메인 추가
 
 ### 🦋 내부(NAT)망 원격접속

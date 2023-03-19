@@ -23,3 +23,17 @@ typings.d.ts
 
 1. 단순히 npm으로 타입전용 모듈을 받는다(없는 경우도 있음) // @types/모듈이름
 2. typings.d.ts에 declare module '모듈이름'; 을 기술
+
+### 재 내보내기
+
+```ts
+export { default as man } from "./man.svg";
+export { default as girl } from "./girl.svg";
+```
+
+```ts
+import * as icons from "./svg";
+
+type IconType = keyof typeof icons;
+// 'man' | 'girl'
+```

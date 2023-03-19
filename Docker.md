@@ -41,6 +41,11 @@ DockerFile > Image > Container
 - `docker rmi 이미지이름:태그`\
   태그 생략시 모든 이미지이름을 삭제
   - -f: --force
+- `docker container prune --force`\
+
+- `docker image prune --all --force`
+- `docker volume prune --force`
+- `docker system prune --volumes`
 
 ### 기타
 
@@ -101,13 +106,44 @@ DockerFile > Image > Container
 - `docker-compose ps`
 - `docker-compose stop`
 - `docker-compose start`
+- `docker-compose restart`
 - `docker-compose exec 컨테이너이름 명령어`
 - `docker-compose logs 컨테이너이름 -f`
   - -f: 팔로잉
 
 ## ETC
 
-### Question
+### Q
 
 - ports옵션 과 env_file옵션에 세팅한 파일 내 PORT 은 동일 ?
 - DockerFile의 expose - they’ll only be accessible to linked - services, 어쨋든 컨테이너끼리 통신?
+
+<br />
+
+---
+
+## docker swarm
+
+docker swarm init
+docker swarm join-token worker
+docker swarm leave --force
+
+docker node ls
+docker node demote NODE
+docker node rm NODE
+
+docker stack deploy -c docker-stack.yml stack_name
+docker stack ls
+docker stack rm STACK
+
+docker service ps stack_name_ser/Users/moong/workspace/drill-git/Users/moong/workspace/drill-git/mysql.sql/mysql.sqlvice_name
+docker service ls
+
+docker stack deploy -c docker-stack.development.yml app
+
+--Docker-compose up failing because "port is already allocated"
+
+docker-compose down
+docker rm -fv $(docker ps -aq)
+lsof -i -P -n | grep 5432
+출처: https://nayha.tistory.com/625 [Nayha]
