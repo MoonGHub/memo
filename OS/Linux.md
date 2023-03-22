@@ -52,22 +52,6 @@
 
 ---
 
-### 🦋 **service** vs **systemctl**
-
-최근 리눅스 버전에서는 init데몬 대신에 systemd데몬을 사용하여 프로세스를 관리
-
-- `service`: init데몬 사용\
-  사용법)
-  - `service 서비스명 status`
-  - `service 서비스명 start`
-- `systemctl`: systemd데몬 사용
-  사용법)
-  - `systemctl status 서비스명`
-
-### 🦋 LVM(Logical Volume Manager) 볼륨 사이즈 확장
-
----
-
 ## Ubuntu(22.04.1 live server amd64)
 
 설치 후, 업데이트 및 필요 패키지 설치
@@ -91,6 +75,9 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 - Lightsail
   1. 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
   2. `ssh -i pem파일경로 ubuntu@3.35.129.200`
+  - Permissions 관련 에러가 발생 시, `chmod 400 pem파일`로 권한 변경 후, 재시도
+
+<br />
 
 ### 🦋 **apt** vs **yum**
 
@@ -108,10 +95,14 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   - Fedora
   - CentOS
 
+<br />
+
 ### 🦋 쉘 확인
 
 `grep root /etc/passwd`: root사용자에 대한 정보 확인\
 `cat /etc/shells`: 현재 사용 가능한 쉘 확인
+
+<br />
 
 ### 🦋 background 실행 및 foreground, background 전환
 
@@ -131,7 +122,33 @@ foreground로 전환
 2. `fg %[jobs의 task number]`\
    ex) `fg %1`
 
+<br />
+
 ### 🦋 재부팅 및 종료
 
 재부팅: `sudo reboot` 또는 `sudo shutdown -r now`\
 종료: `sudo shutdown -h now`
+
+<br />
+
+### 🦋 **service** vs **systemctl**
+
+최근 리눅스 버전에서는 init데몬 대신에 systemd데몬을 사용하여 프로세스를 관리
+
+- `service`: init데몬 사용\
+  사용법)
+  - `service 서비스명 status`
+  - `service 서비스명 start`
+- `systemctl`: systemd데몬 사용
+  사용법)
+  - `systemctl status 서비스명`
+
+### 🦋 서비스 등록
+
+1. initd
+
+2. systemd
+
+<br />
+
+### 🦋 LVM(Logical Volume Manager) 볼륨 사이즈 확장
