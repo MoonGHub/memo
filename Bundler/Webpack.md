@@ -1,4 +1,4 @@
-# React - Webpack
+# Bundler - Webpack
 
 [참고](https://webpack.js.org/guides/)
 
@@ -9,8 +9,10 @@
 - html-webpack-plugin
 - uglifyjs-webpack-plugin
 - clean-webpack-plugin
-- 내장
-  - SplitChunksPlugin
+- tsconfig-paths-webpack-plugin
+- fork-ts-checker-webpack-plugin
+- webpack
+  - ProvidePlugin
 
 <br />
 

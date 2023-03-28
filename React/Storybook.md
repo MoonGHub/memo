@@ -7,8 +7,32 @@
 1. `pnpm --filter {project_name} add react react-dom @babel/cli`
 2. `pnpm --filter {project_name} sb-init`\
    스크립트 내용: `sb-init: npx storybook init --type webpack_react`
+   - 에러 발생 시: `pnpx sb init`\
+     또는 `pnpx sb@next init`
 
 - [초기화 시의 타입들 참고](https://github.com/storybookjs/storybook/blob/cf5749a099fc7671659624521dbd5473c830d05b/code/lib/cli/src/project_types.ts#L75)
+  - angular
+  - aurelia
+  - ember
+  - html
+  - marionette
+  - marko
+  - meteor
+  - mithril
+  - preact
+  - rax
+  - react
+  - react_native
+  - react_project
+  - react_scripts
+  - riot
+  - server
+  - sfc_vue
+  - svelte
+  - vue
+  - vue3
+  - web_components
+  - webpack_react
 
 <br />
 

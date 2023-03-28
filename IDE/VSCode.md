@@ -70,6 +70,7 @@
   - `Option Click`: 멀티 커서
   - `Ctrl g`: Go to Line
   - `Cmd Shift c`: Open New External Terminal
+  - `Option Cmd Right/Left`: Move Right/Left Terminal
   - `Cmd i`: Suggest
   - `Cmd .`: Quick Fix
   - `Cmd u`: 해당 파일에서 이전 작업하던 곳으로 커서 이동

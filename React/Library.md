@@ -105,5 +105,12 @@
      `pnpm --filter {project_name} add react react-dom @babel/cli`
 
 - 프로젝트 리스트 보기
+
   - `pnpm recursive list`
   - `pnpm recursive list | grep @moon`
+
+- 전체 실행
+  - `pnpm -r build`\
+    build 스크립트가 포함된 모든 패키지의 build를 수행
+  - `pnpm -r --parallel tscw`\
+    비동기로 실행됨
