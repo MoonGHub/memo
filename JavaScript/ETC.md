@@ -83,10 +83,62 @@ for (i = 0; i < 10; i++) {
 
 <br />
 
-### 🦋 strict 모드
+### 🦋 StrictMode
 
 > 1. 기존에는 조용히 무시되던 에러들을 throwing
 > 2. JavaScript 엔진의 최적화 작업을 어렵게 만드는 실수들을 잡음
 > 3. 엄격 모드의 코드는 비엄격 모드의 동일한 코드보다 더 빨리 기능 할 수 있음
 > 4. 엄격 모드는 ECMAScript의 차기 버전들에서 정의 될 문법을 금지
 > 5. 모듈방식은 기본적으로 strict모드
+
+<br />
+
+### 🦋 **ESM** vs **CJS**
+
+- ESM: ECMAScript Module
+
+  - import/export
+  - package.json의 **type**이 **module**이거나, 확장자가 **.mjs**
+  - package.json의 **type**이 **module**인 경우
+
+    - `.mjs`또는 `.js`사용
+    - import 사용이 강제됨
+    - import시, 해당 파일의 확장자 명시 필요\
+      **아래와 같은 설정으로 무시 가능**
+
+      - 웹팩 사용의 경우(Storybook 설정도 마찬가지)
+        ```js
+        // webpack.config.js
+        {
+        		test: /\.m?js/,
+        		resolve: {
+        			fullySpecified: false,
+        		},
+        },
+        ```
+      - Vite의 경우
+
+        ```js
+
+        ```
+
+      - Vite의 SSR(Node 환경)의 경우
+        ```js
+        // vite.config.ts
+        {
+          ssr: {
+            noExternal: [
+              "@react-financial-charts/**/*",
+              "react-financial-charts",
+            ],
+          },
+        }
+        ```
+
+- CJS: CommonJS
+
+  - require/module.exports
+  - package.json의 **type**이 **commonjs**이거나, 확장자가 **.cjs**
+  - package.json의 **type**이 **commonjs**인 경우
+    - `.cjs`또는 `.js`사용
+    - require 사용이 강제됨

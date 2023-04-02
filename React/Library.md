@@ -109,7 +109,11 @@
   - `pnpm recursive list`
   - `pnpm recursive list | grep @moon`
 
-- 전체 실행
+- 명령어 개별 실행
+
+  - `pnpm --filter {project_name} exec {command}`
+
+- 스크립트 전체 실행
   - `pnpm -r build`\
     build 스크립트가 포함된 모든 패키지의 build를 수행
   - `pnpm -r --parallel tscw`\

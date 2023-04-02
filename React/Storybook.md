@@ -5,10 +5,12 @@
 [참고](https://storybook.js.org/docs/react/get-started/install/)
 
 1. `pnpm --filter {project_name} add react react-dom @babel/cli`
-2. `pnpm --filter {project_name} sb-init`\
-   스크립트 내용: `sb-init: npx storybook init --type webpack_react`
-   - 에러 발생 시: `pnpx sb init`\
-     또는 `pnpx sb@next init`
+2. `pnpm --filter @moon-apps/web-kr.dayfly exec npx storybook init --type webpack_react`\
+   또는 스크립트로 실행
+   - `pnpm --filter {project_name} sb-init`\
+     스크립트 내용: `sb-init: npx storybook init --type webpack_react`
+     - 에러 발생 시: `pnpx sb init`\
+       또는 `pnpx sb@next init`
 
 - [초기화 시의 타입들 참고](https://github.com/storybookjs/storybook/blob/cf5749a099fc7671659624521dbd5473c830d05b/code/lib/cli/src/project_types.ts#L75)
   - angular

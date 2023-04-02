@@ -1,5 +1,20 @@
 # Bundler - Vite
 
+## 설치
+
+> `pnpm create vite`
+
+- React App
+
+  - Select a framework: React
+  - Select a variant: TypeScript + SWC
+
+- React SSR의 경우
+  - Select a framework: Others
+  - Select a variant: create-vite-extra
+  - Select a template: ssr-react
+  - Select a variant: TypeScript + SWC
+
 ## 실행
 
 - `vite`\
@@ -29,3 +44,10 @@ KEY2 = key2
 console.log(import.meta.env.VITE_KEY1); // key1
 console.log(import.meta.env.KEY2); // undefined
 ```
+
+## SSR
+
+### Import 관련 에러
+
+- ESM의 Lib에서의 type 문제\
+  [참고](../JavaScript/ETC.md#🦋-esm-vs-cjs)
