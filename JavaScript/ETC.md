@@ -127,10 +127,15 @@ for (i = 0; i < 10; i++) {
         // vite.config.ts
         {
           ssr: {
-            noExternal: [
-              "@react-financial-charts/**/*",
-              "react-financial-charts",
-            ],
+            optimizeDeps: {
+              disabled: "build",
+              // 종속성 최적화 비활성화로 true는 build와 dev 모두 포함
+              include: ["react-financial-charts"],
+              // 모노레포에서 알아서 탐색이 되지만 번들이 되지않음
+              // 해당 디펜던시가 ESM로 내보내져야 함, 그렇지 않다면 명시 필요(강제 최적화)
+            },
+            noExternal: ["react-financial-charts"],
+            // SSR시, 번들링에 포함되지 않게 함(초기 로딩이 빨라짐)
           },
         }
         ```

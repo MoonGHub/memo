@@ -2,7 +2,7 @@
 
 ## 설치
 
-> `pnpm create vite`
+> `pnpm create vite` (pnpm v7.29.2)
 
 - React App
 
@@ -49,5 +49,17 @@ console.log(import.meta.env.KEY2); // undefined
 
 ### Import 관련 에러
 
-- ESM의 Lib에서의 type 문제\
-  [참고](../JavaScript/ETC.md#🦋-esm-vs-cjs)
+- ESM의 Lib에서의 type 또는 모듈 관련 문제\
+  - 방법1. [참고](../JavaScript/ETC.md#🦋-esm-vs-cjs)
+  - 방법2. `lazy(() => import("./Tooltip"))`의 동적 Import를 사용
+    - Vite에서 동적 Import 사용 시, lazy와 같이 사용해야 함
+
+<br />
+
+## Plugin
+
+- @originjs/vite-plugin-commonjs
+  - viteCommonjs
+  - esbuildCommonjs
+- vite-plugin-node-polyfills
+  - nodePolyfills

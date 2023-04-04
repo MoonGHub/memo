@@ -114,7 +114,13 @@
   - `pnpm --filter {project_name} exec {command}`
 
 - 스크립트 전체 실행
+
   - `pnpm -r build`\
     build 스크립트가 포함된 모든 패키지의 build를 수행
   - `pnpm -r --parallel tscw`\
     비동기로 실행됨
+
+- ETC
+  - `pnpm install --shamefully-hoist`
+    - 각 프로젝트의 종속성들이 최상위의 **node_modules**에 설치됨
+    - 서로 다른 버전의 종속성 설치로 충돌 문제가 발생 할 수 있음
