@@ -95,9 +95,13 @@ for (i = 0; i < 10; i++) {
 
 ### 🦋 **ESM** vs **CJS**
 
+> 결론: ESM가 CJS보다 안정적이며 동적인 특성으로 트러블슈팅이 편함
+
 - ESM: ECMAScript Module
 
-  - import/export
+  - import/export 구문 사용
+  - 비동기로 작성이 불가 - 정적
+    - 임의 시점(조건문 등)에서 import 사용 불가
   - package.json의 **type**이 **module**이거나, 확장자가 **.mjs**
   - package.json의 **type**이 **module**인 경우
 
@@ -135,14 +139,17 @@ for (i = 0; i < 10; i++) {
               // 해당 디펜던시가 ESM로 내보내져야 함, 그렇지 않다면 명시 필요(강제 최적화)
             },
             noExternal: ["react-financial-charts"],
-            // SSR시, 번들링에 포함되지 않게 함(초기 로딩이 빨라짐)
+            // 기본적으로 SSR은 디펜던시를 번들링에 포함하지 않음(초기 로딩이 빨라짐)
+            // 설정 시, 외부화에서 제외
           },
         }
         ```
 
 - CJS: CommonJS
 
-  - require/module.exports
+  - require/module.exports 구문 사용
+  - 비동기적(동적)으로 실행 -> 빌드 단계에서 전체 코드를 알 수 없어, 불 필요한 부분의 체킹이 불가
+    - 임의 시점(조건문 등)에서 require 사용 가능
   - package.json의 **type**이 **commonjs**이거나, 확장자가 **.cjs**
   - package.json의 **type**이 **commonjs**인 경우
     - `.cjs`또는 `.js`사용

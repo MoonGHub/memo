@@ -18,6 +18,7 @@
 - file
 - tee
 - grep
+  - -i: 대소문자 구분 없이
 - head tail
 - tr
 - sed
@@ -40,6 +41,11 @@
 - pgrep
 - systemctl
 - snap
+- netstat
+  - -a: 모든 연결 및 수신 대기 포트 표시
+  - -n: 주소나 포트 형식을 숫자로 표시
+  - -l: listen중인 포트 표시
+  - -c: 매 초마다 실행
 
 ---
 
@@ -70,7 +76,9 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 ---
 
-### 🦋 SSH 접속
+## 여러 명령어
+
+### SSH 접속
 
 - Lightsail
   1. 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
@@ -79,7 +87,7 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 <br />
 
-### 🦋 **apt** vs **yum**
+### **apt** vs **yum**
 
 `apt`: Debian 및 Ubuntu에서 사용
 
@@ -97,14 +105,14 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 <br />
 
-### 🦋 쉘 확인
+### 쉘 확인
 
 `grep root /etc/passwd`: root사용자에 대한 정보 확인\
 `cat /etc/shells`: 현재 사용 가능한 쉘 확인
 
 <br />
 
-### 🦋 background 실행 및 foreground, background 전환
+### background 실행 및 foreground, background 전환
 
 background로 실행\
 `명령어 &`: background 실행 - 끝에 `&`를 붙여줌
@@ -124,14 +132,14 @@ foreground로 전환
 
 <br />
 
-### 🦋 재부팅 및 종료
+### 재부팅 및 종료
 
 재부팅: `sudo reboot` 또는 `sudo shutdown -r now`\
 종료: `sudo shutdown -h now`
 
 <br />
 
-### 🦋 **service** vs **systemctl**
+### **service** vs **systemctl**
 
 최근 리눅스 버전에서는 init데몬 대신에 systemd데몬을 사용하여 프로세스를 관리
 
@@ -143,7 +151,9 @@ foreground로 전환
   사용법)
   - `systemctl status 서비스명`
 
-### 🦋 서비스 등록
+<br />
+
+### 서비스 등록
 
 1. initd
 
@@ -151,4 +161,23 @@ foreground로 전환
 
 <br />
 
-### 🦋 LVM(Logical Volume Manager) 볼륨 사이즈 확장
+### LVM(Logical Volume Manager) 볼륨 사이즈 확장
+
+<br />
+
+### 특정 (네트워크)포트 확인 및 종료
+
+사용 중인 포트 확인
+
+```shell
+sudo lsof -i : 8081
+sudo kill -9 PID
+```
+
+<br />
+
+네트워크 포트 확인
+
+```shell
+netstat -na | grep -i 7777
+```
