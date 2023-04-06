@@ -19,6 +19,8 @@
 <span style={{ fontSize: "10px" }}> ... </span>
 ```
 
+<br />
+
 ### 렌더링
 
 > 모든 값을 렌더링 하기전에 이스케이프시킴\
@@ -30,9 +32,17 @@
 - React.lazy를 사용하기 위해서 필요
 
 ```jsx
-...
+// export default 인 경우
 const Home = lazy(() => import("./routes/Home"));
 const About = lazy(() => import("./routes/About"));
+
+// export 인 경우
+const Home = lazy(() =>
+  import("./routes/Home").then((res) => ({ default: res.Home }))
+);
+const About = lazy(() =>
+  import("./routes/About").then((res) => ({ default: res.About }))
+);
 
 <Suspense fallback={<div>Loading...</div>}>
   <Switch>

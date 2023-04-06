@@ -52,7 +52,7 @@ console.log(import.meta.env.KEY2); // undefined
 - ESM의 Lib에서의 type 또는 모듈 관련 문제\
   - 방법1. [참고](../JavaScript/ETC.md#🦋-esm-vs-cjs)
   - 방법2. `lazy(() => import("./Tooltip"))`의 동적 Import를 사용
-    - Vite에서 동적 Import 사용 시, lazy와 같이 사용해야 함
+    - Vite에서 동적 Import 사용 시, lazy와 같이 사용해야 함 [참고](../React/Grammar.md#suspense)
 
 <br />
 
@@ -63,3 +63,20 @@ console.log(import.meta.env.KEY2); // undefined
   - esbuildCommonjs
 - vite-plugin-node-polyfills
   - nodePolyfills
+
+<br />
+
+## PBL
+
+### vite.config.ts에 package.json import
+
+tsconfig.node.json에 추가
+
+```json
+{
+  "compilerOptions": {
+    "resolveJsonModule": true
+  },
+  "include": ["package.json"]
+}
+```
