@@ -1,5 +1,11 @@
 # Bundler - Vite
 
+> 작성 시점 버전 4.2.1
+
+진입점이 기본적으로 html이며, 라이브러리 모드의 경우 별도 설정(build.lib)이 필요함
+
+<br />
+
 ## 설치
 
 > `pnpm create vite` (pnpm v7.29.2)
@@ -14,6 +20,8 @@
   - Select a variant: create-vite-extra
   - Select a template: ssr-react
   - Select a variant: TypeScript + SWC
+
+<br />
 
 ## 실행
 
@@ -45,7 +53,16 @@ console.log(import.meta.env.VITE_KEY1); // key1
 console.log(import.meta.env.KEY2); // undefined
 ```
 
+<br />
+
 ## SSR
+
+동작 방식
+
+0. 클라이언트와 서버 각각 빌드
+1. Node에서 요청을 받으면 entry-server에 작성된 코드로 html을 렌더링
+2. 클라이언트의 index.html에 1.에서의 렌더값을 대치
+3. 응답
 
 ### Import 관련 에러
 

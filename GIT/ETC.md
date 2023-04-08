@@ -17,3 +17,16 @@
   2. `eval $(ssh-agent -s)`
   3. `ssh-add ~/.ssh/moonghub_rsa`
   4. `ssh -T git@moonghub_rsa`
+
+<br />
+
+### 🦋 이슈 브랜치 자동 생성 및 삭제
+
+1. robvanderleek/create-issue-branch 을 이용\
+   Issue -> Create branch -> Create pr
+
+   - 할당자와 label을 부여하여 이슈 생성
+   - label만 부여해 이슈를 생성하고, 나중에 할당자를 부여
+
+2. Settings > General > Automatically delete head branches 체크
+3. 로컬에서 브랜치 동기화는 [참고](./Grammar.md#동기화)

@@ -64,10 +64,15 @@
 
 ### 업데이트(PULL / PUSH / FETCH)
 
+- `git pull`
+  - 현재 브랜치를 업데이트
+  - --all: 로컬의 모든 브랜치를 업데이트
+  - --prune(또는 -p): 유효하지 않은 참조를 제거\
+    원격에서는 지워진 브랜치지만 로컬(git branch -r)에서는 계속 남아 있는 경우
 - `git push -u origin master`
   - -u: 처음 연결을 위한 것으로 최초 사용 이후는 생략
 - `git fetch`
-  - -p: 유효하지 않은 참조를 제거
+  - 위 pull옵션과 동일
 
 ### STASH
 
@@ -114,7 +119,7 @@
 - `git reset --hard HEAD^`\
   - staging/tracked file and 작업내용을 다 지우고, 최신 커밋을 지움
   - 지우고난 최신 커밋의 실행 직후상태로 돌리는 것
-- `git reset commitHash file`
+- `git reset commitHash file`\
   soft, hard 사용 불가
 
 ### REVERT
@@ -158,11 +163,11 @@
 
 ### 동기화
 
-- `git remote prune origin`
-- `git fetch --all --prune`\
-  동기화(원격 브랜치도 삭제됨)
-- `git remote prune origin`\
-  동기화(원격 브랜치도 삭제됨)
+해당 브랜치가 저장소에 없고(deleted after pr is merged),\
+로컬의 원격 브랜치에도 없지만(git pull -p),\
+로컬의 작업 브랜치에 남아있는 경우,
+
+- `git branch --merged | egrep -v 'main|prod|dev' | xargs git branch -d`
 
 <br />
 

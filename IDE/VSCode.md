@@ -35,7 +35,8 @@
   - `Ctrl g`: Go to Line
   - `Ctrl i`: Suggest
   - `Ctrl .`: Quick Fix
-  - `Ctrl u`: 해당 파일에서 이전 작업하던 곳으로 커서 이동
+  - `Ctrl u`: 해당 파일에서의 이전 커서로 이동
+  - `Ctrl -`: 이전 작업하던 곳으로 커서 이동
   - `Ctrl [ 또는 ]`: 들여쓰기
   - `Ctrl Shift c`: Open New External Terminal
   - `Ctrl Shift [ / ]`: 코드 접기/펼치기
@@ -73,7 +74,8 @@
   - `Option Cmd Right/Left`: Move Right/Left Terminal
   - `Cmd i`: Suggest
   - `Cmd .`: Quick Fix
-  - `Cmd u`: 해당 파일에서 이전 작업하던 곳으로 커서 이동
+  - `Cmd u`: 해당 파일에서의 이전 커서로 이동
+  - `Ctrl -`: 이전 작업하던 곳으로 커서 이동
   - `Cmd [ 또는 ]`: 들여쓰기
   - `Cmd Shift t`: 방금 닫은 파일 오픈
   - `Cmd F2`: 해당 커서의 단어 모두 선택
