@@ -13,6 +13,8 @@
 - `:`: 행 이동
 - `?`: 명령 목록 확인
 
+<br />
+
 ## Windows Shortcut
 
 - Origin
@@ -44,6 +46,7 @@
   - `Ctrl Shift t`: 방금 닫은 파일 오픈
   - `Ctrl F2`: 해당 커서의 단어 모두 선택
   - `F2`: 참조되는 변수명 모두 변경
+  - `F8`: 해당 페이지의 에러부로 이동
   - `F12`: 해당 변수/함수 선언부 확인
   - Layout Toggle
     - `Ctrl Shift u`: OUTPUT
@@ -55,6 +58,8 @@
   - `Ctrl Enter`: Git - Open File
   - `Ctrl n`: New file
   - `Ctrl Alt s`: Save Without Formatting
+
+<br />
 
 ## Mac Shortcut
 
@@ -80,6 +85,7 @@
   - `Cmd Shift t`: 방금 닫은 파일 오픈
   - `Cmd F2`: 해당 커서의 단어 모두 선택
   - `F2`: 참조되는 변수명 모두 변경
+  - `F8`: 해당 페이지의 에러부로 이동
   - `F12`: 해당 변수/함수 선언부 확인
   - Layout Toggle
     - `Cmd Shift u`: OUTPUT
@@ -95,7 +101,23 @@
   - `Ctrl Shift [ / ]`: 코드 접기/펼치기
   - `Ctrl Shift \`: 블럭 앞 뒤 이동
 
+<br />
+
 ## Extension Shortcut
 
 - Code runnder
   - `Ctrl Alt(Cmd) n`: Run Code
+
+<br />
+
+## 설정(settings.json)
+
+### 타입스크립트를 사용 할 경우, 작성한 alias paths를 자동완성으로 사용
+
+shortest: 상대경로와 alias로 지정한 paths 중 비교하여 짧은 경로를 Sugesstions에 표시
+
+방법 1. sttings.json에 아래 구문 추가\
+ `"typescript.preferences.importModuleSpecifier": "shortest"`
+
+방법 2. settings에서 **typescript importModuleSpecifier** 검색 후,\
+ TypeScript > Preferences: Import Module Specifier 값을 `shortest`로 변경

@@ -54,8 +54,14 @@ const About = lazy(() =>
 
 #### 청크 및 스플릿팅
 
-- [참고1](https://webpack.js.org/guides/code-splitting/)
-- [참고2](https://www.zerocho.com/category/Webpack/post/58ad4c9d1136440018ba44e7)
+- Webpack의 경우
+
+  - [참고1](https://webpack.js.org/guides/code-splitting/)
+  - [참고2](https://www.zerocho.com/category/Webpack/post/58ad4c9d1136440018ba44e7)
+
+- Vite의 경우
+  - 같은 패키지에서 다른 모듈을 Lazy로 가져와도 chunk가 되지 않음
+  - Lazy 사용 시, 해당 변수명으로 자동으로 chunk가 이루어짐
 
 <br />
 
