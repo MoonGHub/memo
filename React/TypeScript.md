@@ -1,5 +1,11 @@
 # React - TypeScript
 
+## Keywords
+
+- Partial
+- Omit
+- Pick
+
 target: 컴파일된 코드가 어떤 환경에서 실행될 지 정의 ex) es5 or es6
 module: 컴파일된 코드가 어던 모듈 시스템을 사용할지 정의 ex) common or es2015
 strict: 모든 타입 체킹 옵션을 활성화한다는 것을 의미

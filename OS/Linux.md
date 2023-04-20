@@ -175,7 +175,7 @@ foreground로 전환
 사용 중인 포트 확인
 
 ```shell
-sudo lsof -i : 8081
+sudo lsof -i :8081
 sudo kill -9 PID
 ```
 

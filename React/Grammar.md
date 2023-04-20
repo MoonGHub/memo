@@ -52,7 +52,7 @@ const About = lazy(() =>
 </Suspense>;
 ```
 
-#### 청크 및 스플릿팅
+#### 코드 스플릿팅 및 청크
 
 - Webpack의 경우
 

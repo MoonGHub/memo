@@ -66,15 +66,24 @@ console.log(import.meta.env.KEY2); // undefined
 
 ### Import 관련 에러
 
-- ESM의 Lib에서의 type 또는 모듈 관련 문제\
+- ESM의 Lib에서의 type 또는 모듈 관련 문제
   - 방법1. [참고](../JavaScript/ETC.md#🦋-esm-vs-cjs)
   - 방법2. `lazy(() => import("./Tooltip"))`의 동적 Import를 사용
     - Vite에서 동적 Import 사용 시, lazy와 같이 사용해야 함 [참고](../React/Grammar.md#suspense)
+  - `require is not defined`에러 발생 시, 플러그인 사용(**vite-plugin-commonjs**)\
+    - 단일레포인 경우, `vite-plugin-commonjs`플러그인을 사용하여 require 구문들을 ESM형식으로 변환
+    - 멀티레포로 구현하여 모듈을 가져올 경우, 외부 모듈을
+      1. vite로 만들어 빌드 시키거나
+      2. babel을 사용해서 빌드 시키거나
+      3. node를 다르게 실행하거나 [참고](https://github.com/philals/reading-exports-issue/commit/501151290df7d8f04d28c7cc092674c7f53e1201)
+      4. webpack과 같은 번들러를 사용해서, ESM구문을 CJS로 바꿈
 
 <br />
 
 ## Plugin
 
+- vite-plugin-commonjs\
+  require을 import로 변환
 - @originjs/vite-plugin-commonjs
   - viteCommonjs
   - esbuildCommonjs

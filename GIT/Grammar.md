@@ -22,6 +22,8 @@
 - `git config --global -l`
 - `git config --local user.name "name"`
 - `git config --local user.email "email"`
+- `git config --unset user.name`\
+  설정 된 user.name 제거
 
 ### 원격 저장소 설정
 
