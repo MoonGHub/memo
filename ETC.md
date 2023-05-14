@@ -94,6 +94,7 @@
 ## WORD
 
 - `i.e.`: 라틴어 id est,의 약어이며, '즉', '다시 말하면'이라는 뜻
+- `Fyi`: For Your Information, 참고로
 - `코딩 컨벤션`: 관리하기 쉬운 코드를 작성하기 위한 일종의 코딩 스타일 규약
 - `UTC`: Coordinated Universal Time - 협정 세계시(영국 런던기준),
 - `KST`: 한국 표준시(UTC +9)

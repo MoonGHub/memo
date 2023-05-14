@@ -72,8 +72,16 @@ Firewall > NAT
     - Select Rules: 3.번의 규칙
 
 - 시작 에러(WARNING: failed to start haproxy)
+
   1.  `service haproxy status` 및 `service haproxy start`으로 먼저 실행
   2.  `haproxy -d -f /usr/local/etc/haproxy.conf`으로 상세 에러 확인
+
+- Jenkins - Git webhook 연동 추가
+  1. real server와 backend pools는 Jenkins의 port로 위와 동일하게 생성
+  2. 새 condition을 path matches로 Git에서 webhook에 추가한 경로로 하나만 추가
+  3. Advanced > map file을 생성하여 host에 따라 1.에서 추가한 backend pools 분배
+  4. 새 rule에서 2.의 조건을 추가 후, Map domains to backend pools using a map file로 3.의 map파일 지정
+  5. Public Service에 추가한 reverse_proxy_https에 4.의 rule추가(제일 앞에 위치해야 함)
 
 ### ACME Client - SSL 발급 및 HAproxy 설정
 

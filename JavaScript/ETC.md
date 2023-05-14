@@ -169,6 +169,5 @@ ESM의 import/export 구문을 사용하기 위해서는 **package.json**에서 
   > 해결법:
   >
   > 1. `type: "module"`을 제거 후, import구문을 require로 변경
-  > 2. (기능 안함)노드를 실행할 때, 옵션을 추가 `--experimental-modules --es-module-specifier-resolution=node`
-  > 3. 위 내용을 [참고](#🦋-esm-vs-cjs)
-  > 4. 해당 모듈을 lazy 로딩하여 사용 [참고](../React/Grammar.md#suspense)
+  > 2. 위 내용을 [참고](#🦋-esm-vs-cjs)
+  > 3. 해당 모듈을 lazy 로딩하여 사용 [참고](../React/Grammar.md#suspense)

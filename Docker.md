@@ -22,7 +22,7 @@ DockerFile > Image > Container
   이미지 받기
 - `docker build --tag 이미지이름:버젼`\
   작성한 DockerFile로 이미지 생성\
-  버젼 생략 시 latest가 디폴트
+  버젼 생략 시 latest가 디폴
 
 ### 실행
 
@@ -63,6 +63,8 @@ DockerFile > Image > Container
   컨테이너에 접속
   - -i : 표준입출력 STDIN를 열겠다는 의미
   - -t : 가상 tty(pesudo tty)를 통해 접속하겠다는 의미
+- `docker logs 컨테이너이름`\
+  해당 컨테이너에 출력된 로그 확인
 
 ### Hub
 
