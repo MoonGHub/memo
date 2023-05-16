@@ -140,7 +140,7 @@ foreground로 전환
 ### 재부팅 및 종료
 
 재부팅: `sudo reboot` 또는 `sudo shutdown -r now`\
-종료: `sudo shutdown -h now`
+종료: `sudo shutdown -h now` 또는 `sudo poweroff`
 
 <br />
 

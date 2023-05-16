@@ -1,7 +1,7 @@
 # Docker
 
 **CYCLE**\
-DockerFile > Image > Container
+DockerFile > Image > Container(=이미지 인스턴스)
 
 ## Install
 
@@ -41,8 +41,7 @@ DockerFile > Image > Container
 - `docker rmi 이미지이름:태그`\
   태그 생략시 모든 이미지이름을 삭제
   - -f: --force
-- `docker container prune --force`\
-
+- `docker container prune --force`
 - `docker image prune --all --force`
 - `docker volume prune --force`
 - `docker system prune --volumes`
@@ -100,20 +99,30 @@ DockerFile > Image > Container
   서비스 초기화(서비스, 네트워크 삭제)
   - --volume: 볼륨 삭제
   - --rmi all: 싹 다 지움
-- `docker-compose up -d`\
+- `docker-compose -p 프로젝트명 up -d`\
   `docker-compose -f docker-compose.teamcity.yml up`\
   서비스생성 > 이미지 빌드 > 컨테이너 생성 및 실행(서비스 실행)
+  - -p: image이름으로 '현재 디렉토리 명\_'가 붙는데, 이것을 수정
   - -d: 백그라운드 실행
   - --platform linux/amd64: m1인 경우 옵션 추가
 - `docker-compose ps`
 - `docker-compose stop`
+  - `docker-compose stop 컨테이너이름`
+  - `docker-compose rm -fsv 컨테이너이름`
+    - -f: force
+    - -s: stop
+    - -v: volume
 - `docker-compose start`
 - `docker-compose restart`
-- `docker-compose exec 컨테이너이름 명령어`
+- `docker-compose exec 컨테이너이름 명령어`\
+  개별 서비스 컨트롤
 - `docker-compose logs 컨테이너이름 -f`
   - -f: 팔로잉
 
 ## ETC
+
+- 인스턴스 실행 시, --build 옵션을 주면 docker-compose의 경우 dockerfile 내의 RUN과 같은 명령어도 수행 됨
+- dockerfile에 COPY에서 디렉토리로 복사하는 경우, / 를 붙여줘야 함
 
 ### Q
 

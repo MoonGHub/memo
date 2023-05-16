@@ -2,8 +2,20 @@
 
 ## 도커로 설치
 
-1. docker pull jenkins/jenkins:lts
-2. sudo docker run -d -p 8282:8080 -v /jenkins:/var/jenkins_home --name jenkins -u root jenkins/jenkins:lts
+1. `docker pull jenkins/jenkins:lts`
+2. ```sh
+   sudo docker run -d -p 8282:8080 \
+     -v /jenkins:/var/jenkins_home \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     --name jenkins -u root \
+     jenkins/jenkins:lts
+   ```
+3. `docker exec -it jenkins /bin/sh`
+4. 젠킨스 내 도커설치
+   - alphine이 아닌 경우 [참고](../Docker.md#install)
+   - alphine인 경우
+     1. `apk update && apk upgrade`
+     2. `apk add docker && apk add docker-compose`
 
 <br />
 

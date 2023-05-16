@@ -116,6 +116,11 @@ Firewall > NAT
     - Enable SSL offloading 체크
     - SSL Offloading > Certificates: 6.에서 발급된 인증서를 등록
 
+- HTTP-01 챌린지
+  - 와일드카드(서브도메인) 인증서 발급 불가
+
+<br />
+
 ### HAProxy - http to https 리다이렉트 설정
 
 1. NAT 포트포워딩 설정을 추가(방화벽은 자동으로 추가 됨)
@@ -141,6 +146,8 @@ Firewall > NAT
 
 ## ETC
 
+<br />
+
 ### IPS(침입탐지시스템) 활성화
 
 [참고](https://docs.opnsense.org/manual/ips.html)
@@ -157,6 +164,6 @@ Firewall > NAT
 5. Rules 탭에서 필요한 부분을 Drop룰로 변경
 6. Schedule 탭에서 cron(System > Settings > Cron) 업데이트 활성화
 
-### 🦋 HAProxy 서브 도메인 추가
+<br />
 
 ### 🦋 내부(NAT)망 원격접속
