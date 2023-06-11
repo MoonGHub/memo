@@ -68,7 +68,7 @@ Firewall > NAT
     - Execute function: Use specified Backend Pool
     - Use backend pool: 2.번의 백엔드 풀
 5.  Virtual Services > Public Services 등록
-    - Listen Addresses: 외부 접속 IP:Port
+    - Listen Addresses: 외부 접속 IP:Port(80)
     - Select Rules: 3.번의 규칙
 
 - 시작 에러(WARNING: failed to start haproxy)
@@ -78,7 +78,7 @@ Firewall > NAT
 
 - Jenkins - Git webhook 연동 추가
   1. real server와 backend pools는 Jenkins의 port로 위와 동일하게 생성
-  2. 새 condition을 path matches로 Git에서 webhook에 추가한 경로로 하나만 추가
+  2. 새 condition을 path regex로 Git에서 webhook에 추가한 경로로 하나만 추가(ex: ^/github-webhook/$)
   3. Advanced > map file을 생성하여 host에 따라 1.에서 추가한 backend pools 분배
   4. 새 rule에서 2.의 조건을 추가 후, Map domains to backend pools using a map file로 3.의 map파일 지정
   5. Public Service에 추가한 reverse_proxy_https에 4.의 rule추가(제일 앞에 위치해야 함)
@@ -88,6 +88,8 @@ Firewall > NAT
 1.  Settings > Settings
     - Enable Plugin 체크
     - Auto Renewal 체크
+    - HAProxy Integration 체크(중요!!)
+      - HAProxy에 인증전용의 로컬 서버가 추가 됨(real, back, public?, condition, rule)
 2.  Settings > Update Schedule\
     갱신 자동 스케줄 추가(자동으로 추가되어 있음)
     - enabled 체크
@@ -98,21 +100,21 @@ Firewall > NAT
 4.  Automations > Automations > add\
     Restart HAProxy 추가
 5.  Challenge Types > Challenge Types > add\
-    지원하지 않는 DNS를 사용중으로 HTTP-01타입을 사용
+    지원하지 않는 DNS 및 HAProxy Integration로 인해 HTTP-01타입을 사용
     - Name: HTTP-01
     - Challenge Type: HTTP-01
     - HTTP Service: HAProxy HTTP Frontend Integration(OPNsense plugin)
     - Enable Auto-Configuration: 체크
-    - HAProxy Frontends: HAProxy에서 백엔드 풀이 등록되어있는 public service
+    - HAProxy Frontends: HAProxy에서 acme 인증 백엔드 풀이 등록되어있는 public service
 6.  Certificates > Certificates > add
     - Common Name: 도메인 이름
-    - Alt Names: 사용 할 서브 도메인들을 추가...? 일단 공백
+    - Alt Names: HTTP-01 타입은 와일드 카드 및 서브도메인 설정 불가
     - ACME Account: 3.의 계정
     - Challenge Type: 5.의 타입
     - Key Length: ec-384
     - Automations: 4.의 자동화
     - DNS Alias Mode: Automatic Mode (uses DNS lookups)
-7.  인증서 발급에 성공 되었으면, 5.에서 등록한 HAProxy의 public service의 설정을 변경
+7.  인증서 발급에 성공 되었으면, real server - backend pool이 등록된 HAProxy의 public service의 설정을 변경
     - Enable SSL offloading 체크
     - SSL Offloading > Certificates: 6.에서 발급된 인증서를 등록
 
@@ -126,19 +128,32 @@ Firewall > NAT
 1. NAT 포트포워딩 설정을 추가(방화벽은 자동으로 추가 됨)
    - WAN(all, all) -> Destination(This Firewall, 80) -> NAT(HAProxy public service의 리스닝 IP, 80)
    - WAN(all, all) -> Destination(This Firewall, 443) -> NAT(HAProxy public service의 리스닝 IP, 443)
-2. HAProxy > 백엔드 풀이 설정된 public service의 리스닝 포트를 443으로 변경
+2. HAProxy > real server들의 백엔드 풀이 설정된 public service를 동일하게 생성하여 리스닝 포트를 443으로 변경
+   - github-webhook도 생성한 443의 public service로 이동
+   - 80의 public service는 Enable SSL offloading 체크 해제
 3. Rules & Checks > Conditions > add
    - Name: Traffic_is_HTTP
    - Condition type: Traffic is HTTP
-4. Rules & Checks > Rules > add
+4. Rules & Checks > Conditions > add
+   - Name: acme-challenge-negate
+   - Condition type: Path regex
+   - Negate condition 체크
+   - Path Regex: `^/\.well-known/acme-challenge/?`
+5. Rules & Checks > Rules > add
    - Name: redirect_https
-   - Select conditions: 3.에서 추가한 Traffic_is_HTTP
+   - Select conditions: 3.에서 추가한 Traffic_is_HTTP과 4.에서 추가한 acme-challenge-negate
    - Execute function: http-request redirect
    - HTTP Redirect: **scheme https code 301**
-5. Virtual Services > Public Services > add
+6. Virtual Services > Public Services > add
+
    - Name: ridirect_to_https
    - Listen Addresses: GW IP:80
    - Rules > Select Rules: 4.에서 추가한 redirect_https
+
+   또는 HAProxy Integration 체크로 자동 추가된 public services에서
+
+   - Listen Addresses: GW IP:80
+   - Rules > Select Rules: 5.에서 추가한 redirect_https(후 순위로 지정)
 
 <br />
 

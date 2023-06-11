@@ -33,3 +33,23 @@
 
 - `show tables;`
 - `desc table_name;`
+
+<br />
+
+## 백업 및 불러들이기
+
+### 백업
+
+`...`
+
+<br />
+
+### 불러들이기
+
+`mysql -uroot -p1234 testdb < /root/docker_backup/test.sql`
+
+<br />
+
+## Docker
+
+`docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=1234 -v /Users/moon/Downloads/docker_backup:/root/docker_backup -d -p 3306:3306 mysql:latest`
