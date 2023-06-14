@@ -81,7 +81,9 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 ---
 
-## 여러 명령어
+<br />
+
+## 여러 설정 및 명령어
 
 ### SSH 접속
 
@@ -186,3 +188,18 @@ sudo kill -9 PID
 ```shell
 netstat -na | grep -i 7777
 ```
+
+<br />
+
+### 타임존 한국표준시(KST)로 변경
+
+1. 현재 시간 확인 (현재 타임존)
+   - `date`
+2. 현재 타임존 확인
+   - `ls -al /etc/localtime`
+3. 타임존을 한국 표준시(KST)로 변경
+   - `ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime`
+4. 변경된 타임존 확인
+   - `ls -al /etc/localtime`
+5. 현재 시간 확인 (현재 타임존)
+   - `date`
