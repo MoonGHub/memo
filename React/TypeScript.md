@@ -2,13 +2,31 @@
 
 ## Keywords
 
-- Partial
-- Omit
-- Pick
-- Record
-- Awaited
-- ReturnType
-- Parameters
+- Utility Type
+  - Partial
+  - Omit
+  - Pick
+  - Record
+  - Awaited
+  - ReturnType
+  - Parameters
+  - Capitalize
+  - InstanceType
+- etc
+  - infer
+
+<br />
+
+## PBL
+
+### class
+
+클래스에 대해 typeof 사용하여 변수에 지정할 경우, 해당 클래스의 타입이 아닌 생성자 타입을 나타냄\
+따라서 typeof를 사용하지 않고, 직접 클래스를 타입으로 지정해줘야 함 또는 Utility Type의 InstanceType를 사용
+
+<br />
+
+---
 
 target: 컴파일된 코드가 어떤 환경에서 실행될 지 정의 ex) es5 or es6
 module: 컴파일된 코드가 어던 모듈 시스템을 사용할지 정의 ex) common or es2015

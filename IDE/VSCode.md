@@ -87,6 +87,7 @@
   - `F2`: 참조되는 변수명 모두 변경
   - `F8`: 해당 페이지의 에러부로 이동
   - `F12`: 해당 변수/함수 선언부 확인
+  - `Shift Option O`: Import 정리
   - Layout Toggle
     - `Cmd Shift u`: OUTPUT
     - `Cmd Shift m`: PROBLEMS
@@ -103,6 +104,10 @@
 
 <br />
 
+## Extension
+
+<br />
+
 ## Extension Shortcut
 
 - Code runnder
@@ -112,12 +117,14 @@
 
 ## 설정(settings.json)
 
+<br />
+
 ### 타입스크립트를 사용 할 경우, 작성한 alias paths를 자동완성으로 사용
 
 shortest: 상대경로와 alias로 지정한 paths 중 비교하여 짧은 경로를 Sugesstions에 표시
 
-방법 1. sttings.json에 아래 구문 추가\
- `"typescript.preferences.importModuleSpecifier": "shortest"`
+- 방법 1. sttings.json에 아래 구문 추가\
+  `"typescript.preferences.importModuleSpecifier": "shortest"`
 
-방법 2. settings에서 **typescript importModuleSpecifier** 검색 후,\
- TypeScript > Preferences: Import Module Specifier 값을 `shortest`로 변경
+- 방법 2. settings에서 **typescript importModuleSpecifier** 검색 후,\
+  TypeScript > Preferences: Import Module Specifier 값을 `shortest`로 변경
