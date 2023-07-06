@@ -45,7 +45,7 @@
 
 <br />
 
-## @storybook/addon-knobs
+## @storybook/addon-knobs (별도 설치 필요 없음)
 
 > 컴포넌트의 props를 스토리북 화면에서 변경해 바로 반영을 시켜줌
 
@@ -53,7 +53,7 @@
 
 <br />
 
-## @storybook/addon-actions (기본설치)
+## @storybook/addon-actions (별도 설치 필요 없음?)
 
 > 스토리북 상의 컴포넌트에 이벤트를 추가
 
@@ -67,7 +67,7 @@ import { action, withActions } from "@storybook/addon-actions";
 
 <br />
 
-## @storybook/addon-docs
+## @storybook/addon-docs (별도 설치 필요 없음)
 
 >
 
@@ -82,6 +82,8 @@ Docs에서 타입설명들을 보여주기 위해서는, 스토리의 export def
 
 Docs에서 컴포넌트 subtitle은, export default{}에서 parameters옵션의 componentSubtitle에 전달
 컴포넌트의 설명은 컴포넌트 파일에서 컴포넌트 코드 바로 윗 부분에 주석!
+
+- v7부터는 통합된 docs로 변경
 
 <br />
 

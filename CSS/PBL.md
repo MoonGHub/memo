@@ -96,6 +96,13 @@ CSS 라이브러리 참고 사이트
   ```css
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+
+  /* 라인 제한 */
+  /* white-space: pre-line; */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   ```
 
 ### EM
