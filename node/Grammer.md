@@ -65,3 +65,13 @@ ECMAScript 모듈의 해석을 지정하는 옵션, import시 파일 확장자 �
 > pnpm add -D ts-node
 
 import시, ts 및 tsx확장자를 사용 할 수 있음
+
+<br />
+
+### nvm
+
+- nvm ls
+- nvm install {version}
+- nvm use {version}
+- nvm alias default 16.15.1\
+  디폴트 버전 변경
