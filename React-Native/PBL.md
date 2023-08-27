@@ -97,7 +97,7 @@ cd {prj_root}/android/app/build/outputs/bundle/release
 
 # apk 생성
 # app-release.aab 또는 googlePlay-release.aab
-bundletool build-apks --ks-pass 'pass:{키스토어 패스워드}' --bundle app-release.aab --output app.apks --ks debug_key.keystore --ks-key-alias debugkeystore --overwrite
+bundletool build-apks --ks-pass 'pass:{키스토어 패스워드}' --bundle app-release.aab --output app.apks --ks release.keystore --ks-key-alias releaseAlias --overwrite
 
 # 에뮬레이터 설치
 bundletool install-apks --apks app.apks

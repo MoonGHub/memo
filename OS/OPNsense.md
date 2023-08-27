@@ -19,28 +19,35 @@
 
 **크롬 브라우저에서 실행**
 
+<br />
+
 ### 포트 추가(OPT1)
 
 1.  Firewall > Rules > OPT1 > Add
 2.  Default로 설정된 값들로 바로 저장(아웃바인드 허용)
+
+<br />
 
 ### 웹 관리 콘솔 접속 제한(포트)
 
 1.  System > Settings > Administration
 2.  Web GUI > Listen Interfaces에서 설정
 
+<br />
+
 ### NAT(Network Address Translation)설정
 
 Firewall > NAT
 
 - 포트 포워딩(> Port Forward > add - 방화벽도 자동 등록됨)
-  - Interface: WAN\
-     IPv4/TCP
-  - Source: all
-  - Destination: This Firewall\
-     port range: IN 포트 지정\
-     Redirect target IP: NAT IP\
-     Redirect target port: NAT port
+  - Interface: WAN
+  - TCP/IP Version: IPv4
+  - Protocol: TCP
+  - Source: any(all)
+  - Destination: This Firewall
+    - port range: IN 포트 지정(HTTP -> HTTP, HTTPS -> HTTPS)
+    - Redirect target IP: NAT IP(OPT1의 GW)
+    - Redirect target port: NAT port(HTTP or HTTPS)
 
 <br />
 
@@ -52,14 +59,18 @@ Firewall > NAT
 - os-acme-client - 3.15
 - os-haproxy - 4.1
 
+<br />
+
 ### HAProxy - 리버스 프록시 설정
 
 1.  Real Servers 등록
-    - FQDN or IP: WAS IP
+    - Name or Prefix: Server Name
+    - FQDN or IP: WAS의 IP
     - Port: 접속 port
     - Verify SSL Certificate 체크 해제
 2.  Virtual Services > Backend Pools 등록
     - Servers: 1.번의 서버
+    - Enable Health Checking 체크 해제
 3.  Rules & Checks > Conditions 등록
     - Condition type: Host starts with 또는 Host contains
     - Host Prefix 또는 Host contains: 도메인 이름
@@ -71,6 +82,12 @@ Firewall > NAT
     - Listen Addresses: 외부 접속 IP:Port(80)
     - Select Rules: 3.번의 규칙
 
+> 3~5에서 Map File로 조건 대체
+>
+> - Advanced > Map Files에 라인 당 `{domain명} {2.의 백엔드 풀 이름}` 형식으로 작성
+> - Rules & Checks > Conditions 등록(Map Domains to backend pools using a map file과 위의 작성 Map파일 선택)
+> - Public Services의 규칙에 위의 rule을 등록
+
 - 시작 에러(WARNING: failed to start haproxy)
 
   1.  `service haproxy status` 및 `service haproxy start`으로 먼저 실행
@@ -79,9 +96,11 @@ Firewall > NAT
 - Jenkins - Git webhook 연동 추가
   1. real server와 backend pools는 Jenkins의 port로 위와 동일하게 생성
   2. 새 condition을 path regex로 Git에서 webhook에 추가한 경로로 하나만 추가(ex: ^/github-webhook/$)
-  3. Advanced > map file을 생성하여 host에 따라 1.에서 추가한 backend pools 분배
+  3. Advanced > map file을 생성하여 `{domain명} {1.의 백엔드 풀 이름}`형식으로 작성
   4. 새 rule에서 2.의 조건을 추가 후, Map domains to backend pools using a map file로 3.의 map파일 지정
   5. Public Service에 추가한 reverse_proxy_https에 4.의 rule추가(제일 앞에 위치해야 함)
+
+<br />
 
 ### ACME Client - SSL 발급 및 HAproxy 설정
 
@@ -120,12 +139,14 @@ Firewall > NAT
 
 - HTTP-01 챌린지
   - 와일드카드(서브도메인) 인증서 발급 불가
+- HAproxy의 public service에서 노출되는 인증서 삭제
+  - OPNsense콘솔 > System > Trust > Certificates > 제거
 
 <br />
 
 ### HAProxy - http to https 리다이렉트 설정
 
-1. NAT 포트포워딩 설정을 추가(방화벽은 자동으로 추가 됨)
+1. Firewall > NAT > Port Forward 설정을 추가(방화벽은 자동으로 추가 됨)
    - WAN(all, all) -> Destination(This Firewall, 80) -> NAT(HAProxy public service의 리스닝 IP, 80)
    - WAN(all, all) -> Destination(This Firewall, 443) -> NAT(HAProxy public service의 리스닝 IP, 443)
 2. HAProxy > real server들의 백엔드 풀이 설정된 public service를 동일하게 생성하여 리스닝 포트를 443으로 변경
@@ -144,13 +165,13 @@ Firewall > NAT
    - Select conditions: 3.에서 추가한 Traffic_is_HTTP과 4.에서 추가한 acme-challenge-negate
    - Execute function: http-request redirect
    - HTTP Redirect: **scheme https code 301**
-6. Virtual Services > Public Services > add
+6. Virtual Services > Public Services > ~~add~~(~~또는~~ 2.의 기존 80포트 편집)
 
-   - Name: ridirect_to_https
-   - Listen Addresses: GW IP:80
-   - Rules > Select Rules: 4.에서 추가한 redirect_https
+   ~~- Name: ridirect_to_https~~\
+   ~~- Listen Addresses: GW IP:80~~\
+   ~~- Rules > Select Rules: 5.에서 추가한 redirect_https~~
 
-   또는 HAProxy Integration 체크로 자동 추가된 public services에서
+   또는 ACME Client 세팅에서 HAProxy Integration 체크로 자동 추가된 public services에서
 
    - Listen Addresses: GW IP:80
    - Rules > Select Rules: 5.에서 추가한 redirect_https(후 순위로 지정)

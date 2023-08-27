@@ -65,6 +65,16 @@
 
 ## Ubuntu(22.04.1 live server amd64)
 
+> 설치 시, 주의 사항
+
+1. Profile setup
+   Your name: 용도를 몰라 Your Pick a username와 동일하게 설정\
+   Your server's name: 프롬프트의 유저명@{이부분}, 콤마와 언더바는 인식이 안됨\
+   Your Pick a username: 프롬프트의 {이부분}@서버명
+2. 추가적 설치는 불필요
+
+<br />
+
 설치 후, 업데이트 및 필요 패키지 설치
 
 ```shell
@@ -78,6 +88,12 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   - `sudo passwd root`: Root계정 패스워드 설정
   - `sudo su` or `sudo -`: Root계정 전환(설치 직후는 패스워드 설정이 필요)
   - `uname -a` 또는 `uname -r`: 커널 버전 확인
+
+> 설치 후, 재설치 방법
+
+1. F2로 Bios 진입
+2. 부팅 순서에서 CD를 최상위로 설정
+3. 재부팅
 
 ---
 
@@ -143,6 +159,19 @@ foreground로 전환
 
 재부팅: `sudo reboot` 또는 `sudo shutdown -r now`\
 종료: `sudo shutdown -h now` 또는 `sudo poweroff`
+
+<br />
+
+### 부트로더 GNU GRUB 진입 방법
+
+1. `sudo vim /etc/default/grub`
+2. 아래와 같이 해당 값을 변경
+   ```config
+   GRUB_TIMEOUT_STYLE=menu
+   GRUB_TIMEOUT=10
+   ```
+3. `sudo update-grub`
+4. 재부팅
 
 <br />
 

@@ -31,6 +31,7 @@
    1. Dashboard > Manage Jenkins > Configure Global Security > Git Host Key Verification Configuration. 에서(제일 아래)\
       Accept first connection 선택
    2. Dashboard > Manage Jenkins > Credentials > System > Global credentials (unrestricted) > Add Credentials
+      - Kind: SSH Username with private key
       - Global (Jenkins, nodes, items, all child items, etc) 선택
       - Username: 키 선택시의 표시 이름
       - Private Key > Enter directly > 1.에서 생성한 id_rsa의 내용을 복사/붙여넣기 (-----BEGIN 으로 시작)
@@ -42,7 +43,7 @@
 
 1. Freestyle project
 2. General >
-   - GitHub project > Project url: 해당 Repo의 url
+   - GitHub project > Project url: 해당 Repo의 URL
 3. 소스코드 관리 > Git >
 
    - Repository Url: Clone할 때의 SSH URL
@@ -50,8 +51,13 @@
    - Branch Specifier: \*/main
 
 4. 빌드 유발 > GitHub hook trigger for GITScm polling 선택
-
-<br />
+5. 빌드 환경 > Delete workspace before build starts 선택
+6. Build Steps > Execute shell
+   ```sh
+   cd ./apps/web/io.yougram/docker
+   bash jenkins-build-step.sh
+   ```
+   <br />
 
 ### Git Hook 등록
 

@@ -89,6 +89,7 @@
   - `F12`: 해당 변수/함수 선언부 확인
   - `Shift Option O`: Import 정리
   - `Shift Option P (Command Palette) + 'Source Action'`: Add all missing imports
+  - `Ctrl Option a`: tailwindcss className fold toggle
   - Layout Toggle
     - `Cmd Shift u`: OUTPUT
     - `Cmd Shift m`: PROBLEMS
