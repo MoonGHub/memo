@@ -69,4 +69,5 @@ const About = lazy(() =>
 
 ### Words
 
+- pragma: 컴파일러에게 전달하는 전처리 명령? - 파일 상단의 `/** @jsx jsx */`, `/** @jsxImportSource @emotion/react */`와 같은 것
 - SyntheticEvent: 합성 이벤트
