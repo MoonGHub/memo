@@ -121,6 +121,8 @@
     비동기로 실행됨
 
 - ETC
+  - `pnpm store prune`\
+    Removed all cached metadata files
   - `pnpm install --shamefully-hoist`
     - 각 프로젝트의 종속성들이 최상위의 **node_modules**에 설치됨
-    - 서로 다른 버전의 종속성 설치로 충돌 문제가 발생 할 수 있음
+    - 서로 다른 버전의 종속성으로 호환 문제 시

@@ -29,6 +29,8 @@ background-size: auto;
 background-size: 가로px 세로px;
 background-blend-mode: soft-light;
 // 배경 요소가 겹칠 경우 나타내는 방식 지정(사진, 동영상 색상변경, 흑백, 반전 등)
+mix-blend-mode: difference;
+// 위와 동일
 ```
 
 #### 필터

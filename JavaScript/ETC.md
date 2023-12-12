@@ -100,7 +100,8 @@ for (i = 0; i < 10; i++) {
 - ESM: ECMAScript Module
 
   - import/export 구문 사용
-  - 비동기로 작성이 불가 - 정적
+  - 비동기적으로 실행(동적) -> 빌드 단계에서 전체 코드를 알 수 없어, 불 필요한 부분의 체킹이 불가
+    - Top-level Await 지원
     - 임의 시점(조건문 등)에서 import 사용 불가
   - package.json의 **type**이 **module**이거나, 확장자가 **.mjs**
   - package.json의 **type**이 **module**인 경우
@@ -136,12 +137,12 @@ for (i = 0; i < 10; i++) {
               // 종속성 최적화 비활성화로 true는 build와 dev 모두 포함
               include: ["react-financial-charts"],
               // 모노레포에서 알아서 탐색이 되지만 번들이 되지않음
-              // 해당 디펜던시가 ESM로 내보내져야 함, 그렇지 않다면 명시 필요(강제 최적화)
+              // 연결된 패키지를 미리 번들화
+              // ??? - 해당 디펜던시가 ESM로 내보내져야 함, 그렇지 않다면 명시 필요(강제 최적화?)
             },
             noExternal: ["react-financial-charts"],
             // 기본적으로 SSR은 디펜던시를 번들링에 포함하지 않음(초기 로딩이 빨라짐)
             // 설정 시, 외부화에서 제외
-            // 부분적으로 noExternal를 제외해도 됨..?
           },
         }
         ```
@@ -149,10 +150,10 @@ for (i = 0; i < 10; i++) {
 - CJS: CommonJS
 
   - require/module.exports 구문 사용
-  - 비동기적(동적)으로 실행 -> 빌드 단계에서 전체 코드를 알 수 없어, 불 필요한 부분의 체킹이 불가
+  - 동기적으로 작동(정적)
     - 임의 시점(조건문 등)에서 require 사용 가능
   - package.json의 **type**이 **commonjs**이거나, 확장자가 **.cjs**
-  - package.json의 **type**이 **commonjs**인 경우
+  - package.json의 **type**이 생략 또는 **commonjs**인 경우
     - `.cjs`또는 `.js`사용
     - require 사용이 강제됨
 

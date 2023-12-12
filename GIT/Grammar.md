@@ -105,10 +105,13 @@
 
 ### commit 취소
 
-- soft...?
-- mixed
+- soft
+  - Commit 상태의 파일들을 Staged상태로 변경
+    - 해당 커밋해쉬 파일들
   - working tree 유지
+- mixed
   - Unstaged/Untracked file 상태로 되돌림
+  - working tree 유지
 - hard
   - 해당 커밋의 직후 상태로 되돌림
 

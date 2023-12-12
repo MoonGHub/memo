@@ -42,7 +42,8 @@ DockerFile > Image > Container(=이미지 인스턴스)
   태그 생략시 모든 이미지이름을 삭제
   - -f: --force
 - `docker container prune --force`
-- `docker image prune --all --force`
+- `docker image prune --force`
+  - -all: 사용중인 이미지도 삭제
 - `docker volume prune --force`
 - `docker system prune --volumes`
 
