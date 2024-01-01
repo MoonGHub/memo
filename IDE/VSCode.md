@@ -42,7 +42,7 @@
   - `Ctrl [ 또는 ]`: 들여쓰기
   - `Ctrl Shift c`: Open New External Terminal
   - `Ctrl Shift [ / ]`: 코드 접기/펼치기
-  - `Ctrl Shift \`: 블럭 앞 뒤 이동
+  - `Ctrl Shift \`: 블록 앞 뒤 이동
   - `Ctrl Shift t`: 방금 닫은 파일 오픈
   - `Ctrl F2`: 해당 커서의 단어 모두 선택
   - `F2`: 참조되는 변수명 모두 변경
@@ -102,7 +102,7 @@
   - `Ctrl Shift Cmd Up/Down`: 커서 여러개 생성
   - `Ctrl h`: Find and Replace
   - `Ctrl Shift [ / ]`: 코드 접기/펼치기
-  - `Ctrl Shift \`: 블럭 앞 뒤 이동
+  - `Ctrl Shift \`: 블록 앞 뒤 이동
 
 <br />
 
