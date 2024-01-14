@@ -44,8 +44,11 @@ DockerFile > Image > Container(=이미지 인스턴스)
 - `docker container prune --force`
 - `docker image prune --force`
   - -all: 사용중인 이미지도 삭제
+- `docker builder prune --force`
+  - 빌드 캐시 제거
 - `docker volume prune --force`
-- `docker system prune --volumes`
+- `docker system prune -a --volumes --force`
+  - 미사용 오브젝트 모두 제거
 
 ### 기타
 

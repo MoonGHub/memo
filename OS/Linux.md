@@ -232,3 +232,10 @@ netstat -na | grep -i 7777
    - `ls -al /etc/localtime`
 5. 현재 시간 확인 (현재 타임존)
    - `date`
+
+### 용량/메모리 확인
+
+- `swapon -s`: swap 메모리 확인
+- `df -h`
+- `du -h`
+  - -s: 디렉토리의 사용량만 표시

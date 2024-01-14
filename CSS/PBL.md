@@ -105,6 +105,12 @@ CSS 라이브러리 참고 사이트
   -webkit-line-clamp: 3;
   ```
 
+  - 부모 요소의 길이가 정해져 있어야함
+    - table
+      - td또는 td내 부모 요소에 `display: grid`, `grid-auto-flow: column`
+      - td에 `max-width: 0`
+        - 부모요소가 있을 경우 부모요소에 `display: flex`
+
 ### EM
 
 부모 요소의 px크기 = 자식 요소의 1em
@@ -129,12 +135,32 @@ CSS 라이브러리 참고 사이트
 - 화면 내 부드러운 이동\
   `scroll-behavior: smooth;`
 
-### Flex요소 내의 스크롤 적용
+### 스크롤 적용
 
-```css
-flex: 1 1 0;
-overflow-y: auto;
-```
+- flex내 요소가 스크롤인 경우
+
+  ```css
+  // 스크롤 대상 요소
+  flex: auto;
+  height: 0;
+  overflow: auto;
+  ```
+
+- flex요소 내 상위 - 중간 - 하위 요소가 스크롤인 경우
+
+  ```css
+  // 상위
+  flex: auto;
+  height: 0;
+
+  // 중간
+  height: 100%; // 또는 flex: 1;
+  overflow: hidden;
+
+  // 스크롤 대상 하위 요소에
+  flex: 1 1 0;
+  overflow-y: auto;
+  ```
 
 ### 커서
 
