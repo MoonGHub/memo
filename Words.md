@@ -8,4 +8,6 @@ identifier: 식별자
 inheritance: 상속
 polymorphism: 다형성
 generic: 포괄적인
+clamp: 범위를 제한한다
+formula: 공식, 식
 ```

@@ -106,8 +106,9 @@ CSS 라이브러리 참고 사이트
   ```
 
   - 부모 요소의 길이가 정해져 있어야함
+    - 길이 지정 또는 부모 요소에 `display: grid`(, `grid-auto-flow: column`)
     - table
-      - td또는 td내 부모 요소에 `display: grid`, `grid-auto-flow: column`
+      - td또는 td내 부모 요소에 `display: grid`(, `grid-auto-flow: column`)
       - td에 `max-width: 0`
         - 부모요소가 있을 경우 부모요소에 `display: flex`
 

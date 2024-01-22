@@ -29,8 +29,11 @@
 
 > 동적이거나 유동적이면서 어떤 요소의 전체에 영향을 줄 때 사용
 
-`:nth-child(n)`: n번째 자식요소
-`:nth-child(2n)`: 짝수 번째 자식요소 모두(2n -> even, 2n+1 -> odd)
+`:nth-child(n)`: n번째 자식요소\
+`:nth-child(2n)`: 짝수 번째 자식요소(2n -> even)
+
+- `:nth-child(odd)`: 홀수 번째 자식요소(odd 또는 2n+1)
+- `:nth-child(even)`: 짝수 번째 자식요소(even 또는 2n)
 
 `:first-child`: 해당 요소가 부모 아래의 첫 번째 요소인 경우 해당\
 `:first-of-type`: nth-of-type(1) 와 동일\

@@ -146,3 +146,62 @@ animation-name: ani;
   - both: forwards와 backwards 둘 다 적용
 
 <br />
+
+### grid
+
+- 함수
+  - [minmax()](./Function.md#minmax)
+  - [fit-content()](./Function.md#fit-content)
+  - [repeat()](./Function.md#repeat)
+
+<br />
+
+- 상위요소
+
+  ```css
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 2fr auto 100px;
+  // 너비 지정
+  grid-template-rows: repeat(2, minmax(100px, auto));
+  // 높이 지정
+
+  grid-auto-flow: row;
+  // 왼쪽에서 오른쪽으로, 위에서 아래로 배치
+  // 그리드 아이템이 채워진 행이 다 차면 새로운 행이 생성
+  grid-auto-flow: column;
+  // 위에서 아래로, 왼쪽에서 오른쪽으로 배치
+  // 그리드 아이템이 채워진 열이 다 차면 새로운 열이 생성
+  grid-auto-flow: dense;
+  grid-auto-flow: row dense; // or column dense
+  // 그리드 아이템이 순서에 상관없이 가능한 한 빈 공간을 채우도록 배치
+  ```
+
+- 하위요소
+
+  ```css
+  grid-column: 4;
+  // 네 번째 열뒤에 위치
+  grid-column: 1 / 3;
+  // 첫 번째 열 ~ 세 번째 열 차지(두 칸)
+  grid-column: 2 / span 3;
+  // 두 번째 열에서 3개의 열을 차지(세 칸)
+  grid-row: 2 / -1;
+  // 두 번째 행에서 끝에서 첫 번째 행(마지막 행)까지 차지
+  ```
+
+- subgrid
+
+  > 그리드인 부모요소의 하위요소에서 사용\
+  > 부모 그리드 컬럼과 동기화(상속)\
+  > **_모든 브라우저에서 완전 지원되지 않음_**
+
+  - [참고1](https://codepen.io/kumjungmin/pen/qBxRVey)
+  - [참고2](https://codepen.io/rachelandrew/pen/axLzYv)
+
+  ```css
+  // 그리드인 부모요소의 하위요소
+  display: grid;
+  grid-row: 1 / 4;
+  grid-template-rows: subgrid;
+  ```
