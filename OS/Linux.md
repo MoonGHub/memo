@@ -65,6 +65,9 @@
 
 ## Ubuntu(22.04.1 live server amd64)
 
+[참고](https://blog.dalso.org/article/ubuntu-22-04-lts-server-install)
+[참고](https://as-you-say.tistory.com/181)
+
 > 설치 시, 주의 사항
 
 1. Profile setup
@@ -137,21 +140,20 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 ### background 실행 및 foreground, background 전환
 
-background로 실행\
-`명령어 &`: background 실행 - 끝에 `&`를 붙여줌
+- background로 실행\
+  `명령어 &`: background 실행 - 끝에 `&`를 붙여줌
 
-background로 전환
+- background로 전환
 
-1. `ctrl z`: 중지 상태로 변경
-2. `jobs`
-3. `bg %[jobs의 task number]`\
-   ex) `bg %2`
+  1. `ctrl z`: 중지 상태로 변경
+  2. `jobs`
+  3. `bg %[jobs의 task number]`\
+     ex) `bg %2`
 
-foreground로 전환
-
-1. `jobs`
-2. `fg %[jobs의 task number]`\
-   ex) `fg %1`
+- foreground로 전환
+  1. `jobs`
+  2. `fg %[jobs의 task number]`\
+     ex) `fg %1`
 
 <br />
 
@@ -203,20 +205,15 @@ foreground로 전환
 
 ### 특정 (네트워크)포트 확인 및 종료
 
-사용 중인 포트 확인
-
-```shell
-sudo lsof -i :8081
-sudo kill -9 PID
-```
-
-<br />
-
-네트워크 포트 확인
-
-```shell
-netstat -na | grep -i 7777
-```
+- 사용 중인 포트 확인
+  ```shell
+    sudo lsof -i :8081
+    sudo kill -9 PID
+  ```
+- 네트워크 포트 확인
+  ```shell
+  netstat -na | grep -i 7777
+  ```
 
 <br />
 
@@ -239,3 +236,18 @@ netstat -na | grep -i 7777
 - `df -h`
 - `du -h`
   - -s: 디렉토리의 사용량만 표시
+
+### [한글 설치(ubuntu live server)](https://epicarts.tistory.com/30)
+
+<!--
+- `apt-get isntall language-pack-ko`
+- `locale-gen ko.KR.UTF-8`
+- `vim /etc/default/locale`\
+  추가 `LANG=ko_KR.UTF-8`
+- `vim /etc/environment`\
+  추가
+  ```shell
+  LANG=ko_KR.UTF8
+  LANGUAGE=ko_KR:ko:en_GB:en
+  ```
+- `reboot` -->

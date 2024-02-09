@@ -68,6 +68,7 @@ DockerFile > Image > Container(=이미지 인스턴스)
   - -t : 가상 tty(pesudo tty)를 통해 접속하겠다는 의미
 - `docker logs 컨테이너이름`\
   해당 컨테이너에 출력된 로그 확인
+  - -f: follow
 
 ### Hub
 
@@ -120,8 +121,9 @@ DockerFile > Image > Container(=이미지 인스턴스)
 - `docker-compose restart`
 - `docker-compose exec 컨테이너이름 명령어`\
   개별 서비스 컨트롤
-- `docker-compose logs 컨테이너이름 -f`
-  - -f: 팔로잉
+- `docker-compose logs 컨테이너이름 -f`\
+  해당 컨테이너에 출력된 로그 확인
+  - -f: follow
 
 ## ETC
 
