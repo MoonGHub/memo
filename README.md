@@ -51,6 +51,7 @@
   - [PBL](OS/PBL.md)
   - [Windows](OS/Windows.md)
 - Python
+  - [FastApi](python/FastApi.md)
 - React
   - [Grammar](React/Grammar.md)
   - [Library](React/Library.md)

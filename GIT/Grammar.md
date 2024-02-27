@@ -61,6 +61,7 @@
 ### COMMIT
 
 - `git commit -m "msg"`
+  - --allow-empty: 수정사항 없이 커밋 가능
 - `git commit --amend "msg"`\
   최근 커밋으로 합치기 - 스테이징에 변화가 없을 경우, 메세지만 변경
 
@@ -126,6 +127,10 @@
   - 지우고난 최신 커밋의 실행 직후상태로 돌리는 것
 - `git reset commitHash file`\
   soft, hard 사용 불가
+
+### merge 병합 취소
+
+- git merge --abort
 
 ### REVERT
 

@@ -251,3 +251,9 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   LANGUAGE=ko_KR:ko:en_GB:en
   ```
 - `reboot` -->
+
+<br />
+
+### preflight의 OPTIONS 응답 확인
+
+`curl -X OPTIONS -i <요청 URL>`
