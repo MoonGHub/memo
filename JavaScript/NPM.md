@@ -66,12 +66,16 @@ yarn add @yarnpkg/sdks -D
 yarn dlx @yarnpkg/sdks vscode
 ```
 
+<br />
+
 ### 패키지 관리
 
 - `yarn add`
 - `yarn remove`
 - `yarn upgrade`
   > `yarn berry`의 경우에는 `yarn up`
+
+<br />
 
 ### 워크스페이스
 
@@ -96,6 +100,8 @@ yarn dlx @yarnpkg/sdks vscode
 `~0.1.1` : >=0.1.1 <0.2.0\
 `~0.1` : >=0.1.0 <0.2.0\
 `~0` : >=0.0 <1.0\
+
+<br />
 
 ### **^**
 

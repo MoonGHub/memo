@@ -1,6 +1,6 @@
 # JavaScript - ETC
 
-### 🦋 이벤트 전파
+### 이벤트 전파
 
 캡처 -> 타깃 -> 버블링
 캡처 : window에서 대상 요소까지
@@ -9,7 +9,7 @@
 
 <br />
 
-### 🦋 DOM 요소 탐색의 반환 값들
+### DOM 요소 탐색의 반환 값들
 
 #### HTMLCollection
 
@@ -24,13 +24,13 @@ querySelectorAll() ..?
 
 <br />
 
-### 🦋 this의 context scope
+### this의 context scope
 
 - function의 this는 window를 가르킴
 
 <br />
 
-### 🦋 block scope
+### block scope
 
 ```js
 var i;
@@ -48,7 +48,7 @@ for (i = 0; i < 10; i++) {
 
 <br />
 
-### 🦋 **prototype** and **\_\_proto\_\_**
+### **prototype** and **\_\_proto\_\_**
 
 - prototype
 
@@ -83,7 +83,7 @@ for (i = 0; i < 10; i++) {
 
 <br />
 
-### 🦋 StrictMode
+### StrictMode
 
 > 1. 기존에는 조용히 무시되던 에러들을 throwing
 > 2. JavaScript 엔진의 최적화 작업을 어렵게 만드는 실수들을 잡음
@@ -93,7 +93,7 @@ for (i = 0; i < 10; i++) {
 
 <br />
 
-### 🦋 **ESM** vs **CJS**
+### **ESM** vs **CJS**
 
 > 결론: ESM가 CJS보다 안정적이며 정적인 특성으로 트러블슈팅이 편함
 
@@ -159,7 +159,7 @@ for (i = 0; i < 10; i++) {
 
 <br />
 
-### 🦋 Node에서의 CJS과 ESM
+### Node에서의 CJS과 ESM
 
 노드에서는 기본적으로 CJS의 require이 사용된다.\
 ESM의 import/export 구문을 사용하기 위해서는 **package.json**에서 `type: "module"`로 지정이 필요하다
@@ -170,5 +170,56 @@ ESM의 import/export 구문을 사용하기 위해서는 **package.json**에서 
   > 해결법:
   >
   > 1. `type: "module"`을 제거 후, import구문을 require로 변경
-  > 2. 위 내용을 [참고](#🦋-esm-vs-cjs)
+  > 2. 위 내용을 [참고](#esm-vs-cjs)
   > 3. 해당 모듈을 lazy 로딩하여 사용 [참고](../React/Grammar.md#suspense)
+
+<br />
+
+### Generator Function (function\*, yield)
+
+```js
+function* generator(i) {
+  yield i;
+  yield i + 10;
+}
+
+const gen = generator(10);
+
+console.log(gen.next().value);
+// Expected output: 10
+
+console.log(gen.next().value);
+// Expected output: 20
+```
+
+```js
+function* foo(index) {
+  while (index < 2) {
+    yield index;
+    index++;
+  }
+}
+
+const iterator = foo(0);
+
+console.log(iterator.next().value);
+// Expected output: 0
+
+console.log(iterator.next().value);
+// Expected output: 1
+```
+
+```js
+function* func1() {
+  yield 42;
+}
+
+function* func2() {
+  yield* func1();
+}
+
+const iterator = func2();
+
+console.log(iterator.next().value);
+// Expected output: 42
+```

@@ -113,6 +113,8 @@
 ---
 
 - `Enter`: \r(캐리지 리턴 - 13) + \n(라인피드 - 10)
+- Data from forms is normally encoded using the "media type" application/x-www-form-urlencoded.
+  - But when the form includes files, it is encoded as multipart/form-data. (HTTP 프로토콜)
 
 ---
 
@@ -137,3 +139,4 @@
 - `UDP`: User Datagram Protocol
 - `URL`(Uniform Resource Locator): 서버가 제공하는 파일들의 위치
 - `URI`(Uniform Resource Identifier): URL로부터 자원을 식별, HTTP프로토콜, 호스트명, port번호 등 제외함
+- `UUID`: Universally Unique Identifier

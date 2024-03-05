@@ -32,7 +32,6 @@
   - [BOM](JavaScript/BOM.md)
   - [DOM](JavaScript/DOM.md)
   - [ETC](JavaScript/ETC.md)
-  - [Function](JavaScript/Function.md)
   - [NPM](JavaScript/NPM.md)
   - [Object](JavaScript/Object.md)
   - [package.json](JavaScript/package.json.md)
@@ -40,7 +39,7 @@
   - [Vite](JS-Bundler/Vite.md)
   - [Webpack](JS-Bundler/Webpack.md)
 - Node
-  - [Grammer](node/Grammer.md)
+  - [Grammar](node/Grammar.md)
 - OS
   - [ESXI](OS/ESXI.md)
   - [Jenkins](OS/Jenkins.md)

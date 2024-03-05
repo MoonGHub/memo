@@ -23,6 +23,8 @@
 - focus
 - blur // 포커스 제거
 
+<br />
+
 ### 위치 및 크기
 
 - moveBy(x, y) // 지정 위치만큼 이동
@@ -47,6 +49,8 @@
 - name
 - parent
 - top
+
+<br />
 
 ### 기타
 

@@ -1,4 +1,4 @@
-# JavaScript - Object
+# JavaScript - Built In Object
 
 ## Math
 
@@ -95,6 +95,46 @@
 ## Function
 
 - prototype // 부모(상속) 지정
+- apply
+
+  > func.apply(thisArg, [argsArray])
+
+  - thisArg: 함수 내부의 this에 바인딩할 객체
+  - argsArray: 함수에 전달할 argument의 배열
+
+  ```js
+  function request(url, options, callback) {...}
+  var requestArgs = ['http ..', {...}, function(){...}];
+
+  request.apply(null, requestArgs);
+  // request.(...requestArgs)와 동일
+
+  Array.prototype.slice.apply(arguments);
+  // arguments.slice()와 동일
+
+  [].slice.apply(arguments);
+  // arguments.slice()와 동일
+  ```
+
+- call
+
+  > func.call(thisArg, ...arg);
+
+  - apply()와 기능은 같지만 apply()의 두번째 인자에서 배열 형태로 넘긴 것을 각각 하나의 인자로 넘긴다.
+
+  ```js
+  Person.apply(foo, [1, 2, 3]);
+  Person.call(foo, 1, 2, 3);
+  ```
+
+  ```js
+  function MyClass() {
+    SuperClass.call(this);
+    OtherSuperClass.call(this);
+  }
+  ```
+
+- bind
 
 <br />
 
@@ -172,50 +212,28 @@
 - create
 - freeze
 
-## Function
-
-- apply
-
-  > func.apply(thisArg, [argsArray])
-
-  - thisArg: 함수 내부의 this에 바인딩할 객체
-  - argsArray: 함수에 전달할 argument의 배열
-
-  ```js
-  function request(url, options, callback) {...}
-  var requestArgs = ['http ..', {...}, function(){...}];
-
-  request.apply(null, requestArgs);
-  // request.(...requestArgs)와 동일
-
-  Array.prototype.slice.apply(arguments);
-  // arguments.slice()와 동일
-
-  [].slice.apply(arguments);
-  // arguments.slice()와 동일
-  ```
-
-- call
-
-  > func.call(thisArg, ...arg);
-
-  - apply()와 기능은 같지만 apply()의 두번째 인자에서 배열 형태로 넘긴 것을 각각 하나의 인자로 넘긴다.
-
-  ```js
-  Person.apply(foo, [1, 2, 3]);
-  Person.call(foo, 1, 2, 3);
-  ```
-
-  ```js
-  function MyClass() {
-    SuperClass.call(this);
-    OtherSuperClass.call(this);
-  }
-  ```
-
-- bind
+<br />
 
 ## Array
 
 - some
 - every
+- at
+
+<br />
+
+## 기본 제공 함수
+
+- encodeURI('?query=값') // 유니코드로 인코딩, 영숫자 및 일부문자 제외
+- encodeURIComponent('?query=값') // 영숫자만 제외, GET방식에 사용(form은 기본구현되있음)
+- decodeURI('?query=%EA%B0%92')
+- decodeURIComponent('?query=%EA%B0%92')
+- parseInt('5.12')
+- parseInt('5px') // 숫자로 시작해 첫 문자까지
+- parseFloat('13.2%')
+- String(123)
+- Number('123')
+- Boolean(1)
+- isNaN('a') // is not a number, 문자존재 시 false
+- eval('1+2') // 문자열을 코드로 처리, JSON은 JSON.parse를 사용하자
+- JSON.parse('{"name":"man", "age":"12"}')

@@ -10,4 +10,5 @@ polymorphism: 다형성
 generic: 포괄적인
 clamp: 범위를 제한한다
 formula: 공식, 식
+optimal: 최적의
 ```
