@@ -35,6 +35,8 @@
   - [NPM](JavaScript/NPM.md)
   - [Object](JavaScript/Object.md)
   - [package.json](JavaScript/package.json.md)
+  - [PackageManager](JavaScript/PackageManager.md)
+  - [PWA](JavaScript/PWA.md)
 - JS-Bundler
   - [Vite](JS-Bundler/Vite.md)
   - [Webpack](JS-Bundler/Webpack.md)
@@ -50,7 +52,7 @@
   - [PBL](OS/PBL.md)
   - [Windows](OS/Windows.md)
 - Python
-  - [FastApi](python/FastApi.md)
+  - [FastApi](Python/FastApi.md)
 - React
   - [Grammar](React/Grammar.md)
   - [Library](React/Library.md)

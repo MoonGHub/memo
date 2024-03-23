@@ -96,6 +96,33 @@ console.log(import.meta.env.KEY2); // undefined
 
 <br />
 
+### vite-plugin-svgr
+
+> 3 -> 4 버전 상승에 따른 변경점
+
+```jsx
+// v3
+export {
+  default as Icon_Alarm_Default,
+  ReactComponent as Icon_Alarm,
+} from "./alarm.svg";
+
+<img src={Icon_Alarm_Default} />
+<Icon_Alarm />
+```
+
+```jsx
+// v4
+export { default as Icon_Alarm } from "./alarm.svg?react";
+<Icon_Alarm />;
+
+// 또는
+export { default as Icon_Alarm_Default } from "./alarm.svg";
+<img src={Icon_Alarm} />;
+```
+
+<br />
+
 ## PBL
 
 ### vite.config.ts에 package.json import

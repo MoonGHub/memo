@@ -24,6 +24,8 @@
 - `git config --local user.email "email"`
 - `git config --unset user.name`\
   설정 된 user.name 제거
+- `ssh -T git@github.com`\
+  연결 확인
 
 ### 원격 저장소 설정
 
