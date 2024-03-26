@@ -78,7 +78,7 @@ console.log(import.meta.env.KEY2); // undefined
       3. node를 다르게 실행하거나 [참고](https://github.com/philals/reading-exports-issue/commit/501151290df7d8f04d28c7cc092674c7f53e1201)
       4. webpack과 같은 번들러를 사용해서, ESM구문을 CJS로 바꿈
 
-> pnpm의 모노레포로 구성하여, 외부 모듈내 종속성을 찾지 못하는 경우 `require is not defined`와 같은 에러가 발생
+> pnpm의 모노레포로 구성하여, 외부 모듈내 의존성을 찾지 못하는 경우 `require is not defined`와 같은 에러가 발생
 >
 > 루트에 **.npmrc** 생성 후, `shamefully-hoist=true` 추가하여 `pnpm install`을 재실행
 

@@ -32,7 +32,6 @@
   - [BOM](JavaScript/BOM.md)
   - [DOM](JavaScript/DOM.md)
   - [ETC](JavaScript/ETC.md)
-  - [NPM](JavaScript/NPM.md)
   - [Object](JavaScript/Object.md)
   - [package.json](JavaScript/package.json.md)
   - [PackageManager](JavaScript/PackageManager.md)

@@ -1,13 +1,101 @@
 # Package Manager
 
-## Yarn Berry
+## NPM
 
-[참고](../JavaScript/NPM.md#yarn)
+### NPM 관리
+
+- `npm version [버전]`\
+  npm 버전 업데이트
+- `npm cache`
+- `npm cache clean`
+  - --force
+- `npm rebuild`\
+  npm 재설치
+
+<br />
+
+### 패키지 관리
+
+- `npm update`\
+  설치한 패키지를 업데이트
+- `npm dedupe`\
+  npm의 중복된 패키지들을 정리
+
+<br />
+
+### 조회
+
+- `npm root`\
+  node_modules의 위치를 알려줍니다.
+- `npm outdated`\
+  package.json의 명시 버전에 **일치 - 빨강**, **불일치 - 노랑**
+- `npm ls`\
+  현재 설치된 패키지의 버전과 dependencies를 트리 구조로 표현
+
+<br />
+
+### 로그인 및 배포
+
+- `npm adduser`
+- `npm login`
+- `npm logout`
+- `npm whoami`
+- `npm publish`
+  - 직접 출시하거나 버전 업그레이드
+  - .gitignore또는 .npmignore에 명시되지 않은 파일들이 npm 저장소에 업로드
+- `npm unpublish`\
+  사용 비추천
+- `npm deprecate`\
+  출시 된 패키지를 deprecate 적용
+
+<br />
+
+## [Yarn](https://yarnpkg.com/cli/install)
+
+### 패키지 관리
+
+- `yarn add`
+- `yarn remove`
+- `yarn upgrade`
+
+<br />
+
+### 워크스페이스
+
+- `yarn workspace {app_name} {command | script_command}`\
+  ex)
+
+  ```shell
+  yarn workspace dayfly dev
+  # dayfly프로젝트의 dev script를 실행
+
+  yarn workspace dayfly add react-day-picker
+  # dayfly프로젝트에 react-day-picker 추가
+  ```
+
+<br />
+
+## Yarn Berry
 
 ```text
 1. 라이브러리 호이스팅이 안됨
 2. 루트 패키지와 각 프로젝트 패키지간 충돌이 발생
 ```
+
+`yarn set version berry`
+
+적용 후, 생성 된 **.yarnrc.yml**에 `nodeLinker: pnp` 추가
+
+```shell
+# pnp(plug-n-play)를 사용 시, cannot find module Error 해결을 위함
+yarn add @yarnpkg/sdks -D
+yarn dlx @yarnpkg/sdks vscode
+```
+
+### 패키지 관리
+
+- `yarn up`\
+  업그레이드
 
 <br />
 
@@ -17,8 +105,10 @@
 
 ```text
 1. 호이스팅 잘 됨
-2. 빠름?
+2. 기본적으로 가상 스토어(루트의 node_modules/.pnpm)에서 모든 패키지를 관리 - 빠름
 ```
+
+<br />
 
 ### 설치
 
@@ -47,11 +137,9 @@
 
 ### 프로젝트 추가
 
-1. 새 디렉토리 추가 및 해당 디렉토리에서 `npm init`
-2. package.json에 프로젝트 이름 설정
-3. npx를 사용하는 경우, script로 추가 후 루트 디렉토리에서 pnpm으로 실행
-   `pnpm --filter {project_name} sb-init`
-4. 루트 디렉토리에서 필요한 종속성들을 설치
+1. `pnpm init 경로`
+2. package.json 설정
+3. 루트 디렉토리에서 필요한 의존성들을 설치
    `pnpm --filter {project_name} add react react-dom @babel/cli`
 
 <br />
@@ -74,6 +162,11 @@
   - `pnpm -r --parallel tscw`\
     비동기로 실행됨
 
+- 부트스트랩 실행
+
+  - `pnpm dlx create-next-app@latest`
+  - `pnpm --filter {project_name} exec pnpm dlx storybook@latest init`
+
 - ETC
   - `pnpm dedupe`\
     Perform an install removing older dependencies in the lockfile if a newer version can be used.
@@ -81,7 +174,48 @@
   - `pnpm store prune`\
     Removed all cached metadata files
   - `pnpm install --shamefully-hoist`
-    - 각 프로젝트의 종속성들이 최상위의 **node_modules**에 설치됨
-    - 서로 다른 버전의 종속성으로 호환 문제 시
+    - 각 프로젝트의 의존성들이 최상위의 **node_modules**에 설치됨
+    - 서로 다른 버전의 의존성으로 호환 문제 시
 
 <br />
+
+### 의존성 관리
+
+#### dependenciesMeta.\*.injected
+
+`true`인 경우
+
+- `패키지`가 해당 프로젝트의 node_modules에 설치되지 않고 가상 스토어에서 하드링크 됨
+- 프로젝트의 의존성(e.g. react@100)이 있고, `패키지`의 동일 의존성(e.g. react@10)이 있는 경우, `패키지`는 프로젝트의 의존성(e.g. react@100)이 주입?
+
+`미설정` 또는 `false`인 경우
+
+- `패키지`가 해당 프로젝트의 node_modules에 설치 됨(설치된 패키지는 가상 스토어에서 심볼릭 링크 됨 - hoist가 true이며, hoist-pattern에 포함 될 경우)
+
+- `패키지`마다의 각각의 의존성을 사용?
+
+<br />
+
+## 버전 범위
+
+### **~**
+
+`~0.0.1` : >=0.0.1 <0.1.0\
+`~0.1.1` : >=0.1.1 <0.2.0\
+`~0.1` : >=0.1.0 <0.2.0\
+`~0` : >=0.0 <1.0\
+
+<br />
+
+### **^**
+
+`^1.0.2` : >=1.0.2 <2.0\
+`^1.0` : >=1.0.0 <2.0\
+`^1` : >=1.0.0 <2.0
+
+예외)
+
+`^0.1.2` : >=0.1.2 <0.2.0\
+`^0.1` : >=0.1.0 <0.2.0\
+`^0` : >=0.0.0 <1.0.0\
+`^0.0.1` : ==0.0.1

@@ -47,4 +47,6 @@ Even though: (과거 사실) 비록 ~이지만
 preamble: 서문, 머릿말
 associate: 연관짓다
 paragraph: 단락
+insofar: ~하는 한에 있어서는, ~의 범위에서는(+as)
+  e.g.) insofar as possible: 가능한 범위에서 ...
 ```

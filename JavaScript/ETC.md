@@ -133,7 +133,7 @@ for (i = 0; i < 10; i++) {
           ssr: {
             optimizeDeps: {
               disabled: "build",
-              // 종속성 최적화 비활성화로 true는 build와 dev 모두 포함
+              // 의존성 최적화 비활성화로 true는 build와 dev 모두 포함
               include: ["react-financial-charts"],
               // 모노레포에서 알아서 탐색이 되지만 번들이 되지않음
               // 연결된 패키지를 미리 번들화
