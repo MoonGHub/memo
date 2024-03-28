@@ -35,12 +35,12 @@ mix-blend-mode: difference;
 
 #### 필터
 
-[참고](https://georapbox.github.io/css-filters-playground/)
-
-```css
-filter: blur(5px);
-// 사진, 동영상 색상변경, 흑백, 반전 등
-```
+- `filter: blur(5px);`
+  - [참고](https://georapbox.github.io/css-filters-playground/)
+  - 대상 요소에 대해 적용(background-image 제외)
+  - 사진, 동영상 색상변경, 흑백, 반전 등
+- `backdrop-filter: blur(10px);`
+  - 대상 요소 뒤의 영역에 대해 적용
 
 <br />
 

@@ -121,7 +121,8 @@
   - speech
 - 미디어 특성 예시
   - (orientation: landscape)
-- 미디어기능 예시
+  - (prefers-color-scheme: dark)
+- 미디어 기능 예시
   - (hover: hover)\
     모바일에서의 hover 제한
   - (prefers-reduced-motion: no-preference)\

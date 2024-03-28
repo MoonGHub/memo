@@ -104,12 +104,49 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 ## 여러 설정 및 명령어
 
-### SSH 접속
+### SSH 접속 및 허용(Ubuntu/Debian)
 
-- Lightsail
-  1. 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
-  2. `ssh -i pem파일경로 ubuntu@3.35.129.200`
-  - Permissions 관련 에러가 발생 시, `chmod 400 pem파일`로 권한 변경 후, 재시도
+#### 허용
+
+- `systemctl status ssh`\
+  ssh 서비스 실행 확인
+- `ufw status`\
+  ssh 포트 허용 확인
+- `ss -tuln | grep ssh`\
+  ssh 접속 포트 확인
+- `ufw enable`\
+  방화벽 활성화
+  ```text
+  # 실행 후, ufw status
+  Status: active
+  ```
+- `ufw allow ssh`\
+  SSH 포트(기본값은 22번) 허용
+
+  ```text
+  # 실행 후, ufw status
+  Status: active
+
+  To  Action  From
+  --  ----    ----
+  22/tcp  ALLOW Anywhere
+  22/tcp (v6) ALLOW Anywhere (v6)
+  ```
+
+<br />
+
+#### 접속
+
+`ssh user@host`
+
+<br />
+
+#### Lightsail
+
+1. 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
+2. `ssh -i pem파일경로 ubuntu@3.35.129.200`
+
+- Permissions 관련 에러가 발생 시, `chmod 400 pem파일`로 권한 변경 후, 재시도
 
 <br />
 

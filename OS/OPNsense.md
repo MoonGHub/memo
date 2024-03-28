@@ -37,13 +37,16 @@
 
 ### NAT(Network Address Translation)설정
 
+> 외부 접속 허용 포트 추가 시 설정
+
 Firewall > NAT
 
 - 포트 포워딩(> Port Forward > add - 방화벽도 자동 등록됨)
   - Interface: WAN
   - TCP/IP Version: IPv4
   - Protocol: TCP
-  - Source: any(all)
+  - Source: any(all)\
+    내부 네트워크에 도메인으로 접속하기 위하여 any
   - Destination: This Firewall
     - port range: IN 포트 지정(HTTP -> HTTP, HTTPS -> HTTPS)
     - Redirect target IP: NAT IP(OPT1의 GW)
