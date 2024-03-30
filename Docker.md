@@ -125,10 +125,14 @@ DockerFile > Image > Container(=이미지 인스턴스)
   해당 컨테이너에 출력된 로그 확인
   - -f: follow
 
+<br />
+
 ## ETC
 
 - 인스턴스 실행 시, --build 옵션을 주면 docker-compose의 경우 dockerfile 내의 RUN과 같은 명령어도 수행 됨
 - dockerfile에 COPY에서 디렉토리로 복사하는 경우, / 를 붙여줘야 함
+
+<br />
 
 ### Q
 
@@ -141,26 +145,27 @@ DockerFile > Image > Container(=이미지 인스턴스)
 
 ## docker swarm
 
-docker swarm init
-docker swarm join-token worker
-docker swarm leave --force
+- docker swarm init
+- docker swarm join-token worker
+- docker swarm leave --force
 
-docker node ls
-docker node demote NODE
-docker node rm NODE
+- docker node ls
+- docker node demote NODE
+- docker node rm NODE
 
-docker stack deploy -c docker-stack.yml stack_name
-docker stack ls
-docker stack rm STACK
+- docker stack deploy -c docker-stack.yml stack_name
+- docker stack ls
+- docker stack rm STACK
 
-docker service ps stack_name_ser/Users/moong/workspace/drill-git/Users/moong/workspace/drill-git/mysql.sql/mysql.sqlvice_name
-docker service ls
+- docker service ps stack_name_ser/Users/moong/workspace/drill-git/Users/moong/workspace/drill-git/mysql.sql/mysql.sqlvice_name
+- docker service ls
 
-docker stack deploy -c docker-stack.development.yml app
+- docker stack deploy -c docker-stack.development.yml app
 
---Docker-compose up failing because "port is already allocated"
+- --Docker-compose up failing because "port is already allocated"
 
-docker-compose down
-docker rm -fv $(docker ps -aq)
-lsof -i -P -n | grep 5432
+- docker-compose down
+- docker rm -fv $(docker ps -aq)
+- lsof -i -P -n | grep 5432
+
 출처: https://nayha.tistory.com/625 [Nayha]

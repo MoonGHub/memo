@@ -1,6 +1,6 @@
 # GIT - Grammar
 
-**CYCLE**\
+**Cycle**\
 작업 트리(실제 작업 디렉토리) > 스테이지(.git/index) > 커밋 > 저장소(.git/HEAD)
 
 ## 초기화 및 설정
@@ -54,20 +54,20 @@
   로컬의 최신 커밋인 HEAD와 원격 브랜치를 비교(origin/main이 비교 기준브랜치가 됨)\
   ![git_diff](../assets/git_diff.png)
 
-### STAGING
+### Staging
 
 - `git add file`\
   `git add .`\
   Untracked files를 Tracked상태로 변경(스테이징)
 
-### COMMIT
+### Commit
 
 - `git commit -m "msg"`
   - --allow-empty: 수정사항 없이 커밋 가능
 - `git commit --amend "msg"`\
   최근 커밋으로 합치기 - 스테이징에 변화가 없을 경우, 메세지만 변경
 
-### 업데이트(PULL / PUSH / FETCH)
+### 업데이트(Pull / Push / Fetch)
 
 - `git pull`
   - 현재 브랜치를 업데이트
@@ -79,7 +79,7 @@
 - `git fetch`
   - 위 pull옵션과 동일
 
-### STASH
+### Stash
 
 - `git stash`
 - `git stash list`
@@ -89,6 +89,14 @@
   0을 삭제하지 않고 꺼냄
 - `git stash drop`\
   0의 삭제
+
+<br />
+
+### Merge
+
+- `git merge {branch_name}`
+  - `--no-ff`: Fast-Forward가 가능해도 Merge Commit을 생성하고 병합
+  - `--squash`: PR이 병합될 때 모든 커밋이 단일 커밋으로 압축
 
 <br />
 
@@ -134,7 +142,7 @@
 
 - git merge --abort
 
-### REVERT
+### Revert
 
 커밋 이력이 유지되며, 되돌린 후 자동 커밋이 이루어짐
 
@@ -143,7 +151,7 @@
 - `git revert HEAD`\
   최신 커밋을 되돌림
 
-### CHEERY PICK
+### Cherry Pick
 
 특정 커밋을 가져옴
 
@@ -183,7 +191,7 @@
 
 <br />
 
-## REBASE
+## Rebase
 
 - `git rebase -i HEAD~3`\
   최신 커밋부터 3개

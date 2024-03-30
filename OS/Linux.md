@@ -71,9 +71,9 @@
 > 설치 시, 주의 사항
 
 1. Profile setup
-   Your name: 용도를 몰라 Your Pick a username와 동일하게 설정\
-   Your server's name: 프롬프트의 유저명@{이부분}, 콤마와 언더바는 인식이 안됨\
-   Your Pick a username: 프롬프트의 {이부분}@서버명
+   - Your name: 사용자의 실제 이름 또는 관리자의 이름. Your Pick a username과 동일히 작성
+   - Your server's name: 프롬프트의 유저명@{이부분}, 마침표(.)와 언더바는 인식이 안됨\
+   - Your Pick a username: 사용자의 시스템 로그인 아이디. 프롬프트의 {이부분}@서버명
 2. 추가적 설치는 불필요
 
 <br />
@@ -104,22 +104,27 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 ## 여러 설정 및 명령어
 
-### SSH 접속 및 허용(Ubuntu/Debian)
+### 방화벽 및 SSH 설정, 접속(Ubuntu/Debian)
 
-#### 허용
+#### 방화벽 설정
 
-- `systemctl status ssh`\
-  ssh 서비스 실행 확인
-- `ufw status`\
-  ssh 포트 허용 확인
-- `ss -tuln | grep ssh`\
-  ssh 접속 포트 확인
+- `ufw status`
 - `ufw enable`\
   방화벽 활성화
   ```text
   # 실행 후, ufw status
   Status: active
   ```
+- `ufw disable`
+
+<br />
+
+#### 방화벽 SSH 설정
+
+- `systemctl status ssh`\
+  ssh 서비스 실행 확인
+- `ss -tuln | grep ssh`\
+  ssh 접속 포트 확인
 - `ufw allow ssh`\
   SSH 포트(기본값은 22번) 허용
 
@@ -133,11 +138,17 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   22/tcp (v6) ALLOW Anywhere (v6)
   ```
 
+- `ufw deny ssh`\
+  SSH 포트 거부
+
+> **root계정 ssh 접속 허용**\
+> /etc/ssh/sshd_config에서 PermitRootLogin 라인 주석 해제
+
 <br />
 
 #### 접속
 
-`ssh user@host`
+`ssh username@host`
 
 <br />
 
@@ -147,6 +158,19 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 2. `ssh -i pem파일경로 ubuntu@3.35.129.200`
 
 - Permissions 관련 에러가 발생 시, `chmod 400 pem파일`로 권한 변경 후, 재시도
+
+<br />
+
+### 권한 설정
+
+#### 도커
+
+- `sudo usermod -aG docker [username]`
+- `grep docker /etc/group`\
+  [username]이 추가되었는지 확인
+- `systemctl restart docker`
+- 해당 유저로 재 로그인
+- restart시 도커 컨테이너 재실행 필요
 
 <br />
 
@@ -267,12 +291,16 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 5. 현재 시간 확인 (현재 타임존)
    - `date`
 
+<br />
+
 ### 용량/메모리 확인
 
 - `swapon -s`: swap 메모리 확인
 - `df -h`
 - `du -h`
   - -s: 디렉토리의 사용량만 표시
+
+<br />
 
 ### [한글 설치(ubuntu live server)](https://epicarts.tistory.com/30)
 
