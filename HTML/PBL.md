@@ -14,3 +14,7 @@ Its sole purpose is to prevent a browser from switching into so-called "quirks m
 ```
 
 <br />
+
+### ETC
+
+#### [Favicon with manifest](https://dev.to/masakudamatsu/favicon-nightmare-how-to-maintain-sanity-3al7)

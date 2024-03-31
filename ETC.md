@@ -140,3 +140,5 @@
 - `URL`(Uniform Resource Locator): 서버가 제공하는 파일들의 위치
 - `URI`(Uniform Resource Identifier): URL로부터 자원을 식별, HTTP프로토콜, 호스트명, port번호 등 제외함
 - `UUID`: Universally Unique Identifier
+- `TL;DR`: Too Long; Didn't Read, 요약이나 간추린 설명
+- `DX`: Developer Experience, 개발자 경험

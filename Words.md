@@ -49,4 +49,12 @@ associate: 연관짓다
 paragraph: 단락
 insofar: ~하는 한에 있어서는, ~의 범위에서는(+as)
   e.g.) insofar as possible: 가능한 범위에서 ...
+impression: 노출수
+CTR: Click-through rate, 클릭률
+figure out: 알아내다
+at any time: 언제든지
+as pointed out: 지적한대로
+Definitive: 가장 확실한, 최종적인
+Check out: 확인하다
+bother: 귀찮게 하다
 ```

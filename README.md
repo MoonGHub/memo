@@ -20,7 +20,6 @@
   - [AE](Graphic-Tools/AE.md)
 - HTML
   - [Attribute](HTML/Attribute.md)
-  - [Metadata](HTML/Metadata.md)
   - [PBL](HTML/PBL.md)
   - [Tag](HTML/Tag.md)
 - IDE
