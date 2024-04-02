@@ -1,11 +1,5 @@
 # Bundler - Vite
 
-> 작성 시점 버전 4.2.1
-
-진입점이 기본적으로 html이며, 라이브러리 모드의 경우 별도 설정(build.lib)이 필요함
-
-<br />
-
 ## 설치
 
 > `pnpm create vite` (pnpm v7.29.2)
@@ -20,17 +14,6 @@
   - Select a variant: create-vite-extra
   - Select a template: ssr-react
   - Select a variant: TypeScript + SWC
-
-<br />
-
-## 실행
-
-- `vite`\
-  development모드로 개발서버 실행
-- `vite --mode=production`
-- `vite build`
-  - --watch
-- `vite preview`
 
 <br />
 
@@ -84,6 +67,10 @@ console.log(import.meta.env.KEY2); // undefined
 
 <br />
 
+## [SSG](https://github.com/Daydreamer-riri/vite-react-ssg)
+
+<br />
+
 ## Plugin
 
 - vite-plugin-commonjs\
@@ -96,7 +83,7 @@ console.log(import.meta.env.KEY2); // undefined
 
 <br />
 
-### vite-plugin-svgr
+### [vite-plugin-svgr](https://github.com/pd4d10/vite-plugin-svgr)
 
 > 3 -> 4 버전 상승에 따른 변경점
 
@@ -123,6 +110,92 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
 
 <br />
 
+### [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)
+
+[빌드 방식](https://vite-pwa-org.netlify.app/guide/cookbook.html)
+
+- [types](https://github.com/vite-pwa/vite-plugin-pwa/blob/4abcd5462f7ce030c7418303ba5bc6d5dd5b2634/src/types.ts#L236)
+- VitePWA
+
+  - [manifest](https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html)
+    - `false`: manifest.webmanifest 자동 생성 안할 경우
+  - srcDir: injectManifest strategy인 경우
+  - filename: injectManifest strategy인 경우
+  - [strategies](https://vite-pwa-org.netlify.app/guide/service-worker-strategies-and-behaviors.html#service-worker-strategies)
+    - [injectManifest](https://developer.chrome.com/docs/workbox/modules/workbox-build?hl=ko#injectmanifest): sw 직접 만드는 경우
+    - [generateSW](https://developer.chrome.com/docs/workbox/modules/workbox-build?hl=ko#generatesw): default, sw 자동 생성
+  - [injectRegister](https://vite-pwa-org.netlify.app/guide/register-service-worker.html#register-service-worker)
+    - `inline`
+    - `script`
+    - `auto`: default
+  - registerType
+
+    - `autoUpdate`\
+      injectManifest 인경우 [SW 업데이트 코드](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#auto-update-behavior) 필요
+
+      ```js
+      import { clientsClaim } from "workbox-core";
+
+      self.skipWaiting();
+      clientsClaim();
+      ```
+
+    - `prompt`: default\
+      injectManifest 인경우 [SW 업데이트 코드](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#prompt-for-update-behavior) 필요
+
+      ```js
+      self.addEventListener("message", (event) => {
+        if (event.data && event.data.type === "SKIP_WAITING")
+          self.skipWaiting();
+      });
+      ```
+
+  - workbox
+  - [manifest](https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html#web-app-manifest)
+  - injectManifest
+    - injectionPoint
+      - `undefined`: [precaching](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#service-worker-code)을 사용하지 않는 경우
+  - [devOptions](https://vite-pwa-org.netlify.app/guide/development.html#development)\
+    enable sw on development
+    - enabled
+    - type
+      - `classic`: [generateSW strategy](https://vite-pwa-org.netlify.app/guide/development.html#generatesw-strategy) 인 경우
+      - `module`: [injectManifest strategy](https://vite-pwa-org.netlify.app/guide/development.html#injectmanifest-strategy) 인 경우
+
+<br />
+
+#### [virtual:pwa-register/react](https://vite-pwa-org.netlify.app/frameworks/react.html)
+
+> PWA 업데이트 관련 동작 지정
+
+- useRegisterSW
+
+  - [immediate](https://vite-pwa-org.netlify.app/guide/auto-update.html#automatic-reload)
+
+    - `true`: registerType가 autoUpdate인 경우
+
+  - onNeedRefresh
+  - onRegisteredSW
+  - onOfflineReady
+  - onRegisterError
+
+<br />
+
+#### Service Worker
+
+<br />
+
+#### Workbox
+
+- workbox-precaching
+  - [precacheAndRoute](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#service-worker-code)
+
+<br />
+
+## [Vitest](https://vitest.dev/)
+
+<br />
+
 ## PBL
 
 ### vite.config.ts에 package.json import
@@ -139,5 +212,3 @@ tsconfig.node.json에 추가
 ```
 
 <br />
-
-###

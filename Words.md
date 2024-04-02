@@ -57,4 +57,10 @@ as pointed out: 지적한대로
 Definitive: 가장 확실한, 최종적인
 Check out: 확인하다
 bother: 귀찮게 하다
+curious: 궁금해 하다
+pitfall: 문제
+respectively: 각각
+Suppose: 가정하다
+correspond: 해당하다
+Prior to: ~이전에
 ```

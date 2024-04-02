@@ -35,6 +35,7 @@
   - [package.json](JavaScript/package.json.md)
   - [PackageManager](JavaScript/PackageManager.md)
   - [PWA](JavaScript/PWA.md)
+  - [Test](JavaScript/Test.md)
 - JS-Bundler
   - [Vite](JS-Bundler/Vite.md)
   - [Webpack](JS-Bundler/Webpack.md)

@@ -97,3 +97,8 @@ install 이벤트는 클라이언트를 제어하기 전에 필요한 모든 것
 - [file_handlers](https://developer.mozilla.org/en-US/docs/Web/Manifest/file_handlers)
 - [Display badges](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Display_badge_on_app_icon)
 - [data sharing between apps](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Share_data_between_apps)
+
+## ETC
+
+- [Workbox](https://developer.chrome.com/docs/workbox?hl=ko)
+- [vite-plugin-pwa](../JS-Bundler/Vite.md#vite-plugin-pwa)

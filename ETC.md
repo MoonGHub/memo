@@ -142,3 +142,4 @@
 - `UUID`: Universally Unique Identifier
 - `TL;DR`: Too Long; Didn't Read, 요약이나 간추린 설명
 - `DX`: Developer Experience, 개발자 경험
+- `Framework-agnostic`: 프레임워크에서 독립적인
