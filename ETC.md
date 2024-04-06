@@ -143,3 +143,6 @@
 - `TL;DR`: Too Long; Didn't Read, 요약이나 간추린 설명
 - `DX`: Developer Experience, 개발자 경험
 - `Framework-agnostic`: 프레임워크에서 독립적인
+- `pragma`: 컴파일러에게 전달하는 전처리 명령? - 파일 상단의 `/** @jsx jsx */`, `/** @jsxImportSource @emotion/react */`와 같은 것
+- `SyntheticEvent`: 합성 이벤트
+- `stmts`: statements, 명령문, 문장

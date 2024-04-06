@@ -51,6 +51,7 @@ insofar: ~하는 한에 있어서는, ~의 범위에서는(+as)
   e.g.) insofar as possible: 가능한 범위에서 ...
 impression: 노출수
 CTR: Click-through rate, 클릭률
+CPM: Cost Per Mille, 노출 1,000회당 비용
 figure out: 알아내다
 at any time: 언제든지
 as pointed out: 지적한대로
@@ -63,4 +64,5 @@ respectively: 각각
 Suppose: 가정하다
 correspond: 해당하다
 Prior to: ~이전에
+allocate: 할당하다
 ```

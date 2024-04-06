@@ -52,3 +52,13 @@
 
 - 기타 명령어
   - `yarn nx graph`
+
+<br />
+
+## 상태관리
+
+- Redux
+  - **VIEW** --> **Action** --> **Dispatch** --> **Store** --> **VIEW**
+- MobX
+- Recoil
+  - **VIEW** --> **Action** --> **Atom** --> **VIEW**

@@ -117,7 +117,7 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
 - [types](https://github.com/vite-pwa/vite-plugin-pwa/blob/4abcd5462f7ce030c7418303ba5bc6d5dd5b2634/src/types.ts#L236)
 - VitePWA
 
-  - [manifest](https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html)
+  - [manifest](https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html#web-app-manifest)
     - `false`: manifest.webmanifest 자동 생성 안할 경우
   - srcDir: injectManifest strategy인 경우
   - filename: injectManifest strategy인 경우
@@ -151,7 +151,6 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
       ```
 
   - workbox
-  - [manifest](https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html#web-app-manifest)
   - injectManifest
     - injectionPoint
       - `undefined`: [precaching](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#service-worker-code)을 사용하지 않는 경우
@@ -167,6 +166,8 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
 #### [virtual:pwa-register/react](https://vite-pwa-org.netlify.app/frameworks/react.html)
 
 > PWA 업데이트 관련 동작 지정
+
+`workbox-window` 설치 필요
 
 - useRegisterSW
 
@@ -189,6 +190,10 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
 
 - workbox-precaching
   - [precacheAndRoute](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#service-worker-code)
+
+<br />
+
+#### [PWA Assets Generator](https://vite-pwa-org.netlify.app/assets-generator/)
 
 <br />
 

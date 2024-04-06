@@ -1,32 +1,18 @@
 # React - Grammar
 
-## 특징
+## 속성
 
-### 속성
-
-> class -> className\
-> for -> htmlFor
-
-#### input
-
-- onChange 없이 value만 지정 시 read-only로 됨
-
-#### style
-
-카멜형식의 스타일 객체를 전달
-
-```jsx
-<span style={{ fontSize: "10px" }}> ... </span>
-```
+- class -> **className**
+- for -> **htmlFor**
 
 <br />
 
-### 렌더링
+## 렌더링
 
-> 모든 값을 렌더링 하기전에 이스케이프시킴\
-> -> XXS(cross-site-scripting) 공격 방지
+- 모든 값을 렌더링 하기전에 이스케이프시킴\
+  -> XXS(cross-site-scripting) 공격 방지
 
-#### Suspense
+### Suspense
 
 - fallback에 로딩 중 대신할 컴포넌트를 추가
 - React.lazy를 사용하기 위해서 필요
@@ -52,7 +38,9 @@ const About = lazy(() =>
 </Suspense>;
 ```
 
-#### 코드 스플릿팅 및 청크
+<br />
+
+### 코드 스플릿팅 및 청크
 
 - Webpack의 경우
 
@@ -60,14 +48,10 @@ const About = lazy(() =>
   - [참고2](https://www.zerocho.com/category/Webpack/post/58ad4c9d1136440018ba44e7)
 
 - Vite의 경우
-  - 같은 패키지에서 다른 모듈을 Lazy로 가져와도 chunk가 되지 않음
   - Lazy 사용 시, 해당 변수명으로 자동으로 chunk가 이루어짐
 
 <br />
 
-## ETC
+## PBL
 
-### Words
-
-- pragma: 컴파일러에게 전달하는 전처리 명령? - 파일 상단의 `/** @jsx jsx */`, `/** @jsxImportSource @emotion/react */`와 같은 것
-- SyntheticEvent: 합성 이벤트
+- input에 value가 있고, onChange가 없을 때, read-only로 됨
