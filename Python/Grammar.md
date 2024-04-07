@@ -16,6 +16,14 @@
 
 <br />
 
+### 오류
+
+- command not found: python
+  - `echo -e '\nalias python="python3"' >> ~/.zshrc`
+  - `. ~/.zshrc`
+
+<br />
+
 ### [Anaconda](https://www.anaconda.com/download#downloads)
 
 ![image](/assets/python_conda.png)
