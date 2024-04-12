@@ -1,5 +1,9 @@
 # Python - PackageManager
 
+## pip
+
+<br>
+
 ## [Poetry](https://python-poetry.org/docs/)
 
 > Poetry requires Python 3.8+
@@ -95,10 +99,23 @@
 
 #### [모노레포 의존성](https://python-poetry.org/docs/dependency-specification/#path-dependencies)
 
-- VSCode Suggestion
+- VSCode Suggestion, 자동 완성
   - ~~로컬 의존성: settings.json에 `"python.analysis.extraPaths": ["common/test", "util/test", ...]` 추가~~
-    - 루트 의존성이 아닌 모듈 내에서만 사용하는 추가 의존성 해결 불가
-  - **탐색기의 작업 영역에 해당 모듈 폴더 추가**
+    - ~~루트 의존성이 아닌 모듈 내에서만 사용하는 추가 의존성 해결 불가~~
+  - ~~**탐색기의 작업 영역에 해당 모듈 폴더 추가**~~
+  - [Poetry Monorepo](https://marketplace.visualstudio.com/items?itemName=ameenahsanma.poetry-monorepo) Extension 설치
+    - `python.analysis.extraPaths`를 실시간으로 변경해줌
+    - 저장 시 포맷팅(isort, black) 오류로 아래 설정 필요
+      ```json
+      // vscode settings.json,
+      {
+        "[python]": {
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "never"
+          }
+        }
+      }
+      ```
 
 <br />
 

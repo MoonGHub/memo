@@ -53,6 +53,7 @@
 - Python
   - [FastApi](Python/FastApi.md)
   - [Grammar](Python/Grammar.md)
+  - [Library](Python/Library.md)
   - [PackageManager](Python/PackageManager.md)
 - React
   - [Grammar](React/Grammar.md)
