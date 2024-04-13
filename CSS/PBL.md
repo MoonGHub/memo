@@ -20,6 +20,8 @@ CSS 라이브러리 참고 사이트
 <!-- 뷰포트의 가로너비 = 단말기 가로너비 -->
 ```
 
+<br />
+
 ### 요소
 
 - 인라인 방식은 width와 height 값을 무시함
@@ -37,6 +39,8 @@ CSS 라이브러리 참고 사이트
 - http://gridstackjs.com/
 - https://masonry.desandro.com/
 
+<br />
+
 ### Flex
 
 참고
@@ -48,6 +52,8 @@ CSS 라이브러리 참고 사이트
 
 - `flex-wrap: wrap;`\
   부모 크기 오버시 아래에 정렬
+
+<br />
 
 ### Table
 
@@ -71,6 +77,8 @@ CSS 라이브러리 참고 사이트
 - `background-clip: border-box;`\
   이미지의 영역이 border까지 확장됨
 
+<br />
+
 ### SVG
 
 [참고](https://svgontheweb.com/ko/)
@@ -89,28 +97,40 @@ CSS 라이브러리 참고 사이트
 
 <br />
 
-## 폰트
+## 텍스트
 
-- 생략 표시(텍스트 길이가 부모요소보다 커질 경우)
+### 생략 표시(텍스트 길이가 부모요소보다 커질 경우)
 
-  ```css
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+```css
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
 
-  /* 라인 제한 */
-  /* white-space: pre-line; */
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  ```
+/* 라인 제한 */
+/* white-space: pre-line; */
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 3;
+```
 
-  - 부모 요소의 길이가 정해져 있어야함
-    - 길이 지정 또는 부모 요소에 `display: grid`(, `grid-auto-flow: column`)
-    - table
-      - td또는 td내 부모 요소에 `display: grid`(, `grid-auto-flow: column`)
-      - td에 `max-width: 0`
-        - 부모요소가 있을 경우 부모요소에 `display: flex`
+- 부모 요소의 길이가 정해져 있어야함
+  - 길이 지정 또는 부모 요소에 `display: grid`(, `grid-auto-flow: column`)
+  - table
+    - td또는 td내 부모 요소에 `display: grid`(, `grid-auto-flow: column`)
+    - td에 `max-width: 0`
+      - 부모요소가 있을 경우 부모요소에 `display: flex`
+
+<br />
+
+### 그라디언트 효과
+
+```css
+background-image: linear-gradient(to right, #7dd3fc, #4f46e5);
+background-clip: text;
+color: transparent;
+```
+
+<br />
 
 ### EM
 
@@ -135,6 +155,8 @@ CSS 라이브러리 참고 사이트
 
 - 화면 내 부드러운 이동\
   `scroll-behavior: smooth;`
+
+<br />
 
 ### 스크롤 적용
 
@@ -163,10 +185,14 @@ CSS 라이브러리 참고 사이트
   overflow-y: auto;
   ```
 
+<br />
+
 ### 커서
 
 - 드래그 제한 \
   `user-select: none`
+
+<br />
 
 ## ETC
 

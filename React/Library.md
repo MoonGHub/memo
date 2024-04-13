@@ -13,6 +13,8 @@
 
 - `yarn lerna run {script} --scope={project_name} --steam`
 
+<br />
+
 ### NX
 
 > React와 React Native 그리고 그 외 React관련 프로젝트를 위한 세팅 명령어
@@ -62,3 +64,31 @@
 - MobX
 - Recoil
   - **VIEW** --> **Action** --> **Atom** --> **VIEW**
+
+<br />
+
+## next.js
+
+### [모노레포 공통 모듈을 페이지 라우터에서 사용 시](https://nextjs.org/docs/pages/api-reference/next-config-js/transpilePackages)
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ["@acme/ui", "lodash-es"],
+};
+
+module.exports = nextConfig;
+```
+
+<br />
+
+## UI 관련
+
+- [floating-ui](https://floating-ui.com/)
+
+<br />
+
+## 기타 유틸
+
+- [Moment](https://momentjs.com/)
+- [Numeral](http://numeraljs.com/)
