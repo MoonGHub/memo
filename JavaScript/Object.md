@@ -237,3 +237,29 @@
 - isNaN('a') // is not a number, 문자존재 시 false
 - eval('1+2') // 문자열을 코드로 처리, JSON은 JSON.parse를 사용하자
 - JSON.parse('{"name":"man", "age":"12"}')
+
+<br />
+
+## EventSource
+
+> [server sent events(SSE)](../Python/FastApi.md#sse)와 같이 사용
+
+```js
+// example
+
+const eventSource = new EventSource(`http://localhost:8000`, {
+  // withCredentials: true,
+});
+
+eventSource.addEventListener("message", (event) => {
+  console.log(event.data);
+});
+
+eventSource.addEventListener("open", (event) => {});
+
+eventSource.addEventListener("Custom Event", (event) => {});
+
+eventSource.onerror = (error) => {
+  console.error("SSE Error:", error);
+};
+```

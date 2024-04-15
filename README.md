@@ -27,7 +27,6 @@
   - [VSCode](IDE/VSCode.md)
   - [WebStorm](IDE/WebStorm.md)
 - JavaScript
-  - [Ajax](JavaScript/Ajax.md)
   - [BOM](JavaScript/BOM.md)
   - [DOM](JavaScript/DOM.md)
   - [ETC](JavaScript/ETC.md)

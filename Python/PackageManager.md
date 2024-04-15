@@ -116,8 +116,9 @@
         "[python]": {
           "editor.formatOnSave": true,
           "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit"
+            "source.organizeImports": "explicit",
             // explicit로 설정
+            "source.unusedImports": "explicit"
           },
           "editor.defaultFormatter": "ms-python.black-formatter"
         },

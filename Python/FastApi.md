@@ -82,8 +82,6 @@
   - dataclass\
     `FastAPI is using Pydantic to convert those standard dataclasses to Pydantic's own flavor of dataclasses.`
   - field
-- websockets
-  -WebSocket
 - testclient
   - TestClient
 - asyncio
@@ -370,3 +368,27 @@ settings = Settings(_env_file=f'{os.getenv("ENV_STATE")}.env')
 ```
 
 <br />
+
+### SSE
+
+> WebSocket보다 연결 유지 수가 적음
+
+```py
+# example
+
+async def st(req: Request) -> AsyncGenerator[str, Any]:
+    while True:
+        if await req.is_disconnected():
+            break
+
+        now = time.strftime("%Y-%m-%d %H:%M:%S").encode("utf-8")
+        yield f"now: {now.decode('utf-8')}\n\n"
+        await asyncio.sleep(1)
+
+
+@app.get("/")
+async def main(req: Request) -> StreamingResponse:
+    return StreamingResponse(
+        st(req), media_type="text/event-stream"
+    )
+```
