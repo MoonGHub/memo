@@ -1,10 +1,10 @@
 # FastApi
 
-<br />
+[패키지 검색](https://pypi.org/)
 
-## Lib
+## 기본 설치 packages
 
-- fastapi
+- [fastapi](https://fastapi.tiangolo.com/)
 
   - FastApi
   - Query
@@ -46,10 +46,11 @@
       - TrustedHostMiddleware
     - gzip
       - GZipMiddleware
+  - testclient
+    - TestClient
 
-- enum
-  - Enum
-- pydantic
+- [pydantic](https://docs.pydantic.dev/latest/)
+  > Pydantic is the most widely used data validation library for Python
   - BaseModel
   - Field
   - HttpUrl
@@ -57,54 +58,31 @@
   - ValidationError
   - dataclasses
     - dataclass
-- typing
-  - Optional
-  - Literal
-  - Union
-  - List
-  - Annotated
-- datetime
-  - datetime
-- uuid
-  - UUID
-- starlette
+- [starlette](https://www.starlette.io/)
+
   - exceptions
     - HTTPException
   - responses
     - HTMLResponse
-- jose
-  - JWTError
-  - jwt
-- passlib
-  - context
-    - CryptContext
-- dataclasses
-  - dataclass\
-    `FastAPI is using Pydantic to convert those standard dataclasses to Pydantic's own flavor of dataclasses.`
-  - field
-- testclient
-  - TestClient
-- asyncio
-- httpx
-  - AsyncClient
-- sqlalchemy
-  - create_engine
-  - orm
-    - sessionmaker
-  - pool
-    - StaticPool
-- os
-- pydantic_settings
-  - BaseSettings
-  - SettingsConfigDict
-- python-dotenv
 
 <br />
 
-### package
+## 기타 사용 packages
 
-- python-jose[cryptography]
-- passlib[bcrypt]
+- [passlib](https://fastapi.tiangolo.com/ko/tutorial/security/oauth2-jwt/#install-passlib)
+  - context
+    - CryptContext
+- [pydantic_settings](https://fastapi.tiangolo.com/ko/advanced/settings/?h=pydantic_settings#pydantic-settings)
+
+  - BaseSettings
+  - SettingsConfigDict
+
+- [python-dotenv](https://fastapi.tiangolo.com/ko/advanced/settings/?h=python#reading-a-env-file)
+
+- [jose](https://fastapi.tiangolo.com/ko/tutorial/security/oauth2-jwt/?h=jose#install-python-jose)
+
+  - JWTError
+  - jwt
 
 <br />
 
@@ -226,6 +204,8 @@ async def read_items():
 app = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])
 ```
 
+<br />
+
 ### 하위 의존성
 
 > use_cache=True\
@@ -273,6 +253,8 @@ db_user = get_user_from_database()  # 가정된 함수
 # orm_mode 설정으로 인해 바로 Pydantic 모델로 변환 가능
 user = User.from_orm(db_user)
 ```
+
+<br />
 
 ### etc
 
@@ -328,7 +310,7 @@ async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
 
 <br />
 
-## 테스트
+## [테스트](https://fastapi.tiangolo.com/ko/advanced/async-tests/)
 
 ### 동시 요청
 
@@ -348,9 +330,11 @@ async def test_multiple_requests():
 
 <br />
 
-## etc
+## ETC
 
 ### env
+
+> For this to work, you need to pip install python-dotenv.
 
 ```python
 import os
@@ -369,9 +353,7 @@ settings = Settings(_env_file=f'{os.getenv("ENV_STATE")}.env')
 
 <br />
 
-### SSE
-
-> WebSocket보다 연결 유지 수가 적음
+### SSE(Server Sent Events)
 
 ```py
 # example
@@ -391,4 +373,41 @@ async def main(req: Request) -> StreamingResponse:
     return StreamingResponse(
         st(req), media_type="text/event-stream"
     )
+```
+
+<br />
+
+### [WebSocket](https://fastapi.tiangolo.com/ko/advanced/websockets/?h=websocket#websockets)
+
+- [웹소켓 테스트](https://github.com/vi/websocat)
+
+```py
+# example
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+
+    while True:
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S").encode("utf-8")
+        await websocket.send_text(f"Message text was: {current_time}")
+        await asyncio.sleep(1)
+```
+
+<br />
+
+## PBL
+
+### [CORS](https://fastapi.tiangolo.com/ko/tutorial/cors/?h=corsmiddleware)
+
+```py
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 ```

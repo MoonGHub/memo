@@ -1,8 +1,6 @@
 # GIT - PBL
 
-## PBL
-
-### SSH Key gen 생성
+## SSH Key gen 생성
 
 `ssh-keygen -m PEM -t rsa -b 4096 -C answlgus1122@gmail.com`
 
@@ -22,7 +20,7 @@
 
 <br />
 
-### 이슈 브랜치 자동 생성 및 삭제
+## 이슈 브랜치 자동 생성 및 삭제
 
 1. robvanderleek/create-issue-branch 을 이용\
    Issue -> Create branch -> Create pr
@@ -35,9 +33,9 @@
 
 <br />
 
-### Git Action
+## Git Action
 
-#### ssh: handshake failed: ssh: unable to authenticate, attempted methods [none publickey], no supported methods remain
+### 오류 - ssh: handshake failed: ssh: unable to authenticate, attempted methods [none publickey], no supported methods remain
 
 1. Repository secrets에 공개키(id_rsa.pub)가 아닌 개인 키(id_rsa)를 등록
 2. 호스트 서버에서 `cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys`

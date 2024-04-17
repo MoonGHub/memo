@@ -12,10 +12,15 @@
 - 모든 값을 렌더링 하기전에 이스케이프시킴\
   -> XXS(cross-site-scripting) 공격 방지
 
+### >18
+
+<br />
+
 ### Suspense
 
-- fallback에 로딩 중 대신할 컴포넌트를 추가
-- React.lazy를 사용하기 위해서 필요
+> React.lazy 또는 비동기 렌더링이 있는 경우 사용
+
+#### React.lazy
 
 ```jsx
 // export default 인 경우

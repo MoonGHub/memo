@@ -240,9 +240,9 @@
 
 <br />
 
-## EventSource
+## [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)
 
-> [server sent events(SSE)](../Python/FastApi.md#sse)와 같이 사용
+> [server sent events(SSE)](../Python/FastApi.md#sseserver-sent-events)와 같이 사용
 
 ```js
 // example
@@ -257,9 +257,42 @@ eventSource.addEventListener("message", (event) => {
 
 eventSource.addEventListener("open", (event) => {});
 
-eventSource.addEventListener("Custom Event", (event) => {});
-
-eventSource.onerror = (error) => {
+eventSource.addEventListener("error", (error) => {
   console.error("SSE Error:", error);
-};
+
+  if (error.readyState == EventSource.CLOSED) {
+    // Connection was closed.
+  } else {
+    eventSource.close();
+  }
+});
+
+eventSource.addEventListener("Custom Event", (event) => {});
 ```
+
+- addEventListener 이벤트
+  - error
+  - message
+  - open
+
+<br />
+
+## [WebSocket](https://developer.mozilla.org/ko/docs/Web/API/WebSocket)
+
+> [FastApi 참고](../Python/FastApi.md#websocket)
+
+```js
+// example
+
+const ws = new WebSocket("ws://localhost:8000/ws");
+
+ws.addEventListener("message", (event) => {
+  console.log(event.data);
+});
+```
+
+- addEventListener 이벤트
+  - close
+  - error
+  - message
+  - open

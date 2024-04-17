@@ -1,5 +1,30 @@
 # Python - Library
 
+[패키지 검색](https://pypi.org/)
+
+## 기본 내장 packages
+
+- os
+- enum
+  - Enum
+- typing
+  - Optional
+  - Literal
+  - Union
+  - List
+  - Annotated
+- datetime
+  - datetime
+- uuid
+  - UUID
+- dataclasses
+  - dataclass\
+    `FastAPI is using Pydantic to convert those standard dataclasses to Pydantic's own flavor of dataclasses.`
+  - field
+- asyncio
+
+<br />
+
 ## DB
 
 ### alembic

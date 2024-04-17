@@ -4,6 +4,22 @@
 
 <br />
 
+## [type](https://docs.python.org/3.13/library/stdtypes.html#)
+
+- `int`
+- `float`
+- `str`
+- `bool`
+- `list`
+- `tuple`: 불변(immutable)
+- `dict`
+- `set`
+- `None`
+- [from typing](https://docs.python.org/3/library/typing.html#)
+  - `Any`
+
+<br />
+
 ## 설치
 
 - `python3 -m pip install --upgrade pip`\
@@ -36,26 +52,15 @@
 
 - `pip show <모듈명>`
 - `pip list | grep -i 패키지`
-- `pip install 패키지[=버전]`
+- `pip install 패키지[==버전]`
+  - ex)\
+    `pip install MySQL_python==1.2.2`
+- `pip install 패키지[Optional Libraries]`
+  - ex)\
+     `pip install passlib[bcrypt]`
 - `pip install -r requirements.txt`
 - `pip freeze > requirements.txt`\
   패키지 백업
-
-<br />
-
-## [type](https://docs.python.org/3.13/library/stdtypes.html#)
-
-- `int`
-- `float`
-- `str`
-- `bool`
-- `list`
-- `tuple`: 불변(immutable)
-- `dict`
-- `set`
-- `None`
-- [from typing](https://docs.python.org/3/library/typing.html#)
-  - `Any`
 
 <br />
 

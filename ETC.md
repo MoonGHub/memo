@@ -1,13 +1,13 @@
 # ETC
 
-### 🦋 메타마스크 및 이더리움 결제 참고
+### 메타마스크 및 이더리움 결제 참고
 
 - https://metamask.github.io/api-playground/api-documentation/
 - https://ethereum.org/en/developers/docs/apis/json-rpc/
 
 <br />
 
-### 🦋 포트
+### 포트
 
 > `0 ~ 1023`: Well Know Port Numbers - 국제인터넷주소관리기구(CANN)가 특정 앱용으로 예약한 포트\
 > `1024 ~ 49151`: Registered Port Numbers - 회사에서 등록, 사용가능\
@@ -20,7 +20,7 @@
 
 <br />
 
-### 🦋 데이터 단위
+### 데이터 단위
 
 - bit: 0 or 1
 - Byte: 8bit
@@ -31,7 +31,7 @@
 
 <br />
 
-### 🦋 진수와 비트
+### 진수와 비트
 
 - 2진수 - 0, 1 (1bit)
 - 4진수 - 0 ~ 3 (2bit)
@@ -40,7 +40,7 @@
 
 <br />
 
-### 🦋 문자
+### 문자
 
 - ASCII
 
@@ -64,7 +64,7 @@
 
 <br />
 
-### 🦋 실수를 저장하는 방법
+### 실수를 저장하는 방법
 
 - 지수와 가수
   - 비트
@@ -97,7 +97,7 @@
 
 <br />
 
-### 🦋 로컬 스토리지 vs 세션 스토리지
+### 로컬 스토리지 vs 세션 스토리지
 
 - 로컬 스토리지
   - 영구적 보존
@@ -110,13 +110,23 @@
   - 같은 브라우저 세션, 같은 도메인의 여러탭 또는 창 내에서만 공유
   - 로그인 정보, 장바구니 정보 등을 저장
 
----
+<br />
+
+### 서버 응답 코드
+
+- 1xx 정보
+- 2xx 성공
+- 3xx 리다이렉트
+- 4xx 클라이언트 에러
+- 5xx 서버 에러
+
+<br />
+
+## ETC
 
 - `Enter`: \r(캐리지 리턴 - 13) + \n(라인피드 - 10)
 - Data from forms is normally encoded using the "media type" application/x-www-form-urlencoded.
   - But when the form includes files, it is encoded as multipart/form-data. (HTTP 프로토콜)
-
----
 
 <br />
 
