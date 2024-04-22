@@ -85,27 +85,7 @@
   - [파일 설정 - pyproject.toml](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file)
   - [설정 참고](https://github.com/psf/black/blob/main/pyproject.toml)
   - [다른 툴과 함께 사용](https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#)
+- [isort](https://pycqa.github.io/isort/)
+  - [옵션 참고](https://pycqa.github.io/isort/docs/configuration/options.html)
 
 > 코드 위 `# fmt: off` 주석 추가 시 포맷팅 생략
-
-<br />
-
-## 코루틴(coroutine)
-
-### 제너레이터
-
-- range
-
-<br />
-
-### 네이티브 코루틴(async/await 코루틴)
-
-> asyncio.run()에 async 함수를 전달하여 사용
-
-- asyncio
-  - run
-  - sleep
-  - create_task\
-    해당 작업을 비동기로 작업
-  - gather\
-    각 작업을 비동기로 작업

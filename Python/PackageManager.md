@@ -131,7 +131,7 @@
 
       [tool.isort]
       # profile = 'black'
-      # 여기서는 profile 설정 제거
+      # 여기서는 profile 설정 제거 필요
       ```
 
 <br />

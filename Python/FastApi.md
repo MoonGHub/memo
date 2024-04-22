@@ -396,6 +396,12 @@ async def websocket_endpoint(websocket: WebSocket):
 
 <br />
 
+### 실행, 빌드 및 배포
+
+- [poetry and docker 실행 참고](https://github.com/Salfiii/fastapi-template)
+
+<br />
+
 ## PBL
 
 ### [CORS](https://fastapi.tiangolo.com/ko/tutorial/cors/?h=corsmiddleware)
@@ -411,3 +417,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 ```
+
+<br />
+
+### nginx와 함께 사용 시
+
+- [uvicorn 실행 시 --proxy-headers 추가](https://fastapi.tiangolo.com/deployment/docker/#behind-a-tls-termination-proxy)

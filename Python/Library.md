@@ -15,6 +15,8 @@
   - Annotated
 - datetime
   - datetime
+- time
+  - sleep
 - uuid
   - UUID
 - dataclasses
@@ -22,6 +24,17 @@
     `FastAPI is using Pydantic to convert those standard dataclasses to Pydantic's own flavor of dataclasses.`
   - field
 - asyncio
+- threading
+  - Thread
+- multiprocessing
+  - Process
+  - Queue
+- sched
+  - scheduler
+- subprocess\
+  쉘과 같은 외부 프로그램 실행
+- unittest
+- doctest
 
 <br />
 
