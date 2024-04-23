@@ -1,6 +1,8 @@
 # React - Library
 
-## react-router-dom
+## 자주쓰는
+
+### react-router-dom
 
 **react-router**는 코어를 포함하는 master브랜치의 라이브러리\
 **react-router-dom**은 DOM이 인식 할 수 있는 컴포넌트들의 모음
@@ -67,7 +69,7 @@
 
 <br />
 
-## next.js
+## next.js PBL
 
 ### [모노레포 공통 모듈을 페이지 라우터에서 사용 시](https://nextjs.org/docs/pages/api-reference/next-config-js/transpilePackages)
 
@@ -79,6 +81,19 @@ const nextConfig = {
 
 module.exports = nextConfig;
 ```
+
+### 스타일링 - emotion, tailwindcss, twin.macro
+
+- [importsource](https://nextjs.org/docs/architecture/nextjs-compiler#importsource): Next.js will automatically detect jsxImportSource in jsconfig.json or tsconfig.json
+  - ~~tsconfig.json에 추가 `"jsxImportSource": "@emotion/react"`~~
+    - app router는 `'use client'`필요
+      - metadata 사용 불가
+  - 또는 next.config.mjs의 compiler.emotion에 `true`지정
+    - app router는 `'use client'`불필요
+    - app router에서 twin.macro 및 tw props 사용 불가
+    - app router에서 className으로 tailwindcss 사용 가능
+- tailwindcss, twin.macro 적용에 있어 tailwind.config의 content에서 className은 `js`, tw는 `tsx`로 확장자 인식
+- emotion 및 tw 사용 또는 `"jsxImportSource": "@emotion/react"` 지정 시, app router에는 `'use client'`필요
 
 <br />
 

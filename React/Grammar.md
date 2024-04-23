@@ -60,3 +60,4 @@ const About = lazy(() =>
 ## PBL
 
 - input에 value가 있고, onChange가 없을 때, read-only로 됨
+- `pragma`: 트랜스파일 시 처리 방법 전달 방법 - 파일 상단의 `/** @jsx jsx */`, `/** @jsxImportSource @emotion/react */`와 같은 것
