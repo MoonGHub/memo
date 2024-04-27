@@ -88,6 +88,11 @@
 
 ## Swagger
 
+- [기존 메타데이터 참고](https://fastapi.tiangolo.com/ko/tutorial/metadata/)
+- [Open Api Generator 함수명 수정](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function)
+
+<br />
+
 ### api
 
 ```python
@@ -95,7 +100,8 @@
     "/items/",
     response_model=Item,
     summary="Create an item",
-    description="Create an item with all the information, name, description, price, tax and a set of unique tags",
+    # description="Create an item with all the information, name, description, price, tax and a set of unique tags",
+    # doc string 대신 사용, 위 파람이 우선됨
     response_description="The created item",
 )
 async def create_item(item: Item):

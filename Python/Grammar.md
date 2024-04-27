@@ -89,3 +89,29 @@
   - [옵션 참고](https://pycqa.github.io/isort/docs/configuration/options.html)
 
 > 코드 위 `# fmt: off` 주석 추가 시 포맷팅 생략
+
+<br />
+
+## Generic
+
+```py
+from typing import (
+    Generic,
+    TypeVar,
+)
+
+T = TypeVar("T")
+
+
+@dataclass
+class A(Generic[T]):
+    data: T
+
+
+@dataclass
+class B:
+    num: int
+
+
+data: A[B] = A(B(10))
+```

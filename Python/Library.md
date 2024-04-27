@@ -13,6 +13,8 @@
   - Union
   - List
   - Annotated
+  - Generic
+  - TypeVar
 - datetime
   - datetime
 - time

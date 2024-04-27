@@ -77,6 +77,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@acme/ui", "lodash-es"],
+  // 공통 UI모듈을 사용 시, @emotion/styled도 추가해줘야 함
 };
 
 module.exports = nextConfig;
@@ -85,12 +86,13 @@ module.exports = nextConfig;
 ### 스타일링 - emotion, tailwindcss, twin.macro
 
 - [importsource](https://nextjs.org/docs/architecture/nextjs-compiler#importsource): Next.js will automatically detect jsxImportSource in jsconfig.json or tsconfig.json
-  - ~~tsconfig.json에 추가 `"jsxImportSource": "@emotion/react"`~~
-    - app router는 `'use client'`필요
+  - tsconfig.json에 추가 `"jsxImportSource": "@emotion/react"`
+    - app router에서 `'use client'`추가 필수
       - metadata 사용 불가
   - 또는 next.config.mjs의 compiler.emotion에 `true`지정
     - app router는 `'use client'`불필요
-    - app router에서 twin.macro 및 tw props 사용 불가
+      - app router에서 twin.macro 및 tw props 사용 불가
+      - `'use client'`추가 시 tw props적용
     - app router에서 className으로 tailwindcss 사용 가능
 - tailwindcss, twin.macro 적용에 있어 tailwind.config의 content에서 className은 `js`, tw는 `tsx`로 확장자 인식
 - emotion 및 tw 사용 또는 `"jsxImportSource": "@emotion/react"` 지정 시, app router에는 `'use client'`필요
