@@ -70,6 +70,9 @@
   - [옵션 참고](https://pylint.pycqa.org/en/latest/user_guide/configuration/all-options.html)
   - [파일 설정](https://pylint.pycqa.org/en/latest/user_guide/usage/run.html#command-line-options)
   - [설정 참고](https://www.codeac.io/documentation/pylint-configuration.html)
+  - 체크 무시 시\
+    `W0104:pointless-statement`오류 인 경우, 해당 라인 위에\
+    `# pylint: disable=pointless-statement` 추가
 - [flake8](https://flake8.pycqa.org/en/latest/#)
   - [옵션 참고](https://flake8.pycqa.org/en/latest/genindex.html)
   - [파일 설정](https://flake8.pycqa.org/en/latest/user/configuration.html#configuration-locations)
@@ -85,10 +88,13 @@
   - [파일 설정 - pyproject.toml](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file)
   - [설정 참고](https://github.com/psf/black/blob/main/pyproject.toml)
   - [다른 툴과 함께 사용](https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#)
+  - 체크 무시 시\
+    해당 라인 위에 `# fmt: off`주석 추가
 - [isort](https://pycqa.github.io/isort/)
   - [옵션 참고](https://pycqa.github.io/isort/docs/configuration/options.html)
-
-> 코드 위 `# fmt: off` 주석 추가 시 포맷팅 생략
+- pylance
+  - 체크 무시 시\
+    해당 라인에서 `# type: ignore` 주석 추가
 
 <br />
 

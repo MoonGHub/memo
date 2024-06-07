@@ -31,7 +31,7 @@
 
 > 워커 또는 작업 프로세스를 늘릴 경우, 무결성에 주의
 
-그 외의 작업(I/O bound)에서는 스레드를 늘려 작업
+그 외의 작업(I/O bound)에서는 비동기로, 또는 스레드를 늘려 작업
 
 ### I/O bound
 
@@ -47,7 +47,9 @@
   - 순서 운영체제 의존
 - asyncio
   - 협력형 멀티 태스킹 방식(지연되는 동안 다른 일을 함 - 동일 프로세스)
+  - 단일 스레드
   - 순서 사용자 지정 가능
+  - `asyncio.get_event_loop().run_in_executor`와 `concurrent.futures.ThreadPoolExecutor()`를 통해 멀티 스레드 구현
 
 <br />
 
