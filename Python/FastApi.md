@@ -194,6 +194,8 @@ class인 경우
 
 ## 의존성
 
+기본적으로 제너레이터 사용 시, `@contextmanager`를 사용해야 하지만 FastAPI의 Depends에서 사용 시, 생략 가능
+
 ### 경로 의존성
 
 ```python
@@ -214,7 +216,7 @@ app = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])
 
 ### 하위 의존성
 
-> use_cache=True\
+> use_cache=True(기본값)\
 > 동일 요청에서 하위 의존성이 여러 번 호출되어도 최초에 가져온 값을 재사용
 
 ```python

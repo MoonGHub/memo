@@ -37,7 +37,7 @@ pod install
 
 <br />
 
-## 새 프로젝트 생성 시
+### 새 프로젝트 생성 시
 
 ```shell
 rm -rf ~/Library/Developer/Xcode/DerivedData 1938
@@ -102,6 +102,14 @@ bundletool build-apks --ks-pass 'pass:{키스토어 패스워드}' --bundle app-
 # 에뮬레이터 설치
 bundletool install-apks --apks app.apks
 ```
+
+---
+
+## IOS
+
+### 디버깅
+
+- `open -a Simulator`: 시뮬레이터 실행
 
 ---
 

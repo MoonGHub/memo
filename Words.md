@@ -66,4 +66,5 @@ correspond: 해당하다
 Prior to: ~이전에
 allocate: 할당하다
 strive: 애쓰다, 분투하다
+cumulative: 누적되는
 ```

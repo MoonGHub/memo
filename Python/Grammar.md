@@ -121,3 +121,5 @@ class B:
 
 data: A[B] = A(B(10))
 ```
+
+<br />

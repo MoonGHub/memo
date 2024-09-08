@@ -169,7 +169,7 @@ color: transparent;
   overflow: auto;
   ```
 
-- flex요소 내 상위 - 중간 - 하위 요소가 스크롤인 경우
+- flex요소 내 `상위 - 중간 - 하위`구조에서 하위 요소가 스크롤인 경우
 
   ```css
   // 상위
@@ -177,8 +177,10 @@ color: transparent;
   height: 0;
 
   // 중간
+  display: flex;
   height: 100%; // 또는 flex: 1;
   overflow: hidden;
+  // 방향은 상관 없음
 
   // 스크롤 대상 하위 요소에
   flex: 1 1 0;

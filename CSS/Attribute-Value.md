@@ -175,6 +175,10 @@ animation-name: ani;
   grid-auto-flow: dense;
   grid-auto-flow: row dense; // or column dense
   // 그리드 아이템이 순서에 상관없이 가능한 한 빈 공간을 채우도록 배치
+
+  grid-auto-columns: max-content;
+  // grid-template-columns를 사용하지 않고, 하위 요소의 가로길이 만큼 자동 조정
+  // tailwindcss: auto-cols-max
   ```
 
 - 하위요소
