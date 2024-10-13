@@ -18,6 +18,7 @@
 - Graphic Tools
   - [AI](Graphic-Tools/AI.md)
   - [AE](Graphic-Tools/AE.md)
+  - [FIGMA](Graphic-Tools/Figma.md)
 - HTML
   - [Attribute](HTML/Attribute.md)
   - [PBL](HTML/PBL.md)

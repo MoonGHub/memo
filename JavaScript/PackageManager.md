@@ -2,24 +2,25 @@
 
 ## NPM
 
-### NPM 관리
-
-- `npm version [버전]`\
-  npm 버전 업데이트
-- `npm cache`
-- `npm cache clean`
-  - --force
-- `npm rebuild`\
-  npm 재설치
-
-<br />
-
 ### 패키지 관리
 
 - `npm update`\
-  설치한 패키지를 업데이트
+  해당 프로젝트에 설치된 패키지들을 업데이트
+- `npm update <패키지명>`\
+  특정 패키지 업데이트
+- `npm version [버전]`\
+  npm으로된 프로젝트 버전을 업데이트
 - `npm dedupe`\
   npm의 중복된 패키지들을 정리
+- `npm cache`
+  - ls
+  - clean
+    - --force
+- `npm rebuild`\
+  현재 프로젝트에 이미 설치된 패키지들의 바이너리 파일을 다시 빌드하며 아래와 같은 경우에 사용
+  - node버전을 변경 할 경우
+  - 운영체제 등 실행 시스템 환경을 변경 할 경우
+  - 패키지 자체 문제 또는 의존성 문제 발생 시
 
 <br />
 
@@ -31,6 +32,8 @@
   package.json의 명시 버전에 **일치 - 빨강**, **불일치 - 노랑**
 - `npm ls`\
   현재 설치된 패키지의 버전과 dependencies를 트리 구조로 표현
+- `npm list -g --depth=0`\
+  전역으로 설치된 패키지들을 보여줌
 
 <br />
 
