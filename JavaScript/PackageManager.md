@@ -179,6 +179,8 @@ yarn dlx @yarnpkg/sdks vscode
   - `pnpm install --shamefully-hoist`
     - 각 프로젝트의 의존성들이 최상위의 **node_modules**에 설치됨
     - 서로 다른 버전의 의존성으로 호환 문제 시
+  - `pnpm update --workspace`\
+    루트 의존성 버전 업데이트
 
 <br />
 
@@ -186,10 +188,31 @@ yarn dlx @yarnpkg/sdks vscode
 
 #### dependenciesMeta.\*.injected
 
+> 현재 프로젝트에서 사용중인 의존성<sup>1</sup> 버전을, 다른 패키지의 의존성<sup>1</sup> 버전으로 내려줌
+>
+> - 1는 동일 의존성
+
 `true`인 경우
 
 - `패키지`가 해당 프로젝트의 node_modules에 설치되지 않고 가상 스토어에서 하드링크 됨
-- 프로젝트의 의존성(e.g. react@100)이 있고, `패키지`의 동일 의존성(e.g. react@10)이 있는 경우, `패키지`는 프로젝트의 의존성(e.g. react@100)이 주입?
+- 프로젝트의 의존성(e.g. react@100)이 있고, `패키지`에 동일 의존성(e.g. react@10)이 있는 경우, `패키지`는 프로젝트의 의존성(e.g. react@100)이 주입됨
+- [참고](https://pnpm.io/8.x/package_json#dependenciesmeta)
+
+```json
+// ex) package.json
+{
+  "name": "card",
+  "dependencies": {
+    "button": "workspace:1.0.0",
+    "react": "16"
+  },
+  "dependenciesMeta": {
+    "button": {
+      "injected": true
+    }
+  }
+}
+```
 
 `미설정` 또는 `false`인 경우
 

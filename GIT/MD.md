@@ -32,13 +32,17 @@ Drawing Line : `---` or `***`
 
 ---
 
-**Bold Text** : `**TEXT**` or `__TEXT__`
+**Bold Text**: `**TEXT**` or `__TEXT__`
 
-_italic_ : `*TEXT*` or `_TEXT_`
+_italic_: `*TEXT*` or `_TEXT_`
 
-**_Bold and Italic_** : `***TEXT***` or `___TEXT___`
+**_Bold and Italic_**: `***TEXT***` or `___TEXT___`
 
-~~strikethrough~~ : `~~TEXT~~`
+~~strikethrough~~: `~~TEXT~~`
+
+`<sup>`: 윗 첨자<sup>윗윗</sup>
+
+`<sub>`: 아랫 첨자<sub>아랫아랫</sub>
 
 <br>
 

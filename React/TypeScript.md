@@ -2,6 +2,10 @@
 
 ## Keywords
 
+> VSCode 내장 타입스크립트 참고
+> **/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/lib.es5.d.ts**
+> https://www.typescriptlang.org/ko/docs/handbook/utility-types.html
+
 - Utility Type
   - Partial
   - Omit
