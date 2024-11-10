@@ -3,8 +3,7 @@
 ## Keywords
 
 > VSCode 내장 타입스크립트 참고
-> **/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/lib.es5.d.ts**
-> https://www.typescriptlang.org/ko/docs/handbook/utility-types.html
+> **/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/node_modules/typescript/lib/lib.es5.d.ts** > https://www.typescriptlang.org/ko/docs/handbook/utility-types.html
 
 - Utility Type
   - Partial
@@ -39,3 +38,19 @@
 
 클래스에 대해 typeof 사용하여 변수에 지정할 경우, 해당 클래스의 타입이 아닌 생성자 타입을 나타냄\
 따라서 typeof를 사용하지 않고, 직접 클래스를 타입으로 지정해줘야 함 또는 Utility Type의 InstanceType를 사용
+
+### ts-2742
+
+> '\_LexicalEditor'의 유추된 형식 이름을 지정하려면 '.pnpm/@storybook+types@7.6.17/node_modules/@storybook/types'에 대한 참조가 있어야 합니다.
+> 이식하지 못할 수 있습니다. 형식 주석이 필요합니다.ts(2742)
+
+> [!NOTE]
+>
+> tsconfig.json
+>
+> ```json
+> {
+>   // ...
+>   "declaration": false // *.d.ts 생성 여부,
+> }
+> ```

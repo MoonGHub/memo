@@ -51,6 +51,8 @@
   - -n: 주소나 포트 형식을 숫자로 표시
   - -l: listen중인 포트 표시
   - -c: 매 초마다 실행
+- `more [파일명]`
+  파일을 읽어 화면 단위로 끊어서 출력(지나간 내용 다시 볼 수 없음)
 
 ---
 
@@ -102,7 +104,7 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 <br />
 
-## 여러 설정 및 명령어
+## PBL - 여러 설정 및 명령어
 
 ### 방화벽 및 SSH 설정, 접속(Ubuntu/Debian)
 

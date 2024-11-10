@@ -45,13 +45,20 @@ CSS 라이브러리 참고 사이트
 
 참고
 
-- https://codepen.io/enxaneta/pen/adLPwv)
+- https://codepen.io/enxaneta/pen/adLPwv
 - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
 #### 정렬
 
 - `flex-wrap: wrap;`\
   부모 크기 오버시 아래에 정렬
+
+<br />
+
+#### Flex내의 `flex: 1;`인 자식 요소가 부모에 맞춰 크기 줄어들게 하기
+
+부모가 `flex-direction: row;`이며, 자식이 `flex: 1;`인 상황에서 가로 크기를 부모에 맞춰 줄어들게 할 때,\
+자식요소에 `min-width: 0px;` 지정 필요
 
 <br />
 

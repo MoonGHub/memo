@@ -140,7 +140,7 @@ yarn dlx @yarnpkg/sdks vscode
 
 ### 프로젝트 추가
 
-1. `pnpm init 경로` 또는 `pnpm create vite@latest 경로` 또는 `pnpm dlx create-next-app@latest 경로`
+1. `pnpm init`(경로지정 안됨) 또는 `pnpm create vite@latest 경로` 또는 `pnpm dlx create-next-app@latest 경로`
 2. package.json 설정
 3. 루트 디렉토리에서 필요한 의존성들을 설치
    `pnpm --filter {project_name} add react react-dom @babel/cli`
@@ -239,7 +239,7 @@ yarn dlx @yarnpkg/sdks vscode
 `^1.0` : >=1.0.0 <2.0\
 `^1` : >=1.0.0 <2.0
 
-예외)
+예외) 주 버전이 0인 경우
 
 `^0.1.2` : >=0.1.2 <0.2.0\
 `^0.1` : >=0.1.0 <0.2.0\
