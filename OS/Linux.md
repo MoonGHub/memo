@@ -34,6 +34,19 @@
 - md5, sha256, sha512
 - find
 - vim
+  - 다음 찾기
+    - `/{검색어}`
+    - 엔터
+    - `n`
+  - 이전 찾기
+    - `/{검색어}`
+    - 엔터
+    - `N`
+  - 찾기 유지
+    - `:noh`
+    - 엔터
+    - `/{검색어}`
+    - 엔터
 - ps
 - top
 - nice
@@ -73,9 +86,15 @@
 > 설치 시, 주의 사항
 
 1. Profile setup
-   - Your name: 사용자의 실제 이름 또는 관리자의 이름. Your Pick a username과 동일히 작성
-   - Your server's name: 프롬프트의 유저명@{이부분}, 마침표(.)와 언더바는 인식이 안됨\
+   - Your name: 사용자의 실제 이름 또는 관리자의 이름
+     - 노출 되는 곳 없음(아마)
+     - Your Pick a username과 동일히 작성
+   - Your server's name: 프롬프트의 유저명@{이부분}
+     - 마침표(.) 입력 불가
+     - 언더바는 입력은 되지만 생략댐
    - Your Pick a username: 사용자의 시스템 로그인 아이디. 프롬프트의 {이부분}@서버명
+     - 언더바 인식 됨
+     - 초기 계정의 로그인 아이디
 2. 추가적 설치는 불필요
 
 <br />
@@ -143,6 +162,9 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 - `ufw deny ssh`\
   SSH 포트 거부
 
+> ~~**일반계정 비밀번호 ssh접속 허용**~~\
+> ~~/etc/ssh/sshd_config에서 PasswordAuthentication yes 주석 해제~~
+
 > **root계정 ssh 접속 허용**\
 > /etc/ssh/sshd_config에서 PermitRootLogin 라인 주석 해제
 
@@ -153,6 +175,10 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 `ssh username@host`
 
 <br />
+
+#### 접속 IP 제한
+
+<br/>
 
 #### Lightsail
 

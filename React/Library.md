@@ -69,7 +69,7 @@
 
 <br />
 
-## next.js PBL
+## next.js PBL(14v)
 
 ### [모노레포 공통 모듈을 페이지 라우터에서 사용 시](https://nextjs.org/docs/pages/api-reference/next-config-js/transpilePackages)
 

@@ -205,4 +205,10 @@ Firewall > NAT
 
 <br />
 
-### 🦋 내부(NAT)망 원격접속
+### 내부(NAT)망 원격접속 - SSH
+
+> [!NOTE]
+> HTTP 트래픽과 달리 SSH는 헤더 정보나 도메인 정보를 포함하지 않기 때문에, HAProxy는 요청이 어떤 도메인에 해당하는지 직접 알 수 없습니다.
+
+- 당장은 사용하고자 하는 서버를 Default Backend Pool로 지정하여 사용
+- 추후 HAproxy의 sni 기능 서치

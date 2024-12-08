@@ -50,6 +50,8 @@ _italic_: `*TEXT*` or `_TEXT_`
 >
 > > Quote : `>>`
 
+[기본 서식 구문 - 경고](https://docs.github.com/ko/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)
+
 > [!NOTE]
 > Useful information that users should know, even when skimming content.
 
