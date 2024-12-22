@@ -61,3 +61,12 @@ const About = lazy(() =>
 
 - input에 value가 있고, onChange가 없을 때, read-only로 됨
 - `pragma`: 트랜스파일 시 처리 방법 전달 방법 - 파일 상단의 `/** @jsx jsx */`, `/** @jsxImportSource @emotion/react */`와 같은 것
+
+### package.json - sideEffects
+
+공통 패키지에서 빌드 시 사용
+
+> 기본 동작: `true`
+> 안전성을 위해 사용하지 않는 코드라도 번들에 포함
+
+명시적으로 `false`로 설정하면, 트리쉐이킹이 활성화되어 미사용 파일이 제거됨

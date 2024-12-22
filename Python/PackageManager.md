@@ -109,7 +109,7 @@
     - `python.analysis.extraPaths`를 실시간으로 변경해줌
     - 저장 시 포맷팅(isort, black) 오류로 아래 설정 필요
 
-      ```json
+      ```js
       // vscode settings.json
 
       {

@@ -12,3 +12,32 @@
     npm pack을 실행하여 패키지를 <name>-<version>.tgz 형태의 tarball 파일로 묶을 수 있음
 - engines: 패키지가 작동하는 Node 버전을 지정
 - private: 개인 저장소의 우연한 발행을 방지하기 위해 npm에서 패키지의 공개 여부를 지정
+- dependenciesMeta: dependencies 및 optionalDependencies에 포함된 의존성들에 대한 추가 정보를 설정하는 데 사용
+  - optional: 특정 의존성을 선택적 의존성으로 표시
+  - injected: pnpm 전용이며, 특정 의존성이 직접 설치되지 않고 외부에서 주입 [- 참고](./PackageManager.md#dependenciesmetainjected)
+- sideEffects: 사용되지 않는 파일도 안전하게 제거하지 않고 번들에 포함시킬지의 여부
+- exports: 해당 패키지를 import시, 외부에 노출될 경로 지정
+  - ex)
+    ```js
+    // @moon-libs/web 패키지
+    {
+      // ...
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.js",
+          "require": "./dist/index.js"
+        },
+        // import { color, defaultTheme } from '@moon-libs/web/dist/ui/theme/constant';
+        "./dist/ui/theme/constant": {
+          "import": "./dist/ui/theme/constant/index.js",
+          "require": "./dist/ui/theme/constant/index.js"
+        },
+        "./*": {
+          "import": "./dist/*",
+          "require": "./dist/*",
+          "types": "./dist/*"
+        }
+      }
+    }
+    ```

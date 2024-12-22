@@ -327,6 +327,7 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 - `df -h`
 - `du -h`
   - -s: 디렉토리의 사용량만 표시
+  - ex) `du -sh *`: 현재 경로 내의 폴더, 파일의 용량 표시
 
 <br />
 
