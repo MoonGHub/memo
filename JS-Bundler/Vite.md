@@ -71,6 +71,90 @@ console.log(import.meta.env.KEY2); // undefined
 
 <br />
 
+## 빌드
+
+### mjs, cjs 각각 빌드
+
+- vite.config.ts
+
+```js
+{
+  build: {
+		lib: {
+			entry: 'src/index.ts',
+			name: '@moon-libs/util',
+			formats: ['es', 'cjs'],
+			fileName: (format, entryName) => {
+				const extension = format === 'es' ? 'mjs' : 'cjs';
+
+				return `${entryName}.${extension}`;
+			},
+		},
+		cssCodeSplit: true,
+		rollupOptions: {
+			external: [...Object.keys(devDependencies), /react.*/],
+			output: {
+				preserveModules: true,
+				preserveModulesRoot: 'src',
+			},
+		},
+	},
+}
+```
+
+- package.json
+
+```json
+{
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  }
+}
+```
+
+### cjs만 빌드
+
+- vite.config.ts
+
+```js
+{
+  build: {
+		lib: {
+			entry: 'src/index.ts',
+			name: '@moon-libs/util',
+			formats: ['cjs'],
+		},
+		cssCodeSplit: true,
+		rollupOptions: {
+			external: [...Object.keys(devDependencies), /react.*/],
+			output: {
+				preserveModules: true,
+				preserveModulesRoot: 'src',
+				entryFileNames: '[name].js',
+			},
+		},
+	}
+}
+```
+
+- package.json
+
+```json
+{
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts"
+}
+```
+
+<br />
+
 ## Plugin
 
 - vite-plugin-commonjs\
@@ -203,7 +287,7 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
 
 ## PBL
 
-### vite.config.ts에 package.json import
+### vite.config.ts에서 package.json import하는 경우
 
 tsconfig.node.json에 추가
 
