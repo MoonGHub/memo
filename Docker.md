@@ -18,11 +18,18 @@ DockerFile > Image > Container(=이미지 인스턴스)
 
 - `docker build . -f DockerFile -t imagename`\
   DockerFile로 이미지 생성
+  - ex) `docker build . -f ./apps/web/app.tetherbit/ci-cd/dev/Dockerfile -t answlgus1122/app:app.tetherbit-dev --no-cache --progress=plain`
 - `docker pull ubuntu:latest`\
   이미지 받기
 - `docker build --tag 이미지이름:버젼`\
   작성한 DockerFile로 이미지 생성\
   버젼 생략 시 latest가 디폴
+
+#### 네트워크
+
+- `docker network create my-network`
+
+<br />
 
 ### 실행
 
@@ -31,9 +38,12 @@ DockerFile > Image > Container(=이미지 인스턴스)
   - -d: 백그라운드로 실행
   - -p: 호스트80과 컨테이너80 포트를 - 연결하고 외부노출시킴 -> localhost:80으로 접속
   - -v: 호스트의 /root/data 디렉토리를 컨테이너의 /data 디렉토리에 연결
+  - ex) `docker run --name dev -d --network my-network answlgus1122/app:app.tetherbit-dev`
 - `docker start 컨테이너이름or컨테이너ID`
 - `docker restart 컨테이너이름or컨테이너ID`
 - `docker stop 컨테이너이름`
+
+<br />
 
 ### 삭제
 
@@ -41,6 +51,7 @@ DockerFile > Image > Container(=이미지 인스턴스)
 - `docker rmi 이미지이름:태그`\
   태그 생략시 모든 이미지이름을 삭제
   - -f: --force
+  - ex) `docker rm dev &&  docker rmi answlgus1122/app:app.tetherbit-dev`
 - `docker container prune --force`
 - `docker image prune --force`
   - -all: 사용중인 이미지도 삭제

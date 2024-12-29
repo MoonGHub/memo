@@ -41,6 +41,8 @@
 
 ### ts-2742
 
+- 스토리북 에러
+
 > '\_LexicalEditor'의 유추된 형식 이름을 지정하려면 '.pnpm/@storybook+types@7.6.17/node_modules/@storybook/types'에 대한 참조가 있어야 합니다.
 > 이식하지 못할 수 있습니다. 형식 주석이 필요합니다.ts(2742)
 
@@ -54,3 +56,5 @@
 >   "declaration": false // *.d.ts 생성 여부,
 > }
 > ```
+
+- StoryFn 타입 지정해주면 됨

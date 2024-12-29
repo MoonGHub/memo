@@ -42,6 +42,20 @@ server {
 }
 ```
 
+### 정규표현식
+
+- server_name
+
+  - An asterisk can match several name parts. The name “\*.example.org” matches not only www.example.org but www.sub.example.org as well.
+  - A special wildcard name in the form “.example.org” can be used to match both the exact name “example.org” and the wildcard name “\*.example.org”.
+  - 정규식을 사용 시, `~^`로 시작하여 `$`을 끝으로 사용
+    - ex)\
+      `~^www\d+\.example\.net$;`
+      `"~^(?<name>\w\d{1,3}+)\.example\.net$";` // location에서 $name 변수로 사용 가능 
+      `~^(www\.)?(?<domain>.+)$;` // location에서 $domain 변수로 사용 가능
+
+- location
+
 <br />
 
 ## nginx.conf

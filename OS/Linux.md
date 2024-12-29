@@ -193,12 +193,16 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 #### 도커
 
-- `sudo usermod -aG docker [username]`
+- `ls -l /var/run/docker.sock`\
+  그룹명 확인
+- `sudo usermod -aG docker [username]`\
+  그룹(docker)에 유저 추가
 - `grep docker /etc/group`\
-  [username]이 추가되었는지 확인
-- `systemctl restart docker`
-- 해당 유저로 재 로그인
-- restart시 도커 컨테이너 재실행 필요
+  그룹(docker)에 [username]이 추가되었는지 확인
+- `systemctl restart docker` 또는 `newgrp docker`
+  - restart시에는 도커 컨테이너 재실행 필요
+  - newgrp은 바로 적용
+- 해당 유저로 재 로그인하여 확인
 
 <br />
 
