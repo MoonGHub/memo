@@ -81,7 +81,9 @@
 
 ## RegExp
 
-- test(str) // true or false
+temp.txt 1346 line 정리..
+
+- `(?! ...)`: 부정형 전방 탐색, 특정 패턴이 앞에 오지 않는 경우에만 매칭
 
 <br />
 

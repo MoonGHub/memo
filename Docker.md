@@ -27,7 +27,13 @@ DockerFile > Image > Container(=이미지 인스턴스)
 
 #### 네트워크
 
+> - docker-compose를 사용하는 경우, 기본적으로 bridge 네트워크가 사용됨
+> - 개별적으로 실행하는 경우 같은 네트워크를 지정해야 컨테이너끼리 통신이 가능
+
 - `docker network create my-network`
+
+- `docker network ls`
+- `docker network inspect 네트워크이름`
 
 <br />
 

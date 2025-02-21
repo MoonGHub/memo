@@ -15,6 +15,8 @@
   - Parameters
   - Capitalize
   - InstanceType
+  - Required
+  - NonNullable
 - etc
   - infer
 

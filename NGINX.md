@@ -59,3 +59,23 @@ server {
 <br />
 
 ## nginx.conf
+
+<br />
+
+## PBL
+
+### 프록시 사용 시의 host 및 hostname 재정의
+
+- [참고](https://sculove.github.io/post/nginx-reverse-proxy/)
+
+프록시 된 노드 서버에서 `req.hostname` 및 `req.headers.host`가 프록시의 정보로 재정의 됨
+따라서, 아래와 같은 설정이 필요
+
+```conf
+proxy_set_header    Host    $host
+proxy_set_header    Hostname    $hostname;
+```
+
+### SEO
+
+- `server_tokens off;`: `curl -I 도메인` 호출 시, 버전 노출이 되지 않음

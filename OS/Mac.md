@@ -40,6 +40,21 @@
 7. **~/.zshrc** 내 아래 추가\
    `source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`
 
+### PBL
+
+#### agnoster.zsh-theme:91: parse error near `<<<
+
+- [참고](https://shuiky.tistory.com/entry/agnosterzsh-theme91-parse-error-near)
+
+**_해결_**
+
+```sh
+cd $ZSH
+git config core.autocrlf input
+git rm --cached -r .
+git reset --hard
+```
+
 <br />
 
 ## chrome
