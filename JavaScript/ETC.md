@@ -32,7 +32,7 @@ querySelectorAll() ..?
 
 ### block scope
 
-```js
+```javascript
 var i;
 
 for (i = 0; i < 10; i++) {
@@ -52,7 +52,7 @@ for (i = 0; i < 10; i++) {
 
 - prototype
 
-  ```js
+  ```javascript
   function Shape() {
     this.x = 0;
     this.y = 0;
@@ -77,7 +77,7 @@ for (i = 0; i < 10; i++) {
 
 - \_\_proto\_\_
 
-  ```js
+  ```javascript
 
   ```
 
@@ -111,7 +111,7 @@ for (i = 0; i < 10; i++) {
       **아래와 같은 설정으로 무시 가능**
 
       - 웹팩 사용의 경우(Storybook 설정도 마찬가지)
-        ```js
+        ```javascript
         // webpack.config.js
         {
         		test: /\.m?js/,
@@ -122,12 +122,12 @@ for (i = 0; i < 10; i++) {
         ```
       - Vite의 경우
 
-        ```js
+        ```javascript
 
         ```
 
       - Vite의 SSR(Node 환경)의 경우
-        ```js
+        ```javascript
         // vite.config.ts
         {
           ssr: {
@@ -177,7 +177,7 @@ ESM의 import/export 구문을 사용하기 위해서는 **package.json**에서 
 
 ### Generator Function (function\*, yield)
 
-```js
+```javascript
 function* generator(i) {
   yield i;
   yield i + 10;
@@ -192,7 +192,7 @@ console.log(gen.next().value);
 // Expected output: 20
 ```
 
-```js
+```javascript
 function* foo(index) {
   while (index < 2) {
     yield index;
@@ -209,7 +209,7 @@ console.log(iterator.next().value);
 // Expected output: 1
 ```
 
-```js
+```javascript
 function* func1() {
   yield 42;
 }

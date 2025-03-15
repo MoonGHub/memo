@@ -17,7 +17,7 @@
 - 각도: `0deg`(아래->위), `90deg`(왼->오), `270deg`(오->왼), `180deg`(위->아래), ... 등
 - 두 번째 인자부터: `red`, `green 10%`, `40%`, `blue 50% 100%`, ... 등(% 범위를 나타냄 )
 - ex)
-  ```css
+  ```scss
   background: linear-gradient(
     to right,
     red 20%,
@@ -36,7 +36,7 @@
 <a href="home">홈</a>
 ```
 
-```css
+```scss
 a::after {
   content: " (" attr(href) ") ";
 }
@@ -54,7 +54,7 @@ a::after {
 
 - ex)
 
-  ```css
+  ```scss
   display: grid;
   grid-template-rows: repeat(2, minmax(20px, auto));
   grid-template-columns: minmax(30px, auto) repeat(3, 1fr);
@@ -71,7 +71,7 @@ a::after {
 
 - ex)
 
-  ```css
+  ```scss
   display: grid;
   grid-template-columns: fit-content(40%) fit-content(40%) 1fr;
   // 하위 요소 너비에 맞추되 최대 너비를 40%로 제한
@@ -88,7 +88,7 @@ a::after {
 
 - ex)
 
-  ```css
+  ```scss
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   // 결과: 1fr 1fr 1fr 1fr

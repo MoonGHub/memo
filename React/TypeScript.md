@@ -52,7 +52,7 @@
 >
 > tsconfig.json
 >
-> ```js
+> ```javascript
 > {
 >   // ...
 >   "declaration": false // *.d.ts 생성 여부,

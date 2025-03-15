@@ -73,7 +73,7 @@
 
 ### [모노레포 공통 모듈을 페이지 라우터에서 사용 시](https://nextjs.org/docs/pages/api-reference/next-config-js/transpilePackages)
 
-```js
+```javascript
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@acme/ui", "lodash-es"],

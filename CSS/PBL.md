@@ -108,7 +108,7 @@ CSS 라이브러리 참고 사이트
 
 ### 생략 표시(텍스트 길이가 부모요소보다 커질 경우)
 
-```css
+```scss
 overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
@@ -131,7 +131,7 @@ display: -webkit-box;
 
 ### 그라디언트 효과
 
-```css
+```scss
 background-image: linear-gradient(to right, #7dd3fc, #4f46e5);
 background-clip: text;
 color: transparent;
@@ -151,7 +151,7 @@ color: transparent;
 
 - 자동 포커싱
 
-  ```css
+  ```scss
   // 부모 요소
   overflow-y: auto;
   scroll-snap-type: y mandatory;
@@ -169,8 +169,13 @@ color: transparent;
 
 - flex내 요소가 스크롤인 경우
 
-  ```css
+  ```scss
+  // flex요소(+ 그 상위 요소)
+  overflow: hidden;
+
   // 스크롤 대상 요소
+  overflow: auto;
+  // 또는
   flex: auto;
   height: 0;
   overflow: auto;
@@ -178,7 +183,7 @@ color: transparent;
 
 - flex요소 내 `상위 - 중간 - 하위`구조에서 하위 요소가 스크롤인 경우
 
-  ```css
+  ```scss
   // 상위
   flex: auto;
   height: 0;

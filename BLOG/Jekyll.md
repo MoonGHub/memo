@@ -21,7 +21,7 @@
 - `chmod -R 0644 *`: 권한 부여
 - 설치된 번들 모두 제거
 
-  ```markdown
+  ```shell
   bundle list | ruby -e 'ARGF.readlines[1..-1].each {|l| g = l.split(" "); puts "Removing #{g[1]}"; `gem uninstall --force #{g[1]} -v #{g[2].gsub(/\(|\)/, "")}`; }'
   ```
 

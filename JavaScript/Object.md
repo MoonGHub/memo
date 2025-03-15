@@ -104,7 +104,7 @@ temp.txt 1346 line 정리..
   - thisArg: 함수 내부의 this에 바인딩할 객체
   - argsArray: 함수에 전달할 argument의 배열
 
-  ```js
+  ```javascript
   function request(url, options, callback) {...}
   var requestArgs = ['http ..', {...}, function(){...}];
 
@@ -124,12 +124,12 @@ temp.txt 1346 line 정리..
 
   - apply()와 기능은 같지만 apply()의 두번째 인자에서 배열 형태로 넘긴 것을 각각 하나의 인자로 넘긴다.
 
-  ```js
+  ```javascript
   Person.apply(foo, [1, 2, 3]);
   Person.call(foo, 1, 2, 3);
   ```
 
-  ```js
+  ```javascript
   function MyClass() {
     SuperClass.call(this);
     OtherSuperClass.call(this);
@@ -182,7 +182,7 @@ temp.txt 1346 line 정리..
 - fromEntries(arr)
 - defineProperty
 
-  ```js
+  ```javascript
   function withValue(value) {
     var d =
       withValue.d ||
@@ -246,7 +246,7 @@ temp.txt 1346 line 정리..
 
 > [server sent events(SSE)](../Python/FastApi.md#sseserver-sent-events)와 같이 사용
 
-```js
+```javascript
 // example
 
 const eventSource = new EventSource(`http://localhost:8000`, {
@@ -283,7 +283,7 @@ eventSource.addEventListener("Custom Event", (event) => {});
 
 > [FastApi 참고](../Python/FastApi.md#websocket)
 
-```js
+```javascript
 // example
 
 const ws = new WebSocket("ws://localhost:8000/ws");

@@ -119,7 +119,7 @@ yarn dlx @yarnpkg/sdks vscode
 2. `pnpm --version`
 3. 루트의 package.json에 추가
 
-   ```js
+   ```javascript
    {
      // ...
      "packageManager": "pnpm@7.29.2",
@@ -129,7 +129,7 @@ yarn dlx @yarnpkg/sdks vscode
    ```
 
 4. `pnpm-workspace.yaml` 생성 후, 아래 내용 추가
-   ```yml
+   ```yaml
    packages:
      - "apps/**/*"
      - "libs/**/*"
@@ -198,7 +198,7 @@ yarn dlx @yarnpkg/sdks vscode
 - 프로젝트의 의존성(e.g. react@100)이 있고, `패키지`에 동일 의존성(e.g. react@10)이 있는 경우, `패키지`는 프로젝트의 의존성(e.g. react@100)이 주입됨
 - [참고](https://pnpm.io/8.x/package_json#dependenciesmeta)
 
-```js
+```javascript
 // ex) package.json
 {
   "name": "card",

@@ -18,7 +18,7 @@
 - sideEffects: 사용되지 않는 파일도 안전하게 제거하지 않고 번들에 포함시킬지의 여부
 - exports: 해당 패키지를 import시, 외부에 노출될 경로 지정
   - ex)
-    ```js
+    ```javascript
     // @moon-libs/web 패키지
     {
       // ...

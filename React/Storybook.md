@@ -94,7 +94,7 @@ Docs에서 컴포넌트 subtitle은, export default{}에서 parameters옵션의 
   - https://chromatic-ui.notion.site/Storybook-7-migration-guide-dbf41fa347304eb2a5e9c69b34503937
 
 1. `yarn add -D @storybook/mdx2-csf @mdx-js/react`
-2. ```js
+2. ```javascript
    module.exports = {
      features: {
        previewMdx2: true,

@@ -261,7 +261,7 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 1. `sudo vim /etc/default/grub`
 2. 아래와 같이 해당 값을 변경
-   ```config
+   ```
    GRUB_TIMEOUT_STYLE=menu
    GRUB_TIMEOUT=10
    ```

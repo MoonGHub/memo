@@ -26,6 +26,8 @@
 
 ### 꾸미기
 
+#### 터미널 - ohmyzsh, 테마
+
 **실리콘 맥의 경우, brew사용 시 Prefix로 `arch -arm64` 추가**
 
 1. `brew install wget`
@@ -40,6 +42,13 @@
 7. **~/.zshrc** 내 아래 추가\
    `source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`
 
+#### 터미널 - git 자동 완성
+
+VSCODE 1.98.0 - Terminal IntelliSense
+
+- [참고](https://fig.io/docs/getting-started)
+- [참고](https://github.com/withfig/autocomplete)
+
 ### PBL
 
 #### agnoster.zsh-theme:91: parse error near `<<<
@@ -48,7 +57,7 @@
 
 **_해결_**
 
-```sh
+```shell
 cd $ZSH
 git config core.autocrlf input
 git rm --cached -r .

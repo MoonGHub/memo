@@ -3,7 +3,7 @@
 ## 도커로 설치
 
 1. `docker pull jenkins/jenkins:lts`
-2. ```sh
+2. ```shell
    sudo docker run -d -p 8282:8080 \
      -v /jenkins:/var/jenkins_home \
      -v /var/run/docker.sock:/var/run/docker.sock \
@@ -53,7 +53,7 @@
 4. 빌드 유발 > GitHub hook trigger for GITScm polling 선택
 5. 빌드 환경 > Delete workspace before build starts 선택
 6. Build Steps > Execute shell
-   ```sh
+   ```shell
    cd ./apps/web/io.yougram/docker
    bash jenkins-build-step.sh
    ```

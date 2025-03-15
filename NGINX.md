@@ -16,7 +16,7 @@
 
 ## default.conf
 
-```conf
+```
 server {
   listen 80;
 
@@ -71,7 +71,7 @@ server {
 프록시 된 노드 서버에서 `req.hostname` 및 `req.headers.host`가 프록시의 정보로 재정의 됨
 따라서, 아래와 같은 설정이 필요
 
-```conf
+```
 proxy_set_header    Host    $host
 proxy_set_header    Hostname    $hostname;
 ```

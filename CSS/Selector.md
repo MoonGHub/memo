@@ -85,13 +85,13 @@
 
 @import사용
 
-```css
+```scss
 @import url("css/~.css") screen and (min-width: 321px) and (max-width: 768px);
 ```
 
 태그 사용
 
-```css
+```scss
 @media 미디어유형 | 미디어특성 | 미디어기능 [논리 연산자 미디어유형 | 미디어특성 | 미디어기능 ...] {
   // ...;
 }

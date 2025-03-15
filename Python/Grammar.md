@@ -100,7 +100,7 @@
 
 ## Generic
 
-```py
+```python
 from typing import (
     Generic,
     TypeVar,

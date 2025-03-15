@@ -13,7 +13,7 @@
 
 ### 배경
 
-```css
+```scss
 background-image: linear-gradient(
     to bottom,
     rgba(255, 255, 0, 0.5),
@@ -48,7 +48,7 @@ mix-blend-mode: difference;
 
 #### 간격
 
-```css
+```scss
 text-indent: 10px;
 // 들여쓰기
 letter-spacing: 10px;
@@ -61,7 +61,7 @@ text-align: justify;
 
 #### 단 나누기
 
-```css
+```scss
 columns: auto 3;
 // 너비 자동, 단 3개
 column-rule: 1px solid black;
@@ -84,7 +84,7 @@ column-count: 4;	// (최대) 단 수
 
 [참고](https://codepen.io/vineethtr/full/XKKEgM)
 
-```css
+```scss
 transform: translate(x,y) | scale(x,y) | rotateX(45deg) | skew(xdeg, ydeg)
 transform-origin: left top;
 // 중점 변경
@@ -94,7 +94,7 @@ transform-origin: left top;
 
 [참고](https://matthewlein.com/tools/ceaser)
 
-```css
+```scss
 transition: all 1s ease-in-out;
 
 // 위와 동일
@@ -108,7 +108,7 @@ transition-delay: 0s;
 
 #### keyframes - animation
 
-```css
+```scss
 @keyframes ani {
   from {
     // ...;
@@ -158,7 +158,7 @@ animation-name: ani;
 
 - 상위요소
 
-  ```css
+  ```scss
   display: grid;
   gap: 10px;
   grid-template-columns: 1fr 2fr auto 100px;
@@ -183,7 +183,7 @@ animation-name: ani;
 
 - 하위요소
 
-  ```css
+  ```scss
   grid-column: 4;
   // 네 번째 열뒤에 위치
   grid-column: 1 / 3;
@@ -203,7 +203,7 @@ animation-name: ani;
   - [참고1](https://codepen.io/kumjungmin/pen/qBxRVey)
   - [참고2](https://codepen.io/rachelandrew/pen/axLzYv)
 
-  ```css
+  ```scss
   // 그리드인 부모요소의 하위요소
   display: grid;
   grid-row: 1 / 4;

@@ -75,6 +75,8 @@ Inline code is used `like this` using <strong style="background:#8056ff;color:ye
 
 Block code is the followings :
 
+- [supported language](https://docs.github.com/en/contributing/writing-for-github-docs/using-markdown-and-liquid-in-github-docs#code-sample-syntax-highlighting)
+
 <div style="background:#6a69f1;border-radius:5px;">
     <span>```language</span></br>
     <span>CODE</span></br>
@@ -100,7 +102,7 @@ graph TD;
 - [x] #739 `#0d1117`
 - [ ] https://github.com/octo-org/octo-repo/issues/740
 - [ ] Add delight to the experience when all tasks are complete :tada:
-- ```md
+- ```markdown
   - [x] #739 `#0d1117`
   - [ ] https://github.com/octo-org/octo-repo/issues/740
   - [ ] Add delight to the experience when all tasks are complete :tada:
@@ -123,7 +125,7 @@ graph TD;
 
 ## 테이블
 
-- ```md
+- ```markdown
   | 헤더1   |  헤더2  |   헤더3 |
   | :------ | :-----: | ------: |
   | 왼쪽    |  중앙   |  오른쪽 |

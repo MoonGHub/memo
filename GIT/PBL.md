@@ -8,7 +8,7 @@
 - 파일명을 임의 지정 시, 아래와 같은 설정이 필요
   1. config 파일 생성\
      **~/.ssh/config**
-     ```conf
+     ```
      # Git 계정 내꺼
      Host moonghub_rsa
        HostName github.com
@@ -39,3 +39,58 @@
 
 1. Repository secrets에 공개키(id_rsa.pub)가 아닌 개인 키(id_rsa)를 등록
 2. 호스트 서버에서 `cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys`
+
+### 오류 - Failed to CreateArtifact: Artifact storage quota has been hit
+
+```text
+Build_Project
+Failed to CreateArtifact: Artifact storage quota has been hit. Unable to upload any new artifacts. Usage is recalculated every 6-12 hours.
+More info on storage limits: https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#calculating-minute-and-storage-spending
+```
+
+- [참고](https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28)
+
+- 아티팩트 전체(100개) 삭제 명령어
+
+  ```shell
+  gh api \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    -XGET /repos/MoonGHub/app/actions/artifacts \
+    -F per_page=100 | \
+  grep -o '"id":[0-9]\+,"node_id"' | \
+  sed -e 's/"id"://' -e 's/,"node_id"//' | \
+  while read artifact_id; do
+    echo "Deleting artifact with ID: $artifact_id"
+    gh api --method DELETE --silent \
+      -H "Accept: application/vnd.github+json" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      /repos/MoonGHub/app/actions/artifacts/$artifact_id
+  done
+  ```
+
+- 아티팩트 전체(100개) 삭제 명령어 - 오래된 순부터 제거
+  ```shell
+  gh api --jq '.artifacts | sort_by(.created_at) | .[].id' \
+      -H "Accept: application/vnd.github+json" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      -XGET /repos/MoonGHub/app/actions/artifacts \
+      -F per_page=100 | \
+  while read artifact_id; do
+    echo "Deleting artifact with ID: $artifact_id"
+    gh api --method DELETE --silent \
+      -H "Accept: application/vnd.github+json" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      /repos/MoonGHub/app/actions/artifacts/$artifact_id
+  done
+  ```
+
+1. 위 명령어로 아티팩트 수동 제거 후
+2. 워크플로우의 기능 옵션/환경변수 추가
+
+- actions/upload-artifact@v4
+  - 옵션
+    - retention-days: 1
+- docker/build-push-action@v6
+  - 환경 변수
+    - DOCKER_BUILD_RECORD_UPLOAD: false

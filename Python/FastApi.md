@@ -363,7 +363,7 @@ settings = Settings(_env_file=f'{os.getenv("ENV_STATE")}.env')
 
 ### SSE(Server Sent Events)
 
-```py
+```python
 # example
 
 async def st(req: Request) -> AsyncGenerator[str, Any]:
@@ -389,7 +389,7 @@ async def main(req: Request) -> StreamingResponse:
 
 - [웹소켓 테스트](https://github.com/vi/websocat)
 
-```py
+```python
 # example
 
 @app.websocket("/ws")
@@ -414,7 +414,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 ### [CORS](https://fastapi.tiangolo.com/ko/tutorial/cors/?h=corsmiddleware)
 
-```py
+```python
 app = FastAPI()
 
 app.add_middleware(

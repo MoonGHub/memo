@@ -198,7 +198,7 @@
 
 > insertBefore(.., ..)
 
-```js
+```javascript
 
 ```
 
@@ -214,6 +214,6 @@
   - beforeend
   - afterend
 
-```js
+```javascript
 
 ```

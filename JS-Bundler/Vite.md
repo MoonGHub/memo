@@ -24,14 +24,14 @@ mode에 따라서 `.env.production`또는 `.env.development`와 자동으로 매
 
 - dotenv를 따로 설치하지 않아도 됨
 
-```env
+```
 # .env.development
 
 VITE_KEY1 = key1
 KEY2 = key2
 ```
 
-```js
+```javascript
 console.log(import.meta.env.VITE_KEY1); // key1
 console.log(import.meta.env.KEY2); // undefined
 ```
@@ -77,7 +77,7 @@ console.log(import.meta.env.KEY2); // undefined
 
 - vite.config.ts
 
-```js
+```javascript
 {
   build: {
 		lib: {
@@ -104,7 +104,7 @@ console.log(import.meta.env.KEY2); // undefined
 
 - package.json
 
-```json
+```javascripton
 {
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -123,7 +123,7 @@ console.log(import.meta.env.KEY2); // undefined
 
 - vite.config.ts
 
-```js
+```javascript
 {
   build: {
 		lib: {
@@ -146,7 +146,7 @@ console.log(import.meta.env.KEY2); // undefined
 
 - package.json
 
-```json
+```javascripton
 {
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts"
@@ -217,7 +217,7 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
     - `autoUpdate`\
       injectManifest 인경우 [SW 업데이트 코드](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#auto-update-behavior) 필요
 
-      ```js
+      ```javascript
       import { clientsClaim } from "workbox-core";
 
       self.skipWaiting();
@@ -227,7 +227,7 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
     - `prompt`: default\
       injectManifest 인경우 [SW 업데이트 코드](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#prompt-for-update-behavior) 필요
 
-      ```js
+      ```javascript
       self.addEventListener("message", (event) => {
         if (event.data && event.data.type === "SKIP_WAITING")
           self.skipWaiting();
@@ -291,7 +291,7 @@ export { default as Icon_Alarm_Default } from "./alarm.svg";
 
 tsconfig.node.json에 추가
 
-```json
+```javascripton
 {
   "compilerOptions": {
     "resolveJsonModule": true

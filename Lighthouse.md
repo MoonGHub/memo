@@ -4,7 +4,7 @@
 
 - NGINX를 사용하는 경우
 
-  ```conf
+  ```
   server {
   listen 443 ssl http2;
   ...
