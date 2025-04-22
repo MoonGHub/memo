@@ -11,12 +11,14 @@
      ```
      # Git 계정 내꺼
      Host moonghub_rsa
+       AddKeysToAgent yes
        HostName github.com
        IdentityFile ~/.ssh/moonghub_rsa
      ```
   2. `eval $(ssh-agent -s)`
   3. `ssh-add ~/.ssh/moonghub_rsa`
-  4. `ssh -T git@moonghub_rsa`
+  4. `ssh -T git@github.com`
+  - `Hi {owner}! ...` 해당 레포의 `owner`가 표시되어야 함, 실패 시, 2번 부터 재시도
 
 <br />
 
