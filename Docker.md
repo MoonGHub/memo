@@ -39,7 +39,7 @@ DockerFile > Image > Container(=이미지 인스턴스)
 
 ### 실행
 
-- `docker run --name 컨테이너이름 -d -p 80:80 -v /root/data:/data 이미지명 실행파일명`\
+- `docker run --name 컨테이너이름 --restart=always -d -p 80:80 -v /root/data:/data 이미지명 실행파일명`\
   컨테이너 생성 및 실행
   - -d: 백그라운드로 실행
   - -p: 호스트80과 컨테이너80 포트를 - 연결하고 외부노출시킴 -> localhost:80으로 접속
@@ -48,6 +48,10 @@ DockerFile > Image > Container(=이미지 인스턴스)
 - `docker start 컨테이너이름or컨테이너ID`
 - `docker restart 컨테이너이름or컨테이너ID`
 - `docker stop 컨테이너이름`
+
+#### 업데이트
+
+- `docker update --restart=always 컨테이너이름`
 
 <br />
 

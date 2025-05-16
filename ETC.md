@@ -155,3 +155,4 @@
 - `Framework-agnostic`: 프레임워크에서 독립적인
 - `SyntheticEvent`: 합성 이벤트
 - `stmts`: statements, 명령문, 문장
+- `IPC`: Inter-Process Communication, 프로세스 간 통신
