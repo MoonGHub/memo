@@ -93,11 +93,10 @@
 
 ### Type(Trait)
 
+- `String`: 동적 문자열 일 때 사용
 - `Result<T, E>` - `Ok(T)`, `Err(E)`
   - `Result<u8, _>`: 성공 시 `u8`, 에러 시 `_`(알 수 없는 타입 -> 타입 추론)
   - `Result<Self, Self::Error>`
-- `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용
-- `String`: 동적 문자열 일 때 사용
 - `Fn`, `FnMut`, `FnOnce`: 호출 가능한 객체(클로저, 함수 포인터 등)의 추상 타입
 
   ```rs
@@ -125,10 +124,154 @@
   - `FnMut()`: 외부 변수(환경)를 가변 참조(&mut x)로 캡처, FnMut 클로저를 호출하려면 클로저 변수 자체도 mut여야 함
   - `FnOnce()`: move로 소유권을 클로저 내부로 이동시켜 소비하기 때문에, 한 번만 호출 가능
 
+- `Any`: `Box<dyn Any>`처럼 어떤 타입도 허용
+
+#### Liftime Specifier
+
+> `'static`: 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
+
+- `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용
+- `&'static mut str`: `'static` 수명을 가진 가변 참조
+
 #### [Primitive](https://doc.rust-lang.org/std/index.html#primitives)
 
 - `i8`: -128 ~ 127
 - `u8`: 0 ~ 255
+
+#### [Box](https://doc.rust-kr.org/ch15-00-smart-pointers.html)
+
+> 힙 메모리를 사용하는 스마트 포인터
+
+언제 사용하는가?
+
+- [동적 디스패치](#동적-디스패치): 크기를 모르는 타입(dyn Trait)은 직접 사용불가하며, 이 때 Box로 감싸서 사용
+- 재귀적 구조체: 자기 자신을 직접 포함할 때, Box로 감싸줌
+- 큰 데이터 사용 시
+
+사용법
+
+- `Box<T>`: `T`를 힙에 저장할 수 있는 박스 타입
+- `Box::new(value)`: value를 힙에 저장하고, 그 포인터를 스택에 저장
+
+예시
+
+- 동적 디스패치
+
+  ```rs
+  trait Animal {
+      fn speak(&self);
+  }
+
+  struct Dog;
+
+  impl Animal for Dog {
+      fn speak(&self) {
+          println!("멍멍!");
+      }
+  }
+
+  let a: Box<dyn Animal> = Box::new(Dog);
+  a.speak();
+  ```
+
+- 재귀적 구조체
+
+  ```rs
+  #[allow(dead_code)]
+  enum List {
+      Cons(i32, Box<List>),
+      Nil,
+  }
+
+  use List::*;
+
+  fn main() {
+      let list = Cons(1, Box::new(Cons(2, Box::new(Nil))));
+
+      // 열거형 패턴으로 단일 실행
+      if let Cons(value, _) = list {
+          println!("첫 번째 값: {}", value);
+      }
+
+      // 순회 실행
+      fn print_list(list: &List) {
+          match list {
+              Cons(value, next) => {
+                  println!("{}", value);
+                  print_list(next);
+              }
+              Nil => {}
+          }
+      }
+      print_list(&list);
+  }
+  ```
+
+- 큰 데이터 사용 시
+
+  ```rs
+  #[derive(Debug)]
+  struct BigData {
+      arr: [u8; 1000], // 큰 데이터
+  }
+
+  let big = Box::new(BigData { arr: [0; 1000] });
+
+  println!("{:?}", big.arr)
+
+  ```
+
+#### [Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html)
+
+특징
+
+- 가변 크기의 배열
+- 힙(heap) 메모리에 데이터를 연속적으로 저장
+- 오직 하나의 타입만 사용가능, 여러개 사용 시에는 enum사용
+
+```rs
+let mut vec = Vec::new();
+
+vec.push(10);
+vec.push(20);
+vec.push(30);
+
+println!("{:?}", vec); // [10, 20, 30]
+
+println!("첫 번째 요소: {}", vec[0]);
+
+for val in &vec {
+    println!("값: {}", val);
+}
+
+vec.pop();
+
+println!("{:?}", vec); // [10, 20]
+```
+
+Enum 사용 시
+
+```rs
+#[derive(Debug)]
+#[allow(dead_code)]
+enum MyType {
+    Int(i32),
+    Text(String),
+    Bool(bool),
+}
+
+let mut vec: Vec<MyType> = Vec::new();
+
+vec.push(MyType::Int(1));
+vec.push(MyType::Text("hello".to_string()));
+vec.push(MyType::Bool(true));
+
+println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
+```
+
+#### [LinkedList](https://doc.rust-lang.org/std/collections/struct.LinkedList.html)
+
+...
 
 <br />
 
@@ -137,9 +280,9 @@
 - `println!`
   - 자리표시자 출력 형식:\
     `{variable_name}`: 변수명에 매칭되는 변수 출력
-    `{}`: 일반 출력 - Display 트레잇을 구현해야함 - [참고](https://doc.rust-lang.org/std/fmt/trait.Display.html#examples)
+    `{}`: 일반 출력 - [Display 트레잇](https://doc.rust-lang.org/std/fmt/trait.Display.html#examples)을 구현해야함
     `{:?}`: 디버깅용 출력 - `#[derive(Debug)]` 속성을 추가해주면 사용 가능
-    `{:#?}`: `{:?}`의 포맷팅
+    `{:#?}`: `{:?}`의 포맷팅 출력
 
 <br />
 
@@ -177,9 +320,40 @@ enum Option<T> {
 }
 ```
 
+#### [std::ptr](https://doc.rust-lang.org/std/ptr/index.html#functions)
+
+> raw pointer를 다룰 때 사용
+
+- `eq`: 메모리 주소 비교
+
 <br />
 
-## PBL
+## Advanced
+
+### 비동기 처리 - async
+
+`cargo add tokio --features full`로 `tokio` 설치
+
+예제
+
+```rs
+use std::time::Duration;
+use tokio::{runtime::Runtime, time::sleep};
+
+async fn task() {
+    println!("start!");
+    sleep(Duration::from_secs(1)).await;
+    println!("complete!");
+}
+
+fn main() {
+    let rt = Runtime::new().unwrap();
+
+    rt.block_on(task());
+
+    println!("main ended");
+}
+```
 
 ### 에러 핸들링
 
@@ -199,6 +373,8 @@ enum Option<T> {
   - `map_err`: `Err`인 경우, 새로운 `Result<T, E2>` 반환
 - Option
   - `ok_or`: `None`인 경우, 지정한 에러로 `Result<T, E>` 반환
+
+<br />
 
 #### match
 
@@ -291,3 +467,77 @@ match greet() {
   ```
 
 - 비동기 코드에서 클로저가 오래 살아야 할 때!
+
+<br />
+
+### 동적 디스패치
+
+> 공통된 트레잇을 구현한 여러 타입을 처리하기 위함
+
+- 정적 디스패치: 컴파일 타임에 결정, 인라인 최적화 => 빠름, 바이너리 커질 가능성 있음
+- 동적 디스패치: 런타임에 결정, 단일 함수 코드로 여러 타입 처리, 가상 메서드 테이블로 호출 => 비교적 느림, 유연
+
+키워드: `dyn`
+사용법: `&dyn Trait` 또는 `Box<dyn Trait>`로 사용
+
+```rs
+trait Animal {
+    fn speak(&self);
+}
+
+struct Dog;
+struct Cat;
+
+impl Animal for Dog {
+    fn speak(&self) {
+        println!("멍멍!");
+    }
+}
+
+impl Animal for Cat {
+    fn speak(&self) {
+        println!("야옹~");
+    }
+}
+
+let dog = Dog;
+let cat = Cat;
+
+let animals: Vec<&dyn Animal> = vec![&dog, &cat];
+
+for animal in animals {
+    animal.speak(); // 런타임에 어떤 speak()를 호출할지 결정됨
+}
+
+// 또는 (&Dog).speak(); 처럼도 사용 가능
+```
+
+<br />
+
+## PBL
+
+### 인스턴스 비교
+
+`==`(PartialEq)를 사용 시, 내부 값을 비교
+
+```rs
+#[derive(PartialEq)]
+struct Dog;
+
+let dog1 = Dog;
+let dog2 = Dog;
+
+println!("{}", dog1 == dog2); // true
+```
+
+메모리 주소 비교
+
+```rs
+use std::ptr;
+
+let dog1 = Dog;
+let dog2 = Dog;
+
+let same = ptr::eq(&dog1, &dog2);
+println!("같은 인스턴스인가? {}", same); // false
+```
