@@ -93,7 +93,11 @@
 
 ### Type(Trait)
 
-- `String`: 동적 문자열 일 때 사용
+- `String`: 소유권이 있는(owned) 동적 문자열(수정 가능) 일 때 사용
+  - `"hello".to_string()`, `String::from("hello")`
+- `str`: 크기 불명(길이에 대한 정보가 없음)의 문자열 슬라이스(borrowed) - 문자열 데이터 그 자체
+  - `'hello'`, `'hi'`
+  - 길이 정보가 없기 때문에 반드시 `&str`와 같이 사용
 - `Result<T, E>` - `Ok(T)`, `Err(E)`
   - `Result<u8, _>`: 성공 시 `u8`, 에러 시 `_`(알 수 없는 타입 -> 타입 추론)
   - `Result<Self, Self::Error>`
@@ -125,6 +129,8 @@
   - `FnOnce()`: move로 소유권을 클로저 내부로 이동시켜 소비하기 때문에, 한 번만 호출 가능
 
 - `Any`: `Box<dyn Any>`처럼 어떤 타입도 허용
+- `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](#async-클로저의-트레잇-전달)
+- `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
 
 #### Liftime Specifier
 
@@ -340,18 +346,20 @@ enum Option<T> {
 use std::time::Duration;
 use tokio::{runtime::Runtime, time::sleep};
 
-async fn task() {
+async fn task() -> String {
     println!("start!");
-    sleep(Duration::from_secs(1)).await;
+    sleep(Duration::from_secs(1)).await;  // await()가 아님!
     println!("complete!");
+
+    "작업 완료!".to_string()
 }
 
 fn main() {
     let rt = Runtime::new().unwrap();
 
-    rt.block_on(task());
+    let result = rt.block_on(task());
 
-    println!("main ended");
+    println!("main ended :: {}", result);
 }
 ```
 
@@ -540,4 +548,89 @@ let dog2 = Dog;
 
 let same = ptr::eq(&dog1, &dog2);
 println!("같은 인스턴스인가? {}", same); // false
+```
+
+### async 함수/클로저의 트레잇 전달
+
+async 함수/클로저는 반환 타입이 `impl Future<Output = T>`임
+
+기본적인 사용
+
+```rs
+use std::future::Future;
+use std::time::Duration;
+use tokio::runtime::Runtime;
+use tokio::time::sleep;
+
+async fn task() -> String {
+    println!("start!");
+    sleep(Duration::from_secs(1)).await;
+    println!("completed!");
+
+    "result".to_string()
+}
+
+async fn call<F, Fut>(f: F) -> String
+where
+    F: Fn() -> Fut,
+    Fut: Future<Output = String>,
+{
+    f().await
+}
+
+fn main() {
+    let rt = Runtime::new().unwrap();
+
+    let result1 = rt.block_on(call(task));
+    println!("{}", result1);
+
+    let result2 = rt.block_on(call(|| async {
+        println!("closure task start");
+        sleep(Duration::from_secs(1)).await;
+        println!("closure task completed");
+
+        "result2".to_string()
+    }));
+    println!("{}", result2);
+}
+```
+
+Pin과 Box와 함께 사용시
+
+```rs
+use std::future::Future;
+use std::pin::Pin;
+use std::time::Duration;
+use tokio::runtime::Runtime;
+use tokio::time::sleep;
+
+async fn task() -> String {
+    println!("start!");
+    sleep(Duration::from_secs(1)).await;
+    println!("completed!");
+
+    "result".to_string()
+}
+
+async fn call(f: impl Fn() -> Pin<Box<dyn Future<Output = String>>>) -> String {
+    f().await
+}
+
+fn main() {
+    let rt = Runtime::new().unwrap();
+
+    let result1 = rt.block_on(call(|| Box::pin(task())));
+    println!("{}", result1);
+
+    let result2 = rt.block_on(call(|| {
+        Box::pin(async {
+            println!("closure task start");
+            sleep(Duration::from_secs(1)).await;
+            println!("closure task completed");
+
+            "result2".to_string()
+        })
+    }));
+    println!("{}", result2);
+}
 ```
