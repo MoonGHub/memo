@@ -26,8 +26,16 @@
       y: i32,
   }
 
+  impl Point {
+      fn p(&self) {
+        println!("{}, {}", self.x, self.y)
+      }
+  }
+
   let p = Point { x: 1, y: 2 };
   println!("({}, {})", p.x, p.y);
+
+  p.p();
   ```
 
 - `Closure`: 익명 함수, 람다와 유사
@@ -90,6 +98,8 @@
 
 - 기타 용어
   - 캡처: 클로저가 외부 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것
+- 기타..
+  - Heap 영역은 모든 스레드가 공유
 
 ### Type(Trait)
 
@@ -98,7 +108,7 @@
 - `str`: 크기 불명(길이에 대한 정보가 없음)의 문자열 슬라이스(borrowed) - 문자열 데이터 그 자체
   - `'hello'`, `'hi'`
   - 길이 정보가 없기 때문에 반드시 `&str`와 같이 사용
-- `Result<T, E>` - `Ok(T)`, `Err(E)`
+- `Result<T, E>`(Enum타입) - `Ok(T)`, `Err(E)`
   - `Result<u8, _>`: 성공 시 `u8`, 에러 시 `_`(알 수 없는 타입 -> 타입 추론)
   - `Result<Self, Self::Error>`
 - `Fn`, `FnMut`, `FnOnce`: 호출 가능한 객체(클로저, 함수 포인터 등)의 추상 타입
@@ -131,18 +141,63 @@
 - `Any`: `Box<dyn Any>`처럼 어떤 타입도 허용
 - `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](#async-클로저의-트레잇-전달)
 - `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
+- `Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#arcatomic-reference-counted)
 
-#### Liftime Specifier
+#### 복수 트레잇 조합
+
+ex) `T: Debug + PartialEq + Clone`: T는 디버그 출력 가능, 동등 비교 가능, 복사 가능함
+
+자주 쓰이는?
+
+- `Copy`: 값을 비트 단위로 복사 가능 (얕은 복사) - 정수, bool, 작은 크기의 복사 가능한 타입
+- `Clone`: 명시적 복사 가능 (clone() 메서드 사용) - Vec, String 등
+- `Debug`: 디버그용 출력 가능 ({:?} 포맷 사용 가능) - 대부분 타입
+- `PartialEq`: 동등 비교 가능(값이 같은지) (==, != 연산자 사용 가능) - 대부분 타입
+- `Eq`: 완전한 동등 비교 가능 (추가 제약이 있는 PartialEq 확장) - 정수, bool 등
+  - `Eq`는 항상 `PartialEq`의 상위 트레잇
+- `PartialOrd`: 부분 순서 비교 가능 (<, >, <=, >=) - 정수, 부동소수점, 문자열 등
+- `Ord`: 완전한 순서 비교 가능 (PartialOrd 확장) - 정수, 문자열 등
+  - `Ord`는 항상 `PartialOrd + Eq`를 포함
+- `Default`: 기본값 생성 가능 (Default::default()) - Option, 기본 자료형 등
+- `Send`: 다른 스레드로 안전하게 이동 가능 - 대부분 스레드 안전 타입
+- `Sync`: 여러 스레드에서 동시에 접근 가능 - 대부분 불변 데이터
+  - `&T`가 `Sync`이면 `T`는 `Send`임
+
+#### Lifetime Specifier
 
 > `'static`: 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
 
 - `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용
 - `&'static mut str`: `'static` 수명을 가진 가변 참조
 
+구조체가 참조를 들고 있을 경우
+
+```rs
+pub struct LimitTracker<'a, T: 'a + Messenger> {
+    messenger: &'a T,
+    value: usize,
+    max: usize,
+}
+```
+
 #### [Primitive](https://doc.rust-lang.org/std/index.html#primitives)
 
 - `i8`: -128 ~ 127
 - `u8`: 0 ~ 255
+
+타입 변환
+
+```rs
+fn main() {
+    let big: i32 = 300;
+    let small: Result<u8, _> = big.try_into();
+
+    match small {
+        Ok(val) => println!("변환 성공: {}", val),
+        Err(e) => println!("변환 실패: {}", e),
+    }
+}
+```
 
 #### [Box](https://doc.rust-kr.org/ch15-00-smart-pointers.html)
 
@@ -289,6 +344,7 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
     `{}`: 일반 출력 - [Display 트레잇](https://doc.rust-lang.org/std/fmt/trait.Display.html#examples)을 구현해야함
     `{:?}`: 디버깅용 출력 - `#[derive(Debug)]` 속성을 추가해주면 사용 가능
     `{:#?}`: `{:?}`의 포맷팅 출력
+- `format!`
 
 <br />
 
@@ -312,6 +368,10 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 - `cfg($)`: $(조건)이 참일 때만 포함(컴파일)\
   ex) `#[cfg(target_os = "linux")]`, `#[cfg(target_os = "macos")]`
 - `cfg_attr($1, $2)`: \$1(조건)이 참일 때만, \$2(속성) 부여, 단 컴파일은 됨
+
+여러 속성들
+
+- `#[tokio::main]`
 
 <br />
 
@@ -338,7 +398,7 @@ enum Option<T> {
 
 ### 비동기 처리 - async
 
-`cargo add tokio --features full`로 `tokio` 설치
+> `cargo add tokio --features full`로 `tokio` 크레잇 설치
 
 예제
 
@@ -373,7 +433,7 @@ fn main() {
 
 <br />
 
-- 공통
+- `Result`와 `Option` 공통
   - `map`: `Ok`에 대해 변환
   - `and_then`
   - `or_else`
@@ -429,6 +489,8 @@ println!("숫자: {}", num);
 
 #### ?
 
+`None`이면 즉시 리턴
+
 ```rs
 fn get_name() -> Result<String, &'static str> {
     Err("이름이 없음")
@@ -448,7 +510,9 @@ match greet() {
 
 <br />
 
-### 소유권 가져오기 move - Closure(익명 함수)에서만 사용 가능
+### 소유권
+
+#### move - Closure(익명 함수)에서만 사용 가능
 
 - 외부 변수를 복사(borrow) 말고 소유(move)하고 싶을 때!
 
@@ -475,6 +539,65 @@ match greet() {
   ```
 
 - 비동기 코드에서 클로저가 오래 살아야 할 때!
+
+#### as_ref
+
+소유권 유지를 위해 사용
+
+```rs
+fn main() {
+    let opt: Option<String> = Some("hello".to_string());
+    let opt_ref: Option<&String> = opt.as_ref();
+
+    if let Some(val) = opt_ref {
+        println!("if :: {}", val);
+    } else {
+        println!("if :: 없음");
+    }
+
+    match opt_ref {
+        Some(val) => println!("match :: {}", val),
+        None => println!("match :: 없음"),
+    }
+
+    println!(
+        "{}",
+        opt_ref.unwrap_or(&"unwrap_or :: 없음 :: 기본 값".to_string())
+    );
+}
+```
+
+구조체에서 값을 참조 시에 사용
+
+```rs
+struct Profile {
+    nickname: Option<String>,
+}
+
+struct User {
+    profile: Option<Profile>,
+}
+
+fn get_uppercase_nickname(user: &User) -> Option<String> {
+    let nickname = user
+        .profile.as_ref()?           // Option<&Profile>
+        .nickname.as_ref()?          // Option<&String>
+        .to_uppercase();             // String
+    Some(nickname)
+}
+
+fn main() {
+    let user = User {
+        profile: Some(Profile {
+            nickname: Some("rustacean".to_string()),
+        }),
+    };
+    println!("{:?}", get_uppercase_nickname(&user));  // Some("RUSTACEAN")
+
+    let user2 = User { profile: None };
+    println!("{:?}", get_uppercase_nickname(&user2));
+}
+```
 
 <br />
 
@@ -522,11 +645,214 @@ for animal in animals {
 
 <br />
 
+### clone 지양
+
+#### Rc(Reference Counted)
+
+- 단일 스레드 환경
+- 다중 소유권을 지원 - 동일한 데이터에 대한 소유권을 공유
+- Deref Trait를 기본적으로 포함하여 자동 역참조
+
+```rs
+async fn main() {
+    let s1 = Rc::new(String::from("hello"));
+
+    let s2 = Rc::clone(&s1);  // Rc::clone가 s1의 rc참조 카운터를 늘림(rc참조 포인터를 복사)
+    let s3 = Rc::clone(&s1);
+}
+```
+
+#### Arc(Atomic Reference Counted)
+
+- 멀티 스레드 환경
+- 여러 스레드에서 동시에 참조 카운트를 수정해도 안전 - `Arc::strong_count`
+
+값을 참조시
+
+```rs
+use std::{sync::Arc, thread};
+
+#[tokio::main]
+async fn main() {
+    let s1 = Arc::new(String::from("hello"));
+
+    for i in 0..2 {
+        let s1_moved = Arc::clone(&s1);
+
+        let handle = thread::Builder::new()
+            .name(format!("thread-{}", i)) // 스레드에 이름 지정
+            .spawn(move || {
+                println!("thread-{} :: {:?}", i, s1_moved);
+            })
+            .unwrap();
+
+        handle.join().unwrap();
+    }
+}
+```
+
+값을 수정시
+
+```rs
+use std::{sync::{Arc, Mutex}, thread};
+
+fn main() {
+    let s1 = Arc::new(Mutex::new(String::from("hello")));   // Mutex가 내부 가변성을 제공해 mut없이 변경 가능
+
+    for i in 0..2 {
+        let s1_moved = Arc::clone(&s1);
+
+        let handle = thread::Builder::new()
+            .name(format!("thread-{}", i))
+            .spawn(move || {
+                let mut data = s1_moved.lock().unwrap();
+                data.push_str(&format!(" from thread-{}", i));
+                println!("thread-{} :: {:?}", i, data);
+            })
+            .unwrap();
+
+        handle.join().unwrap();
+    }
+}
+```
+
+```rs
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+fn main() {
+    let counter = Arc::new(Mutex::new(0));    // Mutex가 내부 가변성을 제공해 mut없이 변경 가능
+
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+            *num += 1;
+
+            std::mem::drop(num);  // 잠금 해제 기능, 생략 가능, 스코프 벗어날 경우 자동 잠금 해제됨
+        });
+
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("최종 값: {}", *counter.lock().unwrap());
+}
+```
+
+#### RefCell
+
+- 단일 소유권만 지원
+- 단일 스레드 환경
+- 내부 가변성 패턴: 불변 참조(외부에서는 불변 속성)를 사용하면서도 값을 수정할 수 있음(unsafe)
+- 컴파일이 아님 런타임에서 체크 - 실행 오류시, 패닉이 발생하며 종료
+
+```rs
+use std::cell::RefCell;
+
+pub trait Messenger {
+    fn send(&self, msg: &str);
+}
+
+pub struct LimitTracker<'a, T: 'a + Messenger> {
+    messenger: &'a T,
+    value: usize,
+    max: usize,
+}
+
+impl<'a, T> LimitTracker<'a, T>
+where
+    T: Messenger,
+{
+    pub fn new(messenger: &T, max: usize) -> LimitTracker<T> {
+        LimitTracker {
+            messenger,
+            value: 0,
+            max,
+        }
+    }
+
+    pub fn set_value(&mut self, value: usize) {
+        self.value = value;
+
+        let percentage_of_max = self.value as f64 / self.max as f64;
+
+        if percentage_of_max >= 1.0 {
+            self.messenger.send("Error: You are over your quota!");
+        } else if percentage_of_max >= 0.9 {
+            self.messenger
+                .send("Urgent warning: You've used up over 90% of your quota!");
+        } else if percentage_of_max >= 0.7 {
+            self.messenger
+                .send("Warning: You've used up over 75% of your quota!");
+        }
+    }
+}
+
+#[derive(Debug)]
+struct MockMessenger {
+    // sent_message: Vec<String>,
+    sent_message: RefCell<Vec<String>>,
+}
+
+impl MockMessenger {
+    fn new() -> MockMessenger {
+        MockMessenger {
+            // sent_message: vec![],
+            sent_message: RefCell::new(vec![]),
+        }
+    }
+}
+
+impl Messenger for MockMessenger {
+    fn send(&self, message: &str) {
+        // self.sent_message.push(String::from(message));  -> 불변참조 self의 필드에 값을 추가 시 오류!
+        self.sent_message.borrow_mut().push(String::from(message));
+    }
+}
+
+fn main() {
+    let mock_messenger = MockMessenger::new();
+    let mut limit_tracker = LimitTracker::new(&mock_messenger, 100);
+
+    limit_tracker.set_value(80);
+
+    // assert_eq!(mock_messenger.sent_message.len(), 1);
+    assert_eq!(mock_messenger.sent_message.borrow().len(), 1);
+
+    println!("{:#?}", mock_messenger);
+}
+```
+
+#### Weak
+
+언제 사용하나?
+
+- 순환 참조 방지: Rc 타입 간에 순환 참조가 발생할 경우, 참조 카운트가 0이 되지 않아서 메모리 누수 발생
+
+```rs
+
+```
+
+#### Cow
+
+#### borrow()
+
+<br />
+
 ## PBL
 
 ### 인스턴스 비교
 
 `==`(PartialEq)를 사용 시, 내부 값을 비교
+
+> `Eq`: 완전한 동치성 비교시 사용(표시),
 
 ```rs
 #[derive(PartialEq)]
@@ -548,6 +874,70 @@ let dog2 = Dog;
 
 let same = ptr::eq(&dog1, &dog2);
 println!("같은 인스턴스인가? {}", same); // false
+```
+
+### 일반 함수/클로저의 트레잇 전달
+
+기본적인 사용
+
+```rs
+struct MyStruct<F>
+where
+    F: Fn(i32) -> i32,
+{
+    func: F,
+}
+
+fn main() {
+    let s = MyStruct { func: |x| x + 10 };
+
+    println!("{}", (s.func)(5));
+}
+```
+
+Box와 함께 사용시
+
+```rs
+struct MyStruct {
+    func: Box<dyn Fn(i32) -> i32>,
+}
+
+fn main() {
+    let s = MyStruct {
+        func: Box::new(|x| x + 10),
+    };
+
+    println!("{}", (s.func)(5));
+}
+```
+
+기타 예제
+
+```rs
+struct Adder<F>
+where
+    F: Fn(i32, i32) -> i32,
+{
+    op: F,
+}
+
+impl<F> Adder<F>
+where
+    F: Fn(i32, i32) -> i32,
+{
+    fn new(op: F) -> Self {
+        Self { op }
+    }
+
+    fn calc(&self, a: i32, b: i32) -> i32 {
+        (self.op)(a, b)
+    }
+}
+
+fn main() {
+    let add = Adder::new(|x, y| x + y);
+    println!("{}", add.calc(3, 4)); // 7
+}
 ```
 
 ### async 함수/클로저의 트레잇 전달
@@ -632,5 +1022,37 @@ fn main() {
         })
     }));
     println!("{}", result2);
+}
+```
+
+트레잇의 async 함수 선언/사용시
+
+> `cargo add async_trait`로 `async_trait` 크레잇 설치
+
+```rs
+use async_trait::async_trait;
+use tokio::runtime::Runtime;
+
+#[async_trait]
+trait MyTrait {
+    async fn call(&self) -> String;
+}
+struct MyStruct;
+
+#[async_trait]
+impl MyTrait for MyStruct {
+    async fn call(&self) -> String {
+        println!("async trait method");
+
+        "result".to_string()
+    }
+}
+
+fn main() {
+    let rt = Runtime::new().unwrap();
+
+    let result = rt.block_on(MyStruct.call());
+
+    println!("main ended :: {}", result);
 }
 ```
