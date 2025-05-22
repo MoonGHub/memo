@@ -141,7 +141,7 @@
 - `Any`: `Box<dyn Any>`처럼 어떤 타입도 허용
 - `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](#async-클로저의-트레잇-전달)
 - `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
-- `Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#arcatomic-reference-counted)
+- `Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#stdsyncarc---atomic-reference-counted)
 
 #### 복수 트레잇 조합
 
@@ -167,7 +167,7 @@ ex) `T: Debug + PartialEq + Clone`: T는 디버그 출력 가능, 동등 비교 
 
 > `'static`: 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
 
-- `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용
+- `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용 - 정적 메모리에 저장됨
 - `&'static mut str`: `'static` 수명을 가진 가변 참조
 
 구조체가 참조를 들고 있을 경우
@@ -647,7 +647,7 @@ for animal in animals {
 
 ### clone 지양
 
-#### Rc(Reference Counted)
+#### std::rc::Rc - Reference Counted
 
 - 단일 스레드 환경
 - 다중 소유권을 지원 - 동일한 데이터에 대한 소유권을 공유
@@ -662,7 +662,7 @@ async fn main() {
 }
 ```
 
-#### Arc(Atomic Reference Counted)
+#### std::sync::Arc - Atomic Reference Counted
 
 - 멀티 스레드 환경
 - 여러 스레드에서 동시에 참조 카운트를 수정해도 안전 - `Arc::strong_count`
@@ -746,7 +746,7 @@ fn main() {
 }
 ```
 
-#### RefCell
+#### std::cell::RefCell
 
 - 단일 소유권만 지원
 - 단일 스레드 환경
@@ -830,19 +830,110 @@ fn main() {
 }
 ```
 
-#### Weak
+##### `Rc<T>`와 `RefCell<T>`의 조합
+
+> 보편적인 방법
+
+- 다중 소유권과 내부 가변성을 가짐
+
+```rs
+#[derive(Debug)]
+enum List {
+    Cons(Rc<RefCell<i32>>, Rc<List>),
+    Nil,
+}
+
+use List::{Cons, Nil};
+use std::cell::RefCell;
+use std::rc::Rc;
+
+fn main() {
+    let value = Rc::new(RefCell::new(5));
+
+    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+    let b = Cons(Rc::new(RefCell::new(6)), Rc::clone(&a));
+    let c = Cons(Rc::new(RefCell::new(10)), Rc::clone(&a));
+
+    *value.borrow_mut() += 10;
+
+    println!("a after = {:?}", a);
+    println!("b after = {:?}", b);
+    println!("c after = {:?}", c);
+}
+```
+
+#### std::rc::Weak
+
+- 소유는 하지않고, 참조만 가능
 
 언제 사용하나?
 
 - 순환 참조 방지: Rc 타입 간에 순환 참조가 발생할 경우, 참조 카운트가 0이 되지 않아서 메모리 누수 발생
 
 ```rs
+use std::{
+    cell::RefCell,
+    rc::{Rc, Weak},
+};
 
+#[derive(Debug)]
+struct Node {
+    value: i32,
+    parent: RefCell<Weak<Node>>,
+    children: RefCell<Vec<Rc<Node>>>,
+}
+
+fn main() {
+    let leaf = Rc::new(Node {
+        value: 3,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![]),
+    });
+
+    let branch = Rc::new(Node {
+        value: 5,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![Rc::clone(&leaf)]),
+    });
+
+    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);   // Rc를 Weak으로 변환 (약한 참조 생성) - 참조카운트 유지
+
+    println!("leaf parent :: {:#?}", leaf.parent.borrow().upgrade());   // Weak을 Rc(살아있을 경우만) 또는 None 반환  - 참조카운트 증가(살아있을 경우만)
+}
 ```
 
-#### Cow
+#### std::borrow::Cow - Clone On Write
 
-#### borrow()
+- 읽을 때는 참조하고, 쓸 때만 복사해서 소유(clone), 또는 원본 사용
+- `Cow::from`: 참조값 전달시 `Cow::Borrowed`, 소유권을 넘길 시에는 `Cow::Owned`
+- `Cow::to_mut`: `Cow::Borrowed`이면 복사하여 소유, `Cow::Owned`이면 원본 사용
+
+```rs
+use std::borrow::Cow;
+
+fn abs_all(input: &mut Cow<[i32]>) {
+    for i in 0..input.len() {
+        let v = input[i];
+        if v < 0 {
+            input.to_mut()[i] = -v; // 이 시점에 clone 발생
+        }
+    }
+}
+
+fn main() {
+    let slice: [i32; 3] = [-1, 2, -3];
+
+    let mut input1: Cow<[i32]> = Cow::Borrowed(&slice);
+    let mut input2 = Cow::from(vec![-1, 0, 1]);
+
+    abs_all(&mut input1);
+    abs_all(&mut input2);
+
+    println!("원본: {:?}", slice); // ➤ [-1, 2, -3] (변경 안 됨)
+    println!("복사본: {:?}", input1); // ➤ [1, 2, 3] (복사되어 복사본 바뀜)
+    println!("소유권 전달: {:?}", input2); // ➤ [1, 0, 1] (소유권 이전하여 원본 바뀜)
+}
+```
 
 <br />
 
