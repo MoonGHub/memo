@@ -937,6 +937,61 @@ fn main() {
 
 <br />
 
+### Derive 매크로 작성 - 커스텀 트레잇 derive 주입
+
+매크로의 흐름
+
+1. 입력 파싱: 입력으로 전달된 구조체나 열거형을 분석
+2. 코드 생성: 분석한 구조체를 바탕으로 hello() 메서드를 포함한 구현을 자동으로 생성
+3. 생성된 코드 반환: 매크로는 생성된 코드를 토큰 스트림(TokenStream) 형태로 반환
+
+작성 방법
+
+1. `cargo new ./lib/my_macro_hello --lib`\
+   프로시저 매크로는 별도의 라이브러리 크레잇으로 작성해야 함
+2. 생성된 크레잇 경로에서 `cargo add syn quote`으로 필요 의존성 설치
+3. 생성된 `Cargo.toml`에 아래 내용이 포함되어야 함
+
+   ```toml
+   [lib]
+   proc-macro = true
+   ```
+
+   전체 내용
+
+   ```toml
+   [package]
+   name = "my_macro_hello"
+   version = "0.1.0"
+   edition = "2024"
+
+   [dependencies]
+   quote = "1.0.40"
+   syn = "2.0.101"
+
+   [lib]
+   proc-macro = true
+   ```
+
+4. 구현체 작성
+
+   ```rs
+
+   ```
+
+5. 라이브러리 의존성 추가 `cargo add my_macro_hello --path ./lib/my_macro_hello`
+6. 사용
+
+   ```rs
+
+   ```
+
+<br />
+
+### 속성 매크로 작성
+
+<br />
+
 ## PBL
 
 ### 인스턴스 비교
