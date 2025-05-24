@@ -937,13 +937,7 @@ fn main() {
 
 <br />
 
-### Derive 매크로 작성 - 커스텀 트레잇 derive 주입
-
-매크로의 흐름
-
-1. 입력 파싱: 입력으로 전달된 구조체나 열거형을 분석
-2. 코드 생성: 분석한 구조체를 바탕으로 hello() 메서드를 포함한 구현을 자동으로 생성
-3. 생성된 코드 반환: 매크로는 생성된 코드를 토큰 스트림(TokenStream) 형태로 반환
+### Derive 매크로 작성(proc_macro_derive) - 커스텀 트레잇 derive 주입
 
 작성 방법
 
@@ -976,14 +970,45 @@ fn main() {
 4. 구현체 작성
 
    ```rs
+    use proc_macro::TokenStream;
+    use quote::quote;
+    use syn::{DeriveInput, parse_macro_input};
 
+    #[proc_macro_derive(MyMacroHello)]
+    pub fn my_macro_hello(input: TokenStream) -> TokenStream {
+        // 매크로가 적용된 타입의 정보
+        let ast = parse_macro_input!(input as DeriveInput);
+
+        // 타입의 이름
+        let name = &ast.ident;
+
+        // 함수 주입
+        let expanded = quote! {
+            impl #name {
+                pub fn hello(&self) {
+                    println!("Hello from {}!", stringify!(#name));
+                }
+            }
+        };
+
+        // 생성된 코드를 토큰 스트림으로 변환
+        expanded.into()
+        // 또는 TokenStream::from(expanded)
+    }
    ```
 
 5. 라이브러리 의존성 추가 `cargo add my_macro_hello --path ./lib/my_macro_hello`
 6. 사용
 
    ```rs
+    use my_macro_hello::MyMacroHello;
 
+    #[derive(MyMacroHello)]
+    struct StructGood;
+
+    fn main() {
+        StructGood.hello();
+    }
    ```
 
 <br />
