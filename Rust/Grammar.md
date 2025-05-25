@@ -1013,7 +1013,70 @@ fn main() {
 
 <br />
 
-### 속성 매크로 작성
+### 속성 매크로 작성(proc_macro_attribute)
+
+작성 방법
+
+1. [Derive 매크로 작성과 동일(1~3)](#derive-매크로-작성proc_macro_derive---커스텀-트레잇-derive-주입)
+2. 구현제 작성
+
+   ```rs
+    use proc_macro::TokenStream;
+    use quote::quote;
+    use syn::{ItemFn, parse_macro_input};
+
+    #[proc_macro_attribute]
+    pub fn auth_required(_attr: TokenStream, item: TokenStream) -> TokenStream {
+        //  파싱
+        let input = parse_macro_input!(item as ItemFn);
+
+        // 파싱된 함수에서 정보 추출
+        let fn_name = &input.sig.ident; // 함수 이름
+        let fn_block = &input.block; // 함수 본문
+        let fn_vis = &input.vis; // 함수 가시성(pub, private)
+        let fn_sig = &input.sig; // 함수 정의 타입
+
+        let expanded = quote! {
+            #fn_vis #fn_sig {
+                println!("[auth_required] 인증 체크 중...");
+
+                // 인증 여부 체크 로직
+                let authorized = true;
+
+                if !authorized {
+                    println!("🚫 인증 실패: {}", stringify!(#fn_name));
+
+                    return;
+                }
+
+                println!("[auth_required] ✅ 인증 체크 성공!");
+
+                // 인증 성공 시, 원본 함수 본문 실행
+                #fn_block
+            }
+        };
+
+        // 생성된 코드를 토큰 스트림으로 변환
+        expanded.into()
+        // 또는 TokenStream::from(expanded)
+    }
+   ```
+
+3. 라이브러리 의존성 추가 `cargo add my_macro_auth --path ./lib/my_macro_auth`
+4. 사용
+
+   ```rs
+    use my_macro_auth::auth_required;
+
+    #[auth_required]
+    fn something_func() {
+        println!("인증된 사용자만 실행됨!");
+    }
+
+    fn main() {
+        something_func();
+    }
+   ```
 
 <br />
 
