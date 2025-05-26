@@ -2,6 +2,8 @@
 
 ## Basic
 
+### 기본 지식
+
 - `Trait`: Interface 와 비슷하지만 다름
 
   ```rs
@@ -96,10 +98,38 @@
   }
   ```
 
+<br />
+
+- 문법
+
+  - 범위 표현식
+
+    - `1..100	`: (범위표현식) 1이상 100미만 - 100 미포함
+    - `1..=100`: (범위표현식) 1이상 1이하 - 100 포함
+
+      ```rs
+        fn main() {
+            let a: Vec<u32> = (1..=100).collect();
+
+            println!("{:?}", a);
+        }
+      ```
+
 - 기타 용어
   - 캡처: 클로저가 외부 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것
 - 기타..
   - Heap 영역은 모든 스레드가 공유
+
+<br />
+
+### [Crates](https://crates.io/)
+
+- `rand`
+- `strum`
+- `strum_macros`
+- `tokio`
+
+<br />
 
 ### Type(Trait)
 
@@ -196,6 +226,31 @@ fn main() {
         Ok(val) => println!("변환 성공: {}", val),
         Err(e) => println!("변환 실패: {}", e),
     }
+}
+```
+
+```rs
+use std::convert::TryFrom;
+
+#[derive(Debug)]
+struct Age(u8);
+
+impl TryFrom<i32> for Age {
+    type Error = String;
+
+    fn try_from(value: i32) -> Result<Self, Self::Error> {
+        if value >= 0 && value <= 130 {
+            Ok(Age(value as u8))
+        } else {
+            Err("나이 범위 초과".into())
+        }
+    }
+}
+
+fn main() {
+    let age: Result<Age, _> = 150.try_into();
+
+    println!("{:?}", age); // Err("나이 범위 초과")
 }
 ```
 
@@ -394,6 +449,17 @@ enum Option<T> {
 
 <br />
 
+### 접근 제어자
+
+기본적으로 `private` 접근 제어자를 가짐
+
+- `pub`: 어디서든 접근 가능 (현재 크레이트 외부도 가능)
+- `pub(crate)`: 크레이트 내부에서만 접근 가능
+- `pub(super)`: 바로 위 모듈에서만 접근 가능
+- `pub(in path)`: `pub(in crate::a)` - a 모듈 내에서만 접근 가능
+
+<br />
+
 ## Advanced
 
 ### 비동기 처리 - async
@@ -434,6 +500,7 @@ fn main() {
 <br />
 
 - `Result`와 `Option` 공통
+  - `expect`: 메세지와 함께 패닉을 발생시킴
   - `map`: `Ok`에 대해 변환
   - `and_then`
   - `or_else`
