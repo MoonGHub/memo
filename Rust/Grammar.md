@@ -100,25 +100,50 @@
 
 <br />
 
-- 문법
+#### 문법
 
-  - 범위 표현식
+- if 조건식은 무조건 `bool`타입이어야 함
 
-    - `1..100	`: (범위표현식) 1이상 100미만 - 100 미포함
-    - `1..=100`: (범위표현식) 1이상 1이하 - 100 포함
+  ```rs
+  let condition = true;
+  let number = if condition { 5 } else { 6 };
 
-      ```rs
-        fn main() {
-            let a: Vec<u32> = (1..=100).collect();
+  println!("The value of number is: {number}");
+  ```
 
-            println!("{:?}", a);
-        }
-      ```
+- 범위 표현식
 
-- 기타 용어
-  - 캡처: 클로저가 외부 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것
-- 기타..
-  - Heap 영역은 모든 스레드가 공유
+  - `1..100	`: (범위표현식) 1이상 100미만 - 100 미포함
+  - `1..=100`: (범위표현식) 1이상 1이하 - 100 포함
+
+    ```rs
+    fn main() {
+        let a: Vec<u32> = (1..=100).collect();
+
+        println!("{:?}", a);
+    }
+    ```
+
+- 반복문: `loop`, `while`, `for`
+
+  ```rs
+  let mut counter = 0;
+
+  let result = loop {
+      counter += 1;
+
+      if counter == 10 {
+          break counter * 2;  // 이 값을 반환하며 반복문을 빠져나감
+      }
+  };
+
+  println!("The result is {result}");
+  ```
+
+#### 알뜰잡식
+
+- 캡처: 클로저가 외부 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것
+- Heap 영역은 모든 스레드가 공유
 
 <br />
 
@@ -131,7 +156,90 @@
 
 <br />
 
-### Type(Trait)
+### Type, Trait
+
+- `스칼라 (scalar)`: 정수, 부동 소수점 숫자, 부울린, 문자
+
+#### Lifetime Specifier
+
+> `'static`: 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
+
+- `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용 - 정적 메모리에 저장됨
+- `&'static mut str`: `'static` 수명을 가진 가변 참조
+
+구조체가 참조를 들고 있을 경우
+
+```rs
+pub struct LimitTracker<'a, T: 'a + Messenger> {
+    messenger: &'a T,
+    value: usize,
+    max: usize,
+}
+```
+
+#### [Primitive](https://doc.rust-lang.org/std/index.html#primitives)
+
+- 숫자 기본 설정 타입: i32, f64
+  - 정수 오버플로우 시, 디버그는 패닉, 릴리즈는 2의 보수 감싸기
+  - 오버플로우 대응: `wrapping_*`, `checked_*`, `overflowing_*`, `saturating_*`
+- `isize`, `usize`: 컴퓨터 환경이 64-bit 아키텍처이면 64비트를, 32-bit 아키텍처이면 32비트
+- 문자열 리터럴은 큰 따옴표 사용, `char`타입(4byte)은 작은 따옴표를 사용
+- `[]`배열은 갯수가 고정되어 있음, 갯수가 변할 시 벡터를 사용
+
+타입 변환
+
+```rs
+fn main() {
+    let big: i32 = 300;
+    let small: Result<u8, _> = big.try_into();
+
+    match small {
+        Ok(val) => println!("변환 성공: {}", val),
+        Err(e) => println!("변환 실패: {}", e),
+    }
+}
+```
+
+```rs
+use std::convert::TryFrom;
+
+#[derive(Debug)]
+struct Age(u8);
+
+impl TryFrom<i32> for Age {
+    type Error = String;
+
+    fn try_from(value: i32) -> Result<Self, Self::Error> {
+        if value >= 0 && value <= 130 {
+            Ok(Age(value as u8))
+        } else {
+            Err("나이 범위 초과".into())
+        }
+    }
+}
+
+fn main() {
+    let age: Result<Age, _> = 150.try_into();
+
+    println!("{:?}", age); // Err("나이 범위 초과")
+}
+```
+
+기타 예제
+
+```rs
+// 튜플
+let tup = (500, 6.4, 1);
+let (x, y, z) = tup;
+
+println!("{x}, {y}, {z}, {}", tup.0);
+
+// 배열
+let a = [1, 2, 3, 4, 5];
+let first = a[0];
+```
+
+#### Trait
 
 - `String`: 소유권이 있는(owned) 동적 문자열(수정 가능) 일 때 사용
   - `"hello".to_string()`, `String::from("hello")`
@@ -192,67 +300,6 @@ ex) `T: Debug + PartialEq + Clone`: T는 디버그 출력 가능, 동등 비교 
 - `Send`: 다른 스레드로 안전하게 이동 가능 - 대부분 스레드 안전 타입
 - `Sync`: 여러 스레드에서 동시에 접근 가능 - 대부분 불변 데이터
   - `&T`가 `Sync`이면 `T`는 `Send`임
-
-#### Lifetime Specifier
-
-> `'static`: 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
-
-- `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용 - 정적 메모리에 저장됨
-- `&'static mut str`: `'static` 수명을 가진 가변 참조
-
-구조체가 참조를 들고 있을 경우
-
-```rs
-pub struct LimitTracker<'a, T: 'a + Messenger> {
-    messenger: &'a T,
-    value: usize,
-    max: usize,
-}
-```
-
-#### [Primitive](https://doc.rust-lang.org/std/index.html#primitives)
-
-- `i8`: -128 ~ 127
-- `u8`: 0 ~ 255
-
-타입 변환
-
-```rs
-fn main() {
-    let big: i32 = 300;
-    let small: Result<u8, _> = big.try_into();
-
-    match small {
-        Ok(val) => println!("변환 성공: {}", val),
-        Err(e) => println!("변환 실패: {}", e),
-    }
-}
-```
-
-```rs
-use std::convert::TryFrom;
-
-#[derive(Debug)]
-struct Age(u8);
-
-impl TryFrom<i32> for Age {
-    type Error = String;
-
-    fn try_from(value: i32) -> Result<Self, Self::Error> {
-        if value >= 0 && value <= 130 {
-            Ok(Age(value as u8))
-        } else {
-            Err("나이 범위 초과".into())
-        }
-    }
-}
-
-fn main() {
-    let age: Result<Age, _> = 150.try_into();
-
-    println!("{:?}", age); // Err("나이 범위 초과")
-}
-```
 
 #### [Box](https://doc.rust-kr.org/ch15-00-smart-pointers.html)
 
@@ -385,10 +432,6 @@ vec.push(MyType::Bool(true));
 println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 ```
 
-#### [LinkedList](https://doc.rust-lang.org/std/collections/struct.LinkedList.html)
-
-...
-
 <br />
 
 ### [Macros](https://doc.rust-lang.org/std/index.html#macros)
@@ -431,6 +474,8 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 <br />
 
 ### [prelude](https://doc.rust-lang.org/std/prelude/index.html)
+
+- `std::cmp::Ordering`: cmp의 결과 타입으로 사용
 
 #### [std::option::Option](https://doc.rust-lang.org/std/option/enum.Option.html)
 
