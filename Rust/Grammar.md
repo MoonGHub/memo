@@ -23,21 +23,51 @@
 - `Struct`: 상속 없는 클래스 느낌
 
   ```rs
-  struct Point {
+  struct Point1 {
       x: i32,
       y: i32,
-  }
+  } // 일반 구조체
+  struct Point2(i32, i32, i32); // 튜플 구조체
 
-  impl Point {
+  impl Point1 {
       fn p(&self) {
-        println!("{}, {}", self.x, self.y)
+          println!("{}, {}", self.x, self.y)
       }
   }
 
-  let p = Point { x: 1, y: 2 };
-  println!("({}, {})", p.x, p.y);
+  let p1 = Point1 { x: 1, y: 2 };
+  println!("({}, {})", p1.x, p1.y);
+  p1.p();
 
-  p.p();
+  let p2 = Point2(1, 2, 3);
+  println!("{}, {}, {}", p2.0, p2.1, p2.2);
+  ```
+
+  ```rs
+  #[derive(Default, Debug)]
+  struct User {
+      active: bool,
+      nickname: String,
+  }
+
+  impl User {
+      fn new() -> Self {
+          Self {
+              ..Default::default()
+          }
+      }
+  }
+
+  fn main() {
+      let user1 = User {
+          active: true,
+          ..User::default() // 스프레드는 마지막에 위치해야 함
+      };
+
+      let user2 = User::new();
+
+      println!("{:?}, {:?}", user1, user2);
+  }
   ```
 
 - `Closure`: 익명 함수, 람다와 유사
@@ -80,7 +110,7 @@
   }
   ```
 
-- `Enum`: Algebraic data type - 서로 다른 타입들끼리의 묶음
+- `Enum`: Algebraic data type - 서로 다른 variant(타입)들의 묶음, 어떤 종류의 타입도 담을 수 있음
 
   ```rs
   enum Direction {
@@ -94,7 +124,48 @@
 
   match dir {
       Direction::North => println!("Going up"),
-      _ => println!("Not going up"),
+      _ => println!("Not going up"),  // 포괄적인 갈래는 마지막에 위치 할 것
+  }
+  ```
+
+  ```rs
+  #[derive(Debug)]
+  enum IpAddr {
+      V4(u8, u8, u8, u8),
+      V6(String),
+      Other { name: String },
+  }
+
+  impl IpAddr {
+      fn p(&self) {
+          println!("{:?}", self);
+      }
+  }
+
+  fn main() {
+      let home = IpAddr::V4(127, 0, 0, 1);
+      let loopback = IpAddr::V6(String::from("::1"));
+      let other = IpAddr::Other {
+          name: String::from("good"),
+      };
+
+      home.p();
+      loopback.p();
+      other.p();
+  }
+  ```
+
+- `Tuple`: 튜플
+
+  ```rs
+  fn main() {
+      let rect1 = (30, 50);
+
+      println!("{}", area(rect1));
+  }
+
+  fn area(dimensions: (u32, u32)) -> u32 {
+      dimensions.0 * dimensions.1
   }
   ```
 
@@ -124,6 +195,8 @@
     }
     ```
 
+  - `&s[..2]`또는 `&s[..]`와 같이도 사용
+
 - 반복문: `loop`, `while`, `for`
 
   ```rs
@@ -140,10 +213,84 @@
   println!("The result is {result}");
   ```
 
+  ```rs
+  let mut count = 0;
+  'counting_up: loop {
+      println!("count = {count}");
+      let mut remaining = 10;
+
+      loop {
+          println!("remaining = {remaining}");
+          if remaining == 9 {
+              break;
+          }
+          if count == 2 {
+              break 'counting_up;
+          }
+          remaining -= 1;
+      }
+
+      count += 1;
+  }
+  println!("End count = {count}");
+  ```
+
+  ```rs
+  let mut number = 3;
+
+  while number != 0 {
+      println!("{number}!");
+
+      number -= 1;
+  }
+
+  println!("LIFTOFF!!!");
+  ```
+
+  ```rs
+  for number in (1..4).rev() {
+      println!("{number}!");
+  }
+  ```
+
+  ```rs
+  fn main() {
+      let mut str = String::from("test goood");
+
+      let word = first_word(&str); // 불변 참조
+
+      str.clear(); // 가변 참조로 에러! - 하지만 word가 사용되지 않으면 word는 없는 것으로 취급하여 허용됨
+
+      // println!("the first word is: {}", word); // word 사용시, 가변참조 str.clear(); 에서 에러 발생
+  }
+
+  fn first_word(s: &String) -> &str {
+      let bytes = s.as_bytes();
+
+      for (i, &item) in bytes.iter().enumerate() {
+          if item == b' ' {
+              return &s[0..i];
+          }
+      }
+
+      &s[..]
+  }
+  ```
+
 #### 알뜰잡식
 
 - 캡처: 클로저가 외부 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것
-- Heap 영역은 모든 스레드가 공유
+- Heap 영역(런타임에 동적 메모리를 할당)은 모든 스레드가 공유
+- 정수형 등 컴파일 타임에 크기가 고정되는 타입은 모두 스택에 저장
+- `"hello"`과 같은 문자열 리터럴은 바이너리 내(읽기 전용 메모리 영역 - static 영역)에 저장되며 `&'static str`타입으로 사용
+- 스택에 저장되는 값은 빠른 복사본 생성으로 계속 사용 가능
+- 스코프 밖으로 벗어났을 때 특정 동작이 요구되는 타입(Drop 등)에 Copy 어노테이션 추가 불가
+- 대여(borrow): `&`참조자로 스택에 저장된 값(힙을 가르키는 - 포인터 + 길이 + 용량 등)을 참조(가르키는)하겠다는 값을 생성, 소유하지 않으니 drop도 없음
+- `*`는 역참조
+- 동일 스코프에서 어떤 값에 대한 불변 참조자 또는 가변 참조자가 존재시, 추가적인 가변 참조자 `&mut`를 만들지 못함
+  - 여러 개의 불변 참조가 생성 가능, 가변 참조자는 하나만 생성 가능
+- 사용되지 않는 변수에 대해서는 최적화를 통해 "사실상 없는 것처럼" 취급
+- 슬라이스 == 연속된 데이터, 슬라이스는 참조형 타입(&)로만 사용
 
 <br />
 
@@ -168,6 +315,17 @@
 - `&'static mut str`: `'static` 수명을 가진 가변 참조
 
 구조체가 참조를 들고 있을 경우
+
+```rs
+#[derive(Debug)]
+pub struct Test<'a> {
+    str: &'a str,
+}
+
+fn main() {
+    println!("{:?}", Test { str: "good" });
+}
+```
 
 ```rs
 pub struct LimitTracker<'a, T: 'a + Messenger> {
@@ -243,9 +401,9 @@ let first = a[0];
 
 - `String`: 소유권이 있는(owned) 동적 문자열(수정 가능) 일 때 사용
   - `"hello".to_string()`, `String::from("hello")`
-- `str`: 크기 불명(길이에 대한 정보가 없음)의 문자열 슬라이스(borrowed) - 문자열 데이터 그 자체
-  - `'hello'`, `'hi'`
-  - 길이 정보가 없기 때문에 반드시 `&str`와 같이 사용
+- `str`: 크기 불명(길이에 대한 정보가 없음)의 문자열 슬라이스 - 문자열 데이터의 연속된 데이터 그 자체를 의미
+  - `'hello'`, `'hi'` 와 같은 값
+  - 따라서, 길이 정보가 없기 때문에 반드시 `&str`와 같은 타입으로 사용됨 - 길이 정보 포함
 - `Result<T, E>`(Enum타입) - `Ok(T)`, `Err(E)`
   - `Result<u8, _>`: 성공 시 `u8`, 에러 시 `_`(알 수 없는 타입 -> 타입 추론)
   - `Result<Self, Self::Error>`
@@ -281,10 +439,6 @@ let first = a[0];
 - `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
 - `Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#stdsyncarc---atomic-reference-counted)
 
-#### 복수 트레잇 조합
-
-ex) `T: Debug + PartialEq + Clone`: T는 디버그 출력 가능, 동등 비교 가능, 복사 가능함
-
 자주 쓰이는?
 
 - `Copy`: 값을 비트 단위로 복사 가능 (얕은 복사) - 정수, bool, 작은 크기의 복사 가능한 타입
@@ -297,9 +451,11 @@ ex) `T: Debug + PartialEq + Clone`: T는 디버그 출력 가능, 동등 비교 
 - `Ord`: 완전한 순서 비교 가능 (PartialOrd 확장) - 정수, 문자열 등
   - `Ord`는 항상 `PartialOrd + Eq`를 포함
 - `Default`: 기본값 생성 가능 (Default::default()) - Option, 기본 자료형 등
+  - 정수형 타입은 `0`, `bool` 타입은 `false`, `&str`타입은 `""`의 기본값으로 초기값 생성
 - `Send`: 다른 스레드로 안전하게 이동 가능 - 대부분 스레드 안전 타입
 - `Sync`: 여러 스레드에서 동시에 접근 가능 - 대부분 불변 데이터
   - `&T`가 `Sync`이면 `T`는 `Send`임
+- `T: Debug + PartialEq + Clone`: 복수 트레잇 조합 - T는 디버그 출력 가능, 동등 비교 가능, 복사 가능함
 
 #### [Box](https://doc.rust-kr.org/ch15-00-smart-pointers.html)
 
@@ -434,6 +590,8 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 
 <br />
 
+#### [역참조 강제 변환 (deref coercions)](#역참조-강제-변환-deref-coercions-1)
+
 ### [Macros](https://doc.rust-lang.org/std/index.html#macros)
 
 - `println!`
@@ -443,6 +601,7 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
     `{:?}`: 디버깅용 출력 - `#[derive(Debug)]` 속성을 추가해주면 사용 가능
     `{:#?}`: `{:?}`의 포맷팅 출력
 - `format!`
+- `dbg!`: 디버그 출력을 하며 결과값을 그대로 반환함, 넘기는 값이 소유권을 가지는 타입이면, 그 소유권이 dbg!로 이동
 
 <br />
 
@@ -473,7 +632,7 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 
 <br />
 
-### [prelude](https://doc.rust-lang.org/std/prelude/index.html)
+### [prelude](https://doc.rust-lang.org/std/prelude/index.html) - 프렐루드
 
 - `std::cmp::Ordering`: cmp의 결과 타입으로 사용
 
@@ -483,6 +642,17 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 enum Option<T> {
     Some(T), // 값이 있는 경우
     None,    // 값이 없는 경우
+}
+```
+
+예제
+
+```rs
+fn main() {
+    let some_number = Some(10).unwrap_or(1);
+    let none_number = None.unwrap_or(1);
+
+    println!("{}, {}", some_number * 100, none_number * 100);
 }
 ```
 
@@ -506,6 +676,10 @@ enum Option<T> {
 <br />
 
 ## Advanced
+
+### 역참조 강제 변환 (deref coercions)
+
+..
 
 ### 비동기 처리 - async
 
@@ -540,7 +714,8 @@ fn main() {
 => `Option<T>`(Some, None) 또는 `Result<T, E>`(Ok, Err)와 함께 사용
 
 - `unwrap`: 실패(Err 또는 None)일 경우 panic 발생. 즉, 프로그램이 종료
-- `?`: 실패(Err 또는 None) 시, 조기 리턴하며 panic이 발생하지 않고 에러를 전파
+- `unwrap_or`: 디폴트 값 설정
+- `?`: 실패(Err 또는 None) 시, 해당 실패값으로 즉시 조기 리턴하며 panic이 발생하지 않음
 
 <br />
 
@@ -623,6 +798,9 @@ match greet() {
 <br />
 
 ### 소유권
+
+- 한 값의 소유자는 동시에 여럿 존재할 수 없음
+- 스코프 밖으로 벗어날 때, 값은 버려짐 - drop 실행
 
 #### move - Closure(익명 함수)에서만 사용 가능
 
@@ -1198,7 +1376,7 @@ fn main() {
 
 `==`(PartialEq)를 사용 시, 내부 값을 비교
 
-> `Eq`: 완전한 동치성 비교시 사용(표시),
+> `Eq`: 완전한 동치성 비교라는 명시적 표시
 
 ```rs
 #[derive(PartialEq)]
