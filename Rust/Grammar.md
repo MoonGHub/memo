@@ -292,6 +292,74 @@
 - 사용되지 않는 변수에 대해서는 최적화를 통해 "사실상 없는 것처럼" 취급
 - 슬라이스 == 연속된 데이터, 슬라이스는 참조형 타입(&)로만 사용
 
+#### 프로젝트(패키지, 크레이트, 모듈) 관리
+
+- 패키지: Cargo.toml이 포함된 하나 이상의 크레이트로 구성된 번들 - 크레이트를 빌드하고, 테스트하고, 공유하는 데 사용하는 카고 기능
+  - 라이브러리 크레이트(lib.rs)는 하나만 작성 가능
+  - `cargo new 경로 --lib`로 만든건 라이브러리 패키지이자 크레잇 - 여러개 가능(Cargo.toml를 포함하고있는 패키지임으로)
+- 크레이트: 라이브러리나 실행 가능한 모듈로 구성된 트리 구조
+
+  - 바이너리 크레이트: 실행 가능한 실행파일로 컴파일할 수 있는 프로그램
+    - 기본적으로 src/main.rs가 크레이트 루트
+    - src/bin안에 둘 시, 여러 바이너리 크레이트를 패키지에 포함할 수 있음
+  - 라이브러리 크레이트: main 함수를 가지고 있지 않고 실행파일 형태로 컴파일되지 않음
+    - 기본적으로 src/lib.rs가 크레이트 루트
+  - 바이너리(src/main.rs)와 라이브러리(src/lib.rs)가 같이 있는 경우, 해당 패키지의 이름을 경로의 시작점으로 라이브러리 크레이트를 사용
+
+    ```rs
+    // 패키지 이름이 hello_app인 경우
+
+    // src/lib.rs
+    pub fn greet(name: &str) -> String {
+        format!("Hello, {}!", name)
+    }
+
+    // src/main.rs
+    fn main() {
+        // 라이브러리 크레이트를 외부 크레이트처럼 패키지 이름을 사용하여 호출
+        println!("{}", hello_app::greet("Rust"));
+    }
+    ```
+
+- 모듈과 use: 구조, 스코프를 제어하고, 조직 세부 경로를 감추는 데 사용
+- 경로: 구조체, 함수, 모듈 등의 이름을 지정
+  - `crate::`: 절대경로로 루트 시작점
+  - `super::`: 부모 모듈의 컨텍스트를 가르키는 상대 경로
+- `use`키워드와 경로를 함께 사용하여 해당 경로를 단축
+  - `use std::io::{self, Write};`
+  - `use std::collections::*;`
+- `mod`는 모듈을 정의
+  - 파일을 로드 - 모듈 파일사용 시, 선언된 위치의 경로를 사용하여 `mod`로 프로젝트의 일부란 것을 명시해줘야 함
+  - 새로운 스코프를 만듬 -> `mod`내에서 새로 `use`를 사용해야 함
+
+#### 접근 제어자
+
+기본적으로 `private` 접근 제어자를 가짐
+
+- `pub`: 어디서든 접근 가능 (현재 크레이트 외부도 가능)
+- `pub(crate)`: 크레이트 내부에서만 접근 가능
+- `pub(super)`: 바로 위 모듈에서만 접근 가능
+- `pub(in path)`: `pub(in crate::a)` - a 모듈 내에서만 접근 가능
+
+```rs
+mod front_of_house {  // eat_at_restaurant와 front_of_house는 동일한 모듈 내에 정의(형제 관계)되어 있어 바로 사용 가능
+    pub mod hosting { // 모듈의 상위에서 아래로 접근하기 위해 pub 명시 필요
+        pub fn add_to_waitlist() {} // 모듈의 상위에서 아래로 접근하기 위해 pub 명시 필요, 반대로 아래에서 위로의 접근으로는 언제든 가능
+    }
+}
+
+pub fn eat_at_restaurant() {
+    // 절대 경로
+    crate::front_of_house::hosting::add_to_waitlist();
+
+    // 상대 경로
+    front_of_house::hosting::add_to_waitlist();
+}
+```
+
+- 구조체(struct) 내에 비공개 필드가 존재 할 경우, 인스턴스를 생성하고 공개(반환)하는 연관 함수가 필요 - 비공개 필드에 값을 지정할 방법이 없기 때문
+- 열거형(enum)은 공개로 지정할 경우, 모든 배리언트가 공개
+
 <br />
 
 ### [Crates](https://crates.io/)
@@ -635,6 +703,7 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 ### [prelude](https://doc.rust-lang.org/std/prelude/index.html) - 프렐루드
 
 - `std::cmp::Ordering`: cmp의 결과 타입으로 사용
+- `std::collections::HashMap`
 
 #### [std::option::Option](https://doc.rust-lang.org/std/option/enum.Option.html)
 
@@ -661,17 +730,6 @@ fn main() {
 > raw pointer를 다룰 때 사용
 
 - `eq`: 메모리 주소 비교
-
-<br />
-
-### 접근 제어자
-
-기본적으로 `private` 접근 제어자를 가짐
-
-- `pub`: 어디서든 접근 가능 (현재 크레이트 외부도 가능)
-- `pub(crate)`: 크레이트 내부에서만 접근 가능
-- `pub(super)`: 바로 위 모듈에서만 접근 가능
-- `pub(in path)`: `pub(in crate::a)` - a 모듈 내에서만 접근 가능
 
 <br />
 
@@ -1232,7 +1290,7 @@ fn main() {
 작성 방법
 
 1. `cargo new ./lib/my_macro_hello --lib`\
-   프로시저 매크로는 별도의 라이브러리 크레잇으로 작성해야 함
+   프로시저 매크로는 별도의 라이브러리 패키지(크레이트)로 작성해야 함
 2. 생성된 크레잇 경로에서 `cargo add syn quote`으로 필요 의존성 설치
 3. 생성된 `Cargo.toml`에 아래 내용이 포함되어야 함
 
