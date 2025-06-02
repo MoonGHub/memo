@@ -1,4 +1,4 @@
-# OS - OPNSense
+# Platform - OPNSense
 
 ## 설치(23.1 - 23.1.1_2)
 

@@ -41,17 +41,16 @@
 - JS-Bundler
   - [Vite](JS-Bundler/Vite.md)
   - [Webpack](JS-Bundler/Webpack.md)
-- Node
-  - [Grammar](node/Grammar.md)
-- OS
-  - [ESXI](OS/ESXI.md)
-  - [Jenkins](OS/Jenkins.md)
-  - [Linux](OS/Linux.md)
-  - [Mac](OS/Mac.md)
-  - [OpenVPN](OS/OpenVPN.md)
-  - [OPNSense](OS/OPNsense.md)
-  - [PBL](OS/PBL.md)
-  - [Windows](OS/Windows.md)
+- Platform
+  - [ESXI](Platform/ESXI.md)
+  - [Jenkins](Platform/Jenkins.md)
+  - [Linux](Platform/Linux.md)
+  - [Mac](Platform/Mac.md)
+  - [Node](Platform/Node.md)
+  - [OpenVPN](Platform/OpenVPN.md)
+  - [OPNSense](Platform/OPNsense.md)
+  - [PBL](Platform/PBL.md)
+  - [Windows](Platform/Windows.md)
 - Python
   - [FastApi](Python/FastApi.md)
   - [Grammar](Python/Grammar.md)

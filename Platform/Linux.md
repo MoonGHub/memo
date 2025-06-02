@@ -1,4 +1,4 @@
-# OS - Linux
+# Platform - Linux
 
 ## Shortcut
 

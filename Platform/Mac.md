@@ -1,4 +1,4 @@
-# OS - Mac
+# Platform - Mac
 
 ## Shortcut
 

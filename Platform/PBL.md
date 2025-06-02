@@ -1,4 +1,4 @@
-# OS - PBL
+# Platform - PBL
 
 ## MAC 또는 Ubuntu
 

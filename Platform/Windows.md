@@ -1,4 +1,4 @@
-# OS - Windows(11)
+# Platform - Windows(11)
 
 ## Shortcut
 

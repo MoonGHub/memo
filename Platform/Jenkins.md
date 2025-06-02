@@ -1,4 +1,4 @@
-# OS - Jenkins
+# Platform - Jenkins
 
 ## 도커로 설치
 

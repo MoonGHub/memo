@@ -1,4 +1,4 @@
-# OS - OpenVPN
+# Platform - OpenVPN
 
 ### 🦋 설치(2.8.5)
 

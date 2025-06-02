@@ -1,4 +1,4 @@
-# OS - ESXI
+# Platform - ESXI
 
 ### Linux 시스템에 VMware Tools 설치
 
