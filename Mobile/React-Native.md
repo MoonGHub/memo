@@ -1,62 +1,12 @@
-# React Native - PBL
+# Mobile - React Native
 
-## 캐시 제거 및 패키지 인식 오류
-
-```shell
-watchman watch-del-all
-npm cache clean --force
-rm -rf ./node_modules/
-rm -rf $TMPDIR/haste-map-*
-rm -rf $TMPDIR/metro-cache # 또는 rm -rf /tmp/metro-*
-yarn install
-```
-
-### ANDROID
-
-```shell
-cd ./android
-./gradlew clean
-
-# In MacOs
-./gradlew --stop
-./gradlew cleanBuildCache
-```
-
-<br />
-
-### IOS
-
-IOS pod 삭제, 클린 후 설치\
-(실리콘 맥의 경우 arch -arm64)
-
-```shell
-pod deintegrate
-pod cache clean --all
-pod install
-```
-
-<br />
-
-### 새 프로젝트 생성 시
-
-```shell
-rm -rf ~/Library/Developer/Xcode/DerivedData 1938
-rm -rf ~/.gradle/caches
-```
-
----
-
-## Mac
+## Android
 
 - Android SDK 경로: **~/Library/Android/sdk/emulator**
-- Emulator를 CLI로 실행
+- 에뮬레이터 실행
   1. `emulator -list-avds`
   2. `emulator -avd {기기명} -gpu {type}`
      - type : auto, host, mode, mesa
-
----
-
-## Android
 
 ### 디버깅
 
@@ -69,11 +19,7 @@ adb shell 또는 adb -s [device_name] shell
 logcat | grep io.cyclub.app.dev
 ```
 
-<br />
-
-### APK 생성(aab -> apk)
-
-aab파일을 bundletool을 이용해 apk를 생성 및 에뮬레이터에 설치
+### APK 생성(aab -> apk) - bundletool을 이용
 
 debug
 
@@ -86,8 +32,6 @@ bundletool build-apks --ks-pass 'pass:{키스토어 패스워드}' --bundle app-
 # 에뮬레이터 설치
 bundletool install-apks --apks app.apks
 ```
-
-<br />
 
 release
 
@@ -107,11 +51,9 @@ bundletool install-apks --apks app.apks
 
 ## IOS
 
+- 시뮬레이터 실행: `open -a Simulator`
+
 ### 디버깅
-
-- `open -a Simulator`: 시뮬레이터 실행
-
----
 
 react-native-image-picker : 카메라 및 이미지 라이브러리
 react-native-device-info : 디바이스 관련 정보
@@ -158,3 +100,73 @@ y: scroll / 10
 });
 }, 3);
 });
+
+---
+
+## 빌드
+
+### Android
+
+- `./gradlew assembleRelease` or `./gradlew assembleDebug`
+
+  - apk빌드
+  - ✅ assembleRelease의 경우, signingConfigs 및 buildTypes에 keystore가 필요
+
+- `./gradlew bundleRelease`
+  - .aab 빌드
+
+---
+
+## 배포
+
+### App Center
+
+- codepush
+  - `appcenter codepush release-react -a {userName}/{AppName} -d {deployType}`
+    - userName: moong_push
+    - AppName: App Name
+    - deployType: Production/Staging[/...CustomName]
+
+---
+
+## PBL
+
+### 캐시 제거 및 패키지 인식 오류
+
+```shell
+watchman watch-del-all
+npm cache clean --force
+rm -rf ./node_modules/
+rm -rf $TMPDIR/haste-map-*
+rm -rf $TMPDIR/metro-cache # 또는 rm -rf /tmp/metro-*
+yarn install
+```
+
+#### Android
+
+```shell
+cd ./android
+./gradlew clean
+
+# In MacOs
+./gradlew --stop
+./gradlew cleanBuildCache
+```
+
+#### IOS
+
+IOS pod 삭제, 클린 후 설치\
+(실리콘 맥의 경우 arch -arm64)
+
+```shell
+pod deintegrate
+pod cache clean --all
+pod install
+```
+
+#### 새 프로젝트 생성 시
+
+```shell
+rm -rf ~/Library/Developer/Xcode/DerivedData 1938
+rm -rf ~/.gradle/caches
+```
