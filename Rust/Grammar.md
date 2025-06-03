@@ -287,10 +287,24 @@
 - 스코프 밖으로 벗어났을 때 특정 동작이 요구되는 타입(Drop 등)에 Copy 어노테이션 추가 불가
 - 대여(borrow): `&`참조자로 스택에 저장된 값(힙을 가르키는 - 포인터 + 길이 + 용량 등)을 참조(가르키는)하겠다는 값을 생성, 소유하지 않으니 drop도 없음
 - `*`는 역참조
-- 동일 스코프에서 어떤 값에 대한 불변 참조자 또는 가변 참조자가 존재시, 추가적인 가변 참조자 `&mut`를 만들지 못함
+
+  ```rs
+  let mut x = 5;  // x는 포인터가 아님, 값 5를 저장한 스택 메모리 공간의 이름
+
+  x += 2; // 따라서 바로 수정 가능
+  println!("{}", x); // 7
+
+  let y = &mut x; // y는 x의 주소를 저장하는 참조자
+  *y += 1;  // 따라서 역참조로 수정
+
+  println!("{}", x); // 8
+  ```
+
+- **동일 스코프에서 어떤 값에 대한 불변 참조자 또는 가변 참조자가 존재시, 추가적인 가변 참조자 `&mut`를 만들지 못함**
   - 여러 개의 불변 참조가 생성 가능, 가변 참조자는 하나만 생성 가능
 - 사용되지 않는 변수에 대해서는 최적화를 통해 "사실상 없는 것처럼" 취급
 - 슬라이스 == 연속된 데이터, 슬라이스는 참조형 타입(&)로만 사용
+- 백트레이스 (backtrace): 어떤 지점에 도달하기까지 호출한 모든 함수의 목록
 
 #### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -410,49 +424,97 @@ pub struct LimitTracker<'a, T: 'a + Messenger> {
   - 정수 오버플로우 시, 디버그는 패닉, 릴리즈는 2의 보수 감싸기
   - 오버플로우 대응: `wrapping_*`, `checked_*`, `overflowing_*`, `saturating_*`
 - `isize`, `usize`: 컴퓨터 환경이 64-bit 아키텍처이면 64비트를, 32-bit 아키텍처이면 32비트
-- 문자열 리터럴은 큰 따옴표 사용, `char`타입(4byte)은 작은 따옴표를 사용
 - `[]`배열은 갯수가 고정되어 있음, 갯수가 변할 시 벡터를 사용
 
-타입 변환
+##### 문자열
+
+- `String`: 소유권이 있는(owned) 동적 문자열(수정 가능) 일 때 사용
+  - `"hello".to_string()`, `String::from("hello")`
+- `str`: 크기 불명(길이에 대한 정보가 없음)의 문자열 슬라이스 - 문자열 데이터의 연속된 데이터 그 자체를 의미
+  - `'hello'`, `'hi'` 와 같은 값
+  - 따라서, 길이 정보가 없기 때문에 반드시 `&str`와 같은 타입으로 사용됨 - 길이 정보 포함
+- 문자열 리터럴은 큰 따옴표 사용되며 `&'static str`타입으로 `UTF-8`형식(u8<sub>1바이트</sub>의 배열)으로 인코딩되어 저장
+- `String`도 `UTF-8`형식(`Vec<u8>`)으로 인코딩되어 저장
+- `UTF-8`은 1바이트에서 4바이트의 가변 길이로, 저장되는 문자에 따라 여러 인덱스(1개~4개) 범위를 차지
+- `char`타입(4byte)은 작은 따옴표를 사용
 
 ```rs
-fn main() {
-    let big: i32 = 300;
-    let small: Result<u8, _> = big.try_into();
+let s1 = String::from("Hello, ");
+let s2 = String::from("world!");
+let s3 = s1 + &s2;  // 이후 s1은 소유권 이전으로 사용 불가
 
-    match small {
-        Ok(val) => println!("변환 성공: {}", val),
-        Err(e) => println!("변환 실패: {}", e),
-    }
+println!("{}", s3); // Hello, world!
+```
+
+가변 길이로 인해 인덱스로 문자열 슬라이스 접근 대신 `chars` 활용
+
+```rs
+// 실제 길이 값(u8의 갯수)은 24
+for c in "Здравствуйте".chars() {
+    println!("{c}");
 }
 ```
 
-```rs
-use std::convert::TryFrom;
+##### 타입 변환
 
-#[derive(Debug)]
-struct Age(u8);
+- `parse`: 문자열을 숫자 등으로 변환
 
-impl TryFrom<i32> for Age {
-    type Error = String;
+  ```rs
+  let n1 = "3.14".parse::<f64>().unwrap(); // turbofish 문법 사용
 
-    fn try_from(value: i32) -> Result<Self, Self::Error> {
-        if value >= 0 && value <= 130 {
-            Ok(Age(value as u8))
-        } else {
-            Err("나이 범위 초과".into())
-        }
-    }
-}
+  let n2: f64 = "3.14".parse().unwrap();
 
-fn main() {
-    let age: Result<Age, _> = 150.try_into();
+  println!("{}, {}", n1, n2);
 
-    println!("{:?}", age); // Err("나이 범위 초과")
-}
-```
+  let result = "abc".parse::<i32>();
+  match result {
+      Ok(n) => println!("숫자: {}", n),
+      Err(e) => println!("에러 발생: {}", e),
+  }
+  ```
 
-기타 예제
+- `try_into`
+
+  ```rs
+  fn main() {
+      let big: i32 = 300;
+      let small: Result<u8, _> = big.try_into();
+
+      match small {
+          Ok(val) => println!("변환 성공: {}", val),
+          Err(e) => println!("변환 실패: {}", e),
+      }
+  }
+  ```
+
+- `try_from`
+
+  ```rs
+  use std::convert::TryFrom;
+
+  #[derive(Debug)]
+  struct Age(u8);
+
+  impl TryFrom<i32> for Age {
+      type Error = String;
+
+      fn try_from(value: i32) -> Result<Self, Self::Error> {
+          if value >= 0 && value <= 130 {
+              Ok(Age(value as u8))
+          } else {
+              Err("나이 범위 초과".into())
+          }
+      }
+  }
+
+  fn main() {
+      let age: Result<Age, _> = 150.try_into();
+
+      println!("{:?}", age); // Err("나이 범위 초과")
+  }
+  ```
+
+##### 기타 예제
 
 ```rs
 // 튜플
@@ -466,16 +528,8 @@ let a = [1, 2, 3, 4, 5];
 let first = a[0];
 ```
 
-#### Trait
+#### 여러 Trait
 
-- `String`: 소유권이 있는(owned) 동적 문자열(수정 가능) 일 때 사용
-  - `"hello".to_string()`, `String::from("hello")`
-- `str`: 크기 불명(길이에 대한 정보가 없음)의 문자열 슬라이스 - 문자열 데이터의 연속된 데이터 그 자체를 의미
-  - `'hello'`, `'hi'` 와 같은 값
-  - 따라서, 길이 정보가 없기 때문에 반드시 `&str`와 같은 타입으로 사용됨 - 길이 정보 포함
-- `Result<T, E>`(Enum타입) - `Ok(T)`, `Err(E)`
-  - `Result<u8, _>`: 성공 시 `u8`, 에러 시 `_`(알 수 없는 타입 -> 타입 추론)
-  - `Result<Self, Self::Error>`
 - `Fn`, `FnMut`, `FnOnce`: 호출 가능한 객체(클로저, 함수 포인터 등)의 추상 타입
 
   ```rs
@@ -507,9 +561,6 @@ let first = a[0];
 - `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](#async-클로저의-트레잇-전달)
 - `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
 - `Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#stdsyncarc---atomic-reference-counted)
-
-자주 쓰이는?
-
 - `Copy`: 값을 비트 단위로 복사 가능 (얕은 복사) - 정수, bool, 작은 크기의 복사 가능한 타입
 - `Clone`: 명시적 복사 가능 (clone() 메서드 사용) - Vec, String 등
 - `Debug`: 디버그용 출력 가능 ({:?} 포맷 사용 가능) - 대부분 타입
@@ -525,6 +576,74 @@ let first = a[0];
 - `Sync`: 여러 스레드에서 동시에 접근 가능 - 대부분 불변 데이터
   - `&T`가 `Sync`이면 `T`는 `Send`임
 - `T: Debug + PartialEq + Clone`: 복수 트레잇 조합 - T는 디버그 출력 가능, 동등 비교 가능, 복사 가능함
+- `std::cmp::Ordering`: cmp의 결과 타입으로 사용
+- `std::collections::HashMap` - O(1)
+- [std::ptr](https://doc.rust-lang.org/std/ptr/index.html#functions): raw pointer를 다룰 때 사용
+  - `eq`: 메모리 주소 비교
+
+##### Result
+
+- `Result<T, E>`(Enum타입) - `Ok(T)`, `Err(E)`
+- `Result<u8, _>`: 성공 시 `u8`, 에러 시 `_`(알 수 없는 타입 -> 타입 추론)
+- `Result<Self, Self::Error>`
+
+  ```rs
+  use std::str::FromStr;
+
+  #[derive(Debug)]
+  struct MyNumber(i32);
+
+  impl FromStr for MyNumber {
+      type Err = String;
+
+      fn from_str(s: &str) -> Result<Self, Self::Err> {
+          match s.parse::<i32>() {
+              Ok(n) => Ok(MyNumber(n)),
+              Err(_) => Err("정수가 아닙니다".to_string()),
+          }
+      }
+  }
+
+  let mn = MyNumber::from_str("good");
+  match mn {
+      Ok(mn) => println!("{:?}", mn),
+      Err(err) => println!("{err}"),
+  }
+  ```
+
+##### std::collections::HashMap
+
+- 순서 보장 못함
+
+```rs
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+let team_name = String::from("Blue");
+let score = scores.get(&team_name).copied().unwrap_or(0); // copied를 통해 Option<&V>가 아닌 Option<V>를 얻음
+
+for (key, value) in &scores {
+    println!("{key}: {value}");
+}
+```
+
+- 키가 없을 때만 키와 값 추가하기
+
+  ```rs
+  use std::collections::HashMap;
+
+  let mut scores = HashMap::new();
+  scores.insert(String::from("Blue"), 10);
+
+  scores.entry(String::from("Yellow")).or_insert(50); // or_insert는 키에 대한 가변 참조자(&mut V)를 반환
+  scores.entry(String::from("Blue")).or_insert(50);
+
+  println!("{:?}", scores);
+  ```
 
 #### [Box](https://doc.rust-kr.org/ch15-00-smart-pointers.html)
 
@@ -615,7 +734,7 @@ let first = a[0];
 
 - 가변 크기의 배열
 - 힙(heap) 메모리에 데이터를 연속적으로 저장
-- 오직 하나의 타입만 사용가능, 여러개 사용 시에는 enum사용
+- 오직 하나의 타입만 사용가능, 여러개 사용 시에는 enum과 함께 사용
 
 ```rs
 let mut vec = Vec::new();
@@ -635,6 +754,11 @@ for val in &vec {
 vec.pop();
 
 println!("{:?}", vec); // [10, 20]
+
+let mut v = vec![100, 32, 57];
+for i in &mut v {
+    *i += 50;
+}
 ```
 
 Enum 사용 시
@@ -657,6 +781,22 @@ vec.push(MyType::Bool(true));
 println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 ```
 
+매크로 활용
+
+```rs
+let v = vec![1, 2, 3, 4, 5];
+
+let third: &i32 = &v[2];
+// let third: i32 = (&v)[2]; // 의 경우, 복사본이므로 원본 벡터와 연결이 되지 않음
+println!("The third element is {third}");
+
+let third: Option<&i32> = v.get(2); // get은 Option<T>를 반환 -> 범위 밖이어도 패닉이 발생하지 않음
+match third {
+    Some(third) => println!("The third element is {third}"),
+    None => println!("There is no third element."),
+}
+```
+
 <br />
 
 #### [역참조 강제 변환 (deref coercions)](#역참조-강제-변환-deref-coercions-1)
@@ -664,13 +804,17 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 ### [Macros](https://doc.rust-lang.org/std/index.html#macros)
 
 - `println!`
+  - 소유권을 가져가지 않음
   - 자리표시자 출력 형식:\
     `{variable_name}`: 변수명에 매칭되는 변수 출력
     `{}`: 일반 출력 - [Display 트레잇](https://doc.rust-lang.org/std/fmt/trait.Display.html#examples)을 구현해야함
     `{:?}`: 디버깅용 출력 - `#[derive(Debug)]` 속성을 추가해주면 사용 가능
     `{:#?}`: `{:?}`의 포맷팅 출력
 - `format!`
+  - 소유권을 가져가지 않음
 - `dbg!`: 디버그 출력을 하며 결과값을 그대로 반환함, 넘기는 값이 소유권을 가지는 타입이면, 그 소유권이 dbg!로 이동
+- `panic!`: 복구 불가능한 에러 처리
+- `assert_eq!`: 유닛 테스트 또는 디버깅에 사용, 설정한 두 값이 다르면 panic 발생
 
 <br />
 
@@ -703,8 +847,7 @@ println!("{:?}", vec); // [Int(1), Text("hello"), Bool(true)]
 
 ### [prelude](https://doc.rust-lang.org/std/prelude/index.html) - 프렐루드
 
-- `std::cmp::Ordering`: cmp의 결과 타입으로 사용
-- `std::collections::HashMap`
+#### [std::result::Result](https://doc.rust-lang.org/std/result/enum.Result.html)
 
 #### [std::option::Option](https://doc.rust-lang.org/std/option/enum.Option.html)
 
@@ -726,19 +869,15 @@ fn main() {
 }
 ```
 
-#### [std::ptr](https://doc.rust-lang.org/std/ptr/index.html#functions)
-
-> raw pointer를 다룰 때 사용
-
-- `eq`: 메모리 주소 비교
-
-<br />
+---
 
 ## Advanced
 
 ### 역참조 강제 변환 (deref coercions)
 
-..
+내부적으로 Deref를 구현하는 Trait
+
+- `String`: String은 str의 Wrapper이며(실제로는 `Vec<u8>`), &str으로 변환됨
 
 ### 비동기 처리 - async
 
@@ -769,28 +908,112 @@ fn main() {
 
 ### 에러 핸들링
 
+#### 복구 불가능한 에러
+
+사용자를 위험에 빠뜨릴 수 있는 연산을 수행할 때 의도적인 `panic!`을 사용
+
+> 기본적으로 `panic!` 발생 시, unwinding 실행 - 데이터/메모리 정리
+
+`unwinding`를 하지않고, 바로 그만두기 방식
+
+```toml
+[profile.release]
+panic = 'abort'
+```
+
+예제
+
+```rs
+use std::fs::File;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        Err(error) => panic!("Problem opening the file: {:?}", error),
+    };
+}
+```
+
+#### 복구 가능한 에러
+
+```rs
+use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => match File::create("hello.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("Problem creating the file: {:?}", e),
+            },
+            other_error => {
+                panic!("Problem opening the file: {:?}", other_error);
+            }
+        },
+    };
+}
+```
+
+위와 동일 기능
+
+```rs
+use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let greeting_file = File::open("hello.txt").unwrap_or_else(|error| {
+        if error.kind() == ErrorKind::NotFound {
+            File::create("hello.txt").unwrap_or_else(|error| {
+                panic!("Problem creating the file: {:?}", error);
+            })
+        } else {
+            panic!("Problem opening the file: {:?}", error);
+        }
+    });
+}
+```
+
+##### 체이닝 함수로 제어
+
 `unwrap`, `match`, `unwrap_or`, `unwrap_or_else`, `?`
 => `Option<T>`(Some, None) 또는 `Result<T, E>`(Ok, Err)와 함께 사용
 
 - `unwrap`: 실패(Err 또는 None)일 경우 panic 발생. 즉, 프로그램이 종료
 - `unwrap_or`: 디폴트 값 설정
-- `?`: 실패(Err 또는 None) 시, 해당 실패값으로 즉시 조기 리턴하며 panic이 발생하지 않음
+- `?`: 실패(Err 또는 None) 시, 해당 실패값으로 즉시 조기 리턴하며 panic이 발생하지 않음 - 에러 전파
 
 <br />
 
 - `Result`와 `Option` 공통
-  - `expect`: 메세지와 함께 패닉을 발생시킴
-  - `map`: `Ok`에 대해 변환
+  - `expect`: 에러 발생 시 panic!의 기본메세지 대신 설정한 메세지를 표시하며 패닉을 발생, 또는 정상값 반환
+  - `map`: `Ok`또는 `Some`에 대해 변환 후, 새로운 `Result`또는 `Option` 반환
   - `and_then`
   - `or_else`
 - Result
-  - `map_err`: `Err`인 경우, 새로운 `Result<T, E2>` 반환
+  - `ok`: `Option<T>`로 반환되며 `Err`인 경우는 `None`
+  - `map_err`: `Err`에 대해 변환 후, 새로운 `Result` 반환
 - Option
-  - `ok_or`: `None`인 경우, 지정한 에러로 `Result<T, E>` 반환
+  - `ok_or`: 지정한 에러로 `Result<T, E>` 반환
 
 <br />
 
-#### match
+`Err` 배리언트가 나오지 않는 상황에서는 아래 처럼 작성하여도 무방
+
+```rs
+use std::net::IpAddr;
+
+let home: IpAddr = "127.0.0.1"
+    .parse()
+    .expect("Never :: Hardcoded IP address should be valid");
+```
+
+###### match
 
 ```rs
 use std::thread;
@@ -806,7 +1029,7 @@ match handle.join() {
 }
 ```
 
-#### unwrap_or - 기본값 반환
+###### unwrap_or - 기본값 반환
 
 ```rs
 fn get_number() -> Option<i32> {
@@ -817,7 +1040,7 @@ let num = get_number().unwrap_or(42); // 실패 시 기본값 42
 println!("숫자: {}", num);
 ```
 
-#### unwrap_or_else - 기본값 함수 호출
+###### unwrap_or_else - 기본값 함수 호출
 
 ```rs
 fn default_number() -> i32 {
@@ -833,9 +1056,10 @@ let num = get_number().unwrap_or_else(default_number);
 println!("숫자: {}", num);
 ```
 
-#### ?
+###### ?
 
-`None`이면 즉시 리턴
+- `None` 또는 `Err`이면 즉시 리턴하며 에러를 전파
+- Result, Option 혹은 FromResidual을 구현한 타입을 반환하는 함수에서만 사용 가능
 
 ```rs
 fn get_name() -> Result<String, &'static str> {
@@ -852,6 +1076,24 @@ match greet() {
     Ok(_) => println!("완료"),
     Err(e) => println!("에러 발생: {}", e),
 }
+```
+
+```rs
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut username = String::new();
+
+    File::open("hello.txt")?.read_to_string(&mut username)?;
+
+    Ok(username)
+
+    // 위는 아래와 동일
+    // fs::read_to_string("hello.txt")
+}
+
+println!("{:?}", read_username_from_file());
 ```
 
 <br />
@@ -1253,7 +1495,7 @@ fn main() {
 
 #### std::borrow::Cow - Clone On Write
 
-- 읽을 때는 참조하고, 쓸 때만 복사해서 소유(clone), 또는 원본 사용
+- 읽을 때는 참조하고, 쓸 때만 복사해서 소유(clone) 또는 원본 사용
 - `Cow::from`: 참조값 전달시 `Cow::Borrowed`, 소유권을 넘길 시에는 `Cow::Owned`
 - `Cow::to_mut`: `Cow::Borrowed`이면 복사하여 소유, `Cow::Owned`이면 원본 사용
 
@@ -1279,8 +1521,8 @@ fn main() {
     abs_all(&mut input2);
 
     println!("원본: {:?}", slice); // ➤ [-1, 2, -3] (변경 안 됨)
-    println!("복사본: {:?}", input1); // ➤ [1, 2, 3] (복사되어 복사본 바뀜)
-    println!("소유권 전달: {:?}", input2); // ➤ [1, 0, 1] (소유권 이전하여 원본 바뀜)
+    println!("복사본: {:?}", input1); // ➤ [1, 2, 3] (복사되어 복사본이 바뀜)
+    println!("소유권 전달: {:?}", input2); // ➤ [1, 0, 1] (소유권이 이전되어 원본이 바뀜)
 }
 ```
 
@@ -1427,7 +1669,7 @@ fn main() {
     }
    ```
 
-<br />
+---
 
 ## PBL
 
@@ -1459,7 +1701,7 @@ let same = ptr::eq(&dog1, &dog2);
 println!("같은 인스턴스인가? {}", same); // false
 ```
 
-### 일반 함수/클로저의 트레잇 전달
+### 일반 함수/클로저의 구조체 필드값
 
 기본적인 사용
 
@@ -1490,7 +1732,7 @@ fn main() {
         func: Box::new(|x| x + 10),
     };
 
-    println!("{}", (s.func)(5));
+    println!("{}", (s.func)(5));  // impl로 구현한 메소드가 아닌, 필드값이어서 괄호 필요
 }
 ```
 
@@ -1513,7 +1755,7 @@ where
     }
 
     fn calc(&self, a: i32, b: i32) -> i32 {
-        (self.op)(a, b)
+        (self.op)(a, b) // impl로 구현한 메소드가 아닌, 필드값이어서 괄호 필요
     }
 }
 
@@ -1523,7 +1765,7 @@ fn main() {
 }
 ```
 
-### async 함수/클로저의 트레잇 전달
+### async 함수/클로저의 전달
 
 async 함수/클로저는 반환 타입이 `impl Future<Output = T>`임
 

@@ -36,7 +36,6 @@
   - [Object](JavaScript/Object.md)
   - [package.json](JavaScript/package.json.md)
   - [PackageManager](JavaScript/PackageManager.md)
-  - [PWA](JavaScript/PWA.md)
   - [Test](JavaScript/Test.md)
 - JS-Bundler
   - [Vite](JS-Bundler/Vite.md)
@@ -63,6 +62,7 @@
   - [Storybook](React/Storybook.md)
   - [TypeScript](React/TypeScript.md)
 - Mobile
+  - [PWA](Mobile/PWA.md)
   - [React-Native](Mobile/React-Native.md)
 - Rust
   - [Grammar](Rust/Grammar.md)

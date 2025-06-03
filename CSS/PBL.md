@@ -24,7 +24,6 @@ CSS 라이브러리 참고 사이트
 
 ### 요소
 
-- 인라인 방식은 width와 height 값을 무시함
 - `box-sizing: border-box;`\
   width 및 height 크기가 border크기를 포함하게 됨(디폴트: content-box;)
 
@@ -199,7 +198,15 @@ color: transparent;
   overflow-y: auto;
   ```
 
-<br />
+### 모바일의 당겨서 새로고침 막기
+
+```css
+body {
+  overscroll-behavior-y: contain;
+}
+```
+
+또는 html의 스타일에서 `overflow: hidden` 적용
 
 ### 커서
 
