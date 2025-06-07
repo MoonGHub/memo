@@ -40,17 +40,17 @@
 
 <br />
 
-## [Workbox](https://developer.chrome.com/docs/workbox?hl=ko)
-
-...
-
-<br />
-
 ## [Caching](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Caching#cache_first_with_cache_refresh)
 
 install 이벤트는 클라이언트를 제어하기 전에 필요한 모든 것을 캐시할 수 있는 기회입니다.
 
 - [참고](https://web.dev/articles/service-worker-lifecycle?hl=ko#install)
+
+<br />
+
+## [Workbox](https://developer.chrome.com/docs/workbox?hl=ko)
+
+...
 
 <br />
 
@@ -85,11 +85,10 @@ install 이벤트는 클라이언트를 제어하기 전에 필요한 모든 것
 
 <br />
 
-### manifest
-
 ### 노치영역 제어
 
 도큐먼트 영역을 노치영역까지 확대
+단, `orientation`이 `landscape`(가로)일 때만 기능
 
 ```html
 <meta
@@ -117,7 +116,16 @@ This is not supported on iOS.
 
 <br />
 
-## 빌드, 배포
+## 간단히 앱으로 빌드, 배포
+
+**순수 PWA만으로 앱개발 시, 제약 사항**
+
+- `orientation`이 `portrait`(세로)일 때, 노치영역 제어 불가 (배경색만 변경 가능)
+- beforeinstallprompt - 설치 제어
+  - https 환경 또는 localhost접속으로만 가능
+  - 개발 환경 - 실기기에서 IP접속으로 인해 테스트가 불가
+  - IOS 미지원
+- 안드로이드 개발 환경 - 실기기에서 크롬 설치 미동작(단순 웹 바로가기로 기능) -> 실제 유효한 인증서 https 이어야 하는 듯
 
 ### packaging and publishing
 
