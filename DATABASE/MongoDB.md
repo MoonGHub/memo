@@ -1,5 +1,7 @@
 # DATABASE - MongoDB
 
+- GUI 도구: MongoDB Compass
+
 ## 특징
 
 외부적으로는 JSON, 내부적으로 BSON(Binary JSON) 포맷 사용 - JSON보다 용량이 약간 더 커질 수 있지만 속도와 기능 면에서 유리

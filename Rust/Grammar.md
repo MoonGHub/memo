@@ -8,16 +8,23 @@
 
   ```rs
   trait Greet {
-      fn say_hello(&self);
+      fn say_hello1(&self);
+
+      fn say_hello2(&self) {
+          println!("Hello!2")
+      }
   }
 
   struct Person;
 
   impl Greet for Person {
-      fn say_hello(&self) {
-          println!("Hello!");
+      fn say_hello1(&self) {
+          println!("Hello!1");
       }
   }
+
+  Person.say_hello1();
+  Person.say_hello2();
   ```
 
 - `Struct`: 상속 없는 클래스 느낌
@@ -264,7 +271,7 @@
       // println!("the first word is: {}", word); // word 사용시, 가변참조 str.clear(); 에서 에러 발생
   }
 
-  fn first_word(s: &String) -> &str {
+  fn first_word(s: &String) -> &str { // 라이프타임 생략 규칙 1~2에 해당되어 추론 가능
       let bytes = s.as_bytes();
 
       for (i, &item) in bytes.iter().enumerate() {
@@ -279,6 +286,7 @@
 
 #### 알뜰잡식
 
+- 메서드: 메서드는 impl 블록에서 정의되는 함수
 - 캡처: 클로저가 외부 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것
 - Heap 영역(런타임에 동적 메모리를 할당)은 모든 스레드가 공유
 - 정수형 등 컴파일 타임에 크기가 고정되는 타입은 모두 스택에 저장
@@ -306,6 +314,9 @@
 - 슬라이스 == 연속된 데이터, 슬라이스는 참조형 타입(&)로만 사용
 - 백트레이스 (backtrace): 어떤 지점에 도달하기까지 호출한 모든 함수의 목록
 - mangle: minify + uglify
+- `&self`: impl 구현체 함수의 첫 파라미터로 쓰며 사용(명시) 시 인스턴스의 함수로 호출, `&self`가 없으면 정적 메서드로 인스턴스 생성없이 바로 호출
+- `Self`: 해당 impl 블록의 별칭
+- 댕글링 참조 (dangling reference): 이미 메모리에서 사라진 값을 가리키는 참조
 
 #### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -376,6 +387,33 @@ pub fn eat_at_restaurant() {
 - 구조체(struct) 내에 비공개 필드가 존재 할 경우, 인스턴스를 생성하고 공개(반환)하는 연관 함수가 필요 - 비공개 필드에 값을 지정할 방법이 없기 때문
 - 열거형(enum)은 공개로 지정할 경우, 모든 배리언트가 공개
 
+#### 제네릭(Generic)
+
+```rs
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+
+impl Point<f32> {
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+}
+```
+
+```rs
+pub fn notify(item: &impl Summary) {
+    println!("Breaking news! {}", item.summarize());
+}
+```
+
 <br />
 
 ### [Crates](https://crates.io/)
@@ -389,16 +427,45 @@ pub fn eat_at_restaurant() {
 
 ### Type, Trait
 
+- Trait: 메서드 시그니처를 그룹화하여 특정 목적을 달성하는 데 필요한 일련의 동작을 정의
+- Trait를 구현한 구조체를 사용할 때는, 트레이트도 사용하는 스코프내로 가져와야함
+- 외부 타입에 외부 트레이트 구현은 못함, 하나 이상이 자신의 것이어야 함(내 타입 + 외부 트레잇 또는 외부타입 + 내 트레잇)
+
+  ```rs
+  use std::fmt;
+
+  struct MyType;
+
+  // 외부 트레잇 + 내 타입 => 가능
+  impl fmt::Display for MyType {
+      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+          write!(f, "MyType입니다!")
+      }
+  }
+  ```
+
 - `스칼라 (scalar)`: 정수, 부동 소수점 숫자, 부울린, 문자
 
 #### Lifetime Specifier
 
-> `'static`: 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
+> 라이프타임은 제네릭의 일종으로, 어떤 참조자가 필요한 기간 동안 유효함을 보장하여 댕글링 참조를 방지
 
+- `'`(어퍼스트로피)로 시작d
+- `'static`: 정적 라이프타임 - 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
 - `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용 - 정적 메모리에 저장됨
 - `&'static mut str`: `'static` 수명을 가진 가변 참조
+- 참조자를 반환하는 함수를 작성할 때는 반환 타입의 라이프타임 매개변수가 함수 매개변수 중 하나와 일치해야 함
 
-구조체가 참조를 들고 있을 경우
+**라이프타임 생략 규칙** - 아래 절차(1~3)로 입력과 출력 라이프타임이 추론되지 않는 경우 에러
+
+1. 참조자인 매개변수 각각에게 라이프타임 매개변수를 할당
+2. 입력 라이프타임 매개변수가 딱 하나라면, 해당 라이프타임이 모든 출력 라이프타임에 대입
+3. 입력 라이프타임 매개변수가 여러 개인데, 그중 하나가 &self나 &mut self라면,\
+   즉 메서드라면 self의 라이프타임이 모든 출력 라이프타임 매개변수에 대입
+
+<br />
+
+구조체가 참조를 들고 있을 경우, 라이프타임 명시
 
 ```rs
 #[derive(Debug)]
@@ -416,6 +483,26 @@ pub struct LimitTracker<'a, T: 'a + Messenger> {
     messenger: &'a T,
     value: usize,
     max: usize,
+}
+```
+
+```rs
+use std::fmt::Display;
+
+fn longest_with_an_announcement<'a, T>(
+    x: &'a str,
+    y: &'a str,
+    ann: T,
+) -> &'a str
+where
+    T: Display,
+{
+    println!("Announcement! {}", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
 }
 ```
 
@@ -577,6 +664,8 @@ let first = a[0];
 - `Sync`: 여러 스레드에서 동시에 접근 가능 - 대부분 불변 데이터
   - `&T`가 `Sync`이면 `T`는 `Send`임
 - `T: Debug + PartialEq + Clone`: 복수 트레잇 조합 - T는 디버그 출력 가능, 동등 비교 가능, 복사 가능함
+  - `pub fn notify(item: &(impl Summary + Display)) {`
+  - `pub fn notify<T: Summary + Display>(item: &T) {`
 - `std::cmp::Ordering`: cmp의 결과 타입으로 사용
 - `std::collections::HashMap` - O(1)
 - [std::ptr](https://doc.rust-lang.org/std/ptr/index.html#functions): raw pointer를 다룰 때 사용
@@ -1197,7 +1286,22 @@ fn main() {
 
 > 공통된 트레잇을 구현한 여러 타입을 처리하기 위함
 
-- 정적 디스패치: 컴파일 타임에 결정, 인라인 최적화 => 빠름, 바이너리 커질 가능성 있음
+- 정적 디스패치: 컴파일 타임에 결정, 인라인 최적화 => 빠름, 바이너리 커질 가능성 있음\
+  일반 타입 또는 `&impl`를 사용한 구현타입\
+  _\* `&impl`는 매개변수나 반환값 타입으로만 지정가능, `Vec`와 같은 자료형 안에서는 사용 불가하며, 구현체 타입으로 조건분기 불가_
+
+  ```rs
+  pub fn notify(item: &impl Summary) -> impl Summary {
+    // ...
+  }
+  ```
+
+  ```rs
+  pub fn notify<T: Summary>(item1: &T, item2: &T) {
+    // ...
+  }
+  ```
+
 - 동적 디스패치: 런타임에 결정, 단일 함수 코드로 여러 타입 처리, 가상 메서드 테이블로 호출 => 비교적 느림, 유연
 
 키워드: `dyn`
