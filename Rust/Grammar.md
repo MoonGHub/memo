@@ -27,6 +27,24 @@
   Person.say_hello2();
   ```
 
+  ```rs
+  trait Displayable {
+      type Output;
+
+      fn display(&self) -> Self::Output;
+  }
+
+  struct MyStruct;
+
+  impl Displayable for MyStruct {
+      type Output = String;
+
+      fn display(&self) -> Self::Output {
+          "Hello from MyStruct!".to_string()
+      }
+  }
+  ```
+
 - `Struct`: 상속 없는 클래스 느낌
 
   ```rs
@@ -77,7 +95,7 @@
   }
   ```
 
-- `Closure`: 익명 함수, 람다와 유사
+- `Closure`: 익명 함수, 람다와 유사, 클로저들이 사용된 곳에서 타입이 추론
 
   > let 변수명 = |매개변수| 표현식;
 
@@ -274,6 +292,9 @@
   fn first_word(s: &String) -> &str { // 라이프타임 생략 규칙 1~2에 해당되어 추론 가능
       let bytes = s.as_bytes();
 
+      // iter: 요소의 참조값(&T)으로 순회
+      // into_iter: 요소의 소유권(T)을 가지고 순회
+      // iter_mut: 요소의 가변 참조값(&mut T)으로 순회
       for (i, &item) in bytes.iter().enumerate() {
           if item == b' ' {
               return &s[0..i];
@@ -287,13 +308,15 @@
 #### 알뜰잡식
 
 - 메서드: 메서드는 impl 블록에서 정의되는 함수
-- 캡처: 클로저가 외부 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것
+- 캡처: 클로저(익명 함수)가 자신이 정의된 환경의 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것\
+  _(불변 또는 가변으로 참조 - 기본동작, 소유권 이동 - move 키워드 사용)_
 - Heap 영역(런타임에 동적 메모리를 할당)은 모든 스레드가 공유
 - 정수형 등 컴파일 타임에 크기가 고정되는 타입은 모두 스택에 저장
 - `"hello"`과 같은 문자열 리터럴은 바이너리 내(읽기 전용 메모리 영역 - static 영역)에 저장되며 `&'static str`타입으로 사용
 - 스택에 저장되는 값은 빠른 복사본 생성으로 계속 사용 가능
 - 스코프 밖으로 벗어났을 때 특정 동작이 요구되는 타입(Drop 등)에 Copy 어노테이션 추가 불가
 - 대여(borrow): `&`참조자로 스택에 저장된 값(힙을 가르키는 - 포인터 + 길이 + 용량 등)을 참조(가르키는)하겠다는 값을 생성, 소유하지 않으니 drop도 없음
+- 파라미터로 `&self`를 받는 함수들(clone, cloned 등)은 자동참조가 일어남(T => &T)
 - `*`는 역참조
 
   ```rs
@@ -310,6 +333,8 @@
 
 - **동일 스코프에서 어떤 값에 대한 불변 참조자 또는 가변 참조자가 존재시, 추가적인 가변 참조자 `&mut`를 만들지 못함**
   - 여러 개의 불변 참조가 생성 가능, 가변 참조자는 하나만 생성 가능
+  - 불변 참조자를 사용하는 쪽에서는 사용 중 값이 중간에 변경되리라 예상하지 않음
+  - **가변 참조가 존재 하며, 그 가변 참조가 사용되는 구문 이전에 다른 참조는 허용되지 않음**
 - 사용되지 않는 변수에 대해서는 최적화를 통해 "사실상 없는 것처럼" 취급
 - 슬라이스 == 연속된 데이터, 슬라이스는 참조형 타입(&)로만 사용
 - 백트레이스 (backtrace): 어떤 지점에 도달하기까지 호출한 모든 함수의 목록
@@ -317,6 +342,8 @@
 - `&self`: impl 구현체 함수의 첫 파라미터로 쓰며 사용(명시) 시 인스턴스의 함수로 호출, `&self`가 없으면 정적 메서드로 인스턴스 생성없이 바로 호출
 - `Self`: 해당 impl 블록의 별칭
 - 댕글링 참조 (dangling reference): 이미 메모리에서 사라진 값을 가리키는 참조
+- 모든 반복자는 Iterator를 구현하며, 반복자 어댑터(map 등)는 새로운 반복자를 생성하기 때문에 소비 어댑터(collect 등 - 내부적으로 next를 호출)를 사용해야함
+  - 원본 반복자를 소비/반환하는 경우에는 `into_iter`를, 원본을 유지할 때는 반복자 어댑터에 `cloned` 사용
 
 #### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -428,7 +455,7 @@ pub fn notify(item: &impl Summary) {
 ### Type, Trait
 
 - Trait: 메서드 시그니처를 그룹화하여 특정 목적을 달성하는 데 필요한 일련의 동작을 정의
-- Trait를 구현한 구조체를 사용할 때는, 트레이트도 사용하는 스코프내로 가져와야함
+- Trait를 구현한 구조체에서 해당 Trait의 메서드를 사용할 때는, 트레이트도 사용하는 스코프내로 가져와야함
 - 외부 타입에 외부 트레이트 구현은 못함, 하나 이상이 자신의 것이어야 함(내 타입 + 외부 트레잇 또는 외부타입 + 내 트레잇)
 
   ```rs
@@ -641,7 +668,7 @@ let first = a[0];
   }
   ```
 
-  - `Fn()`: 외부 변수(환경)를 불변 참조(&x)로 캡처
+  - `Fn()`: 외부 변수(환경)를 불변 참조(&x)로 캡처하거나 캡처하지 않는 클로저
   - `FnMut()`: 외부 변수(환경)를 가변 참조(&mut x)로 캡처, FnMut 클로저를 호출하려면 클로저 변수 자체도 mut여야 함
   - `FnOnce()`: move로 소유권을 클로저 내부로 이동시켜 소비하기 때문에, 한 번만 호출 가능
 
@@ -1119,7 +1146,7 @@ match handle.join() {
 }
 ```
 
-###### unwrap_or - 기본값 반환
+###### unwrap_or - 디폴트 값 반환
 
 ```rs
 fn get_number() -> Option<i32> {
@@ -1130,7 +1157,7 @@ let num = get_number().unwrap_or(42); // 실패 시 기본값 42
 println!("숫자: {}", num);
 ```
 
-###### unwrap_or_else - 기본값 함수 호출
+###### unwrap_or_else - 디폴트 값 함수로 반환
 
 ```rs
 fn default_number() -> i32 {
@@ -1193,9 +1220,9 @@ println!("{:?}", read_username_from_file());
 - 한 값의 소유자는 동시에 여럿 존재할 수 없음
 - 스코프 밖으로 벗어날 때, 값은 버려짐 - drop 실행
 
-#### move - Closure(익명 함수)에서만 사용 가능
+#### move - Closure(익명 함수)에서만 사용 가능, 소유권 이동
 
-- 외부 변수를 복사(borrow) 말고 소유(move)하고 싶을 때!
+- 캡처 시, 외부 변수를 복사(borrow) 말고 소유(move)하고 싶을 때!
 
   ```rs
   let name = String::from("Rust");
@@ -1205,7 +1232,7 @@ println!("{:?}", read_username_from_file());
   // println!("{}", name); // ❌ name은 더 이상 사용 못함!
   ```
 
-- 스레드에 클로저를 넘길 때!
+- 스레드에 클로저를 넘길 때! - 어느 스레드가 먼저 끝날지 알 수 없기 때문
 
   ```rs
   use std::thread;
@@ -1773,6 +1800,33 @@ fn main() {
         something_func();
     }
    ```
+
+<br />
+
+### 테스트
+
+> `cargo test`로 실행 시, main 함수가 아닌 `#[test]` 속성이 붙은 함수들을 실행
+
+```rs
+#[test]
+fn my_fn() {
+    println!("my_fn :: println");
+}
+```
+
+`cargo test -- --nocapture` 실행 시, 아래와 같이 출력
+
+```text
+   Compiling rust v0.1.0 (/Users/moong/Documents/workspace/playground/rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.24s
+     Running unittests src/main.rs (target/debug/deps/rust-50f7d4cf0a6b627d)
+
+running 1 test
+my_fn :: println
+test my_fn ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+```
 
 ---
 
