@@ -1,6 +1,9 @@
 # HTML - Tag
 
-## Form
+- [form](#form)
+- [metadata](#metadata)
+
+## form
 
 ```html
 <form>
@@ -13,4 +16,12 @@
 </form>
 ```
 
-## Metadata
+### 기능
+
+- `reset`
+- `submit`
+- `checkValidity`
+
+---
+
+## metadata
