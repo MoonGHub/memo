@@ -70,4 +70,5 @@ cumulative: 누적되는
 exhaustive: 철저한
 the key addition: 핵심적인 추가 요소
 Occasionally: 때때로
+explicit use: 명시적인 사용
 ```

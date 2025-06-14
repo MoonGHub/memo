@@ -1,5 +1,13 @@
 # Rust - Grammar
 
+- [Basic](#basic)
+- [Crates](#crates)
+- [Type, Trait](#type-trait)
+- [Macros](#macros)
+- [Attribute](#attribute)
+- [Advanced](#advanced)
+- [PBL](#pbl)
+
 ## Basic
 
 ### 기본 지식
@@ -29,7 +37,7 @@
 
   ```rs
   trait Displayable {
-      type Output;
+      type Output;  // 연관 타입 (associated type)
 
       fn display(&self) -> Self::Output;
   }
@@ -37,7 +45,7 @@
   struct MyStruct;
 
   impl Displayable for MyStruct {
-      type Output = String;
+      type Output = String;  // 연관 타입 (associated type)
 
       fn display(&self) -> Self::Output {
           "Hello from MyStruct!".to_string()
@@ -441,19 +449,20 @@ pub fn notify(item: &impl Summary) {
 }
 ```
 
-<br />
+---
 
-### [Crates](https://crates.io/)
+## [Crates](https://crates.io/)
 
 - `rand`
 - `strum`
 - `strum_macros`
 - `tokio`
 
-<br />
+---
 
-### Type, Trait
+## Type, Trait
 
+- [prelude(프렐루드)](https://doc.rust-lang.org/std/prelude/index.html) - 바로 사용가능한 내장 트레이트
 - Trait: 메서드 시그니처를 그룹화하여 특정 목적을 달성하는 데 필요한 일련의 동작을 정의
 - Trait를 구현한 구조체에서 해당 Trait의 메서드를 사용할 때는, 트레이트도 사용하는 스코프내로 가져와야함
 - 외부 타입에 외부 트레이트 구현은 못함, 하나 이상이 자신의 것이어야 함(내 타입 + 외부 트레잇 또는 외부타입 + 내 트레잇)
@@ -473,7 +482,7 @@ pub fn notify(item: &impl Summary) {
 
 - `스칼라 (scalar)`: 정수, 부동 소수점 숫자, 부울린, 문자
 
-#### Lifetime Specifier
+### Lifetime Specifier
 
 > 라이프타임은 제네릭의 일종으로, 어떤 참조자가 필요한 기간 동안 유효함을 보장하여 댕글링 참조를 방지
 
@@ -533,7 +542,7 @@ where
 }
 ```
 
-#### [Primitive](https://doc.rust-lang.org/std/index.html#primitives)
+### [Primitive](https://doc.rust-lang.org/std/index.html#primitives)
 
 - 숫자 기본 설정 타입: i32, f64
   - 정수 오버플로우 시, 디버그는 패닉, 릴리즈는 2의 보수 감싸기
@@ -541,10 +550,11 @@ where
 - `isize`, `usize`: 컴퓨터 환경이 64-bit 아키텍처이면 64비트를, 32-bit 아키텍처이면 32비트
 - `[]`배열은 갯수가 고정되어 있음, 갯수가 변할 시 벡터를 사용
 
-##### 문자열
+#### 문자열
 
 - `String`: 소유권이 있는(owned) 동적 문자열(수정 가능) 일 때 사용
   - `"hello".to_string()`, `String::from("hello")`
+  - String은 str의 Wrapper이며(실제로는 `Vec<u8>`)
 - `str`: 크기 불명(길이에 대한 정보가 없음)의 문자열 슬라이스 - 문자열 데이터의 연속된 데이터 그 자체를 의미
   - `'hello'`, `'hi'` 와 같은 값
   - 따라서, 길이 정보가 없기 때문에 반드시 `&str`와 같은 타입으로 사용됨 - 길이 정보 포함
@@ -570,7 +580,7 @@ for c in "Здравствуйте".chars() {
 }
 ```
 
-##### 타입 변환
+#### 타입 변환
 
 - `parse`: 문자열을 숫자 등으로 변환
 
@@ -611,7 +621,7 @@ for c in "Здравствуйте".chars() {
   struct Age(u8);
 
   impl TryFrom<i32> for Age {
-      type Error = String;
+      type Error = String;  // 연관 타입 (associated type)
 
       fn try_from(value: i32) -> Result<Self, Self::Error> {
           if value >= 0 && value <= 130 {
@@ -629,7 +639,7 @@ for c in "Здравствуйте".chars() {
   }
   ```
 
-##### 기타 예제
+#### 기타 예제
 
 ```rs
 // 튜플
@@ -643,7 +653,9 @@ let a = [1, 2, 3, 4, 5];
 let first = a[0];
 ```
 
-#### 여러 Trait
+<br />
+
+### 여러 Trait
 
 - `Fn`, `FnMut`, `FnOnce`: 호출 가능한 객체(클로저, 함수 포인터 등)의 추상 타입
 
@@ -697,8 +709,11 @@ let first = a[0];
 - `std::collections::HashMap` - O(1)
 - [std::ptr](https://doc.rust-lang.org/std/ptr/index.html#functions): raw pointer를 다룰 때 사용
   - `eq`: 메모리 주소 비교
+- [std::ops::Deref](#stdopsderef---역참조)
+- [std::ops::Drop](#stdopsdrop---prelude) - prelude
+- [std::boxed::Box](#stdboxedbox) - prelude
 
-##### Result
+#### [std::result::Result](https://doc.rust-lang.org/std/result/enum.Result.html) - prelude
 
 - `Result<T, E>`(Enum타입) - `Ok(T)`, `Err(E)`
 - `Result<u8, _>`: 성공 시 `u8`, 에러 시 `_`(알 수 없는 타입 -> 타입 추론)
@@ -711,7 +726,7 @@ let first = a[0];
   struct MyNumber(i32);
 
   impl FromStr for MyNumber {
-      type Err = String;
+      type Err = String;  // 연관 타입 (associated type)
 
       fn from_str(s: &str) -> Result<Self, Self::Err> {
           match s.parse::<i32>() {
@@ -728,7 +743,7 @@ let first = a[0];
   }
   ```
 
-##### std::collections::HashMap
+#### std::collections::HashMap
 
 - 순서 보장 못함
 
@@ -762,90 +777,7 @@ for (key, value) in &scores {
   println!("{:?}", scores);
   ```
 
-#### [Box](https://doc.rust-kr.org/ch15-00-smart-pointers.html)
-
-> 힙 메모리를 사용하는 스마트 포인터
-
-언제 사용하는가?
-
-- [동적 디스패치](#동적-디스패치): 크기를 모르는 타입(dyn Trait)은 직접 사용불가하며, 이 때 Box로 감싸서 사용
-- 재귀적 구조체: 자기 자신을 직접 포함할 때, Box로 감싸줌
-- 큰 데이터 사용 시
-
-사용법
-
-- `Box<T>`: `T`를 힙에 저장할 수 있는 박스 타입
-- `Box::new(value)`: value를 힙에 저장하고, 그 포인터를 스택에 저장
-
-예시
-
-- 동적 디스패치
-
-  ```rs
-  trait Animal {
-      fn speak(&self);
-  }
-
-  struct Dog;
-
-  impl Animal for Dog {
-      fn speak(&self) {
-          println!("멍멍!");
-      }
-  }
-
-  let a: Box<dyn Animal> = Box::new(Dog);
-  a.speak();
-  ```
-
-- 재귀적 구조체
-
-  ```rs
-  #[allow(dead_code)]
-  enum List {
-      Cons(i32, Box<List>),
-      Nil,
-  }
-
-  use List::*;
-
-  fn main() {
-      let list = Cons(1, Box::new(Cons(2, Box::new(Nil))));
-
-      // 열거형 패턴으로 단일 실행
-      if let Cons(value, _) = list {
-          println!("첫 번째 값: {}", value);
-      }
-
-      // 순회 실행
-      fn print_list(list: &List) {
-          match list {
-              Cons(value, next) => {
-                  println!("{}", value);
-                  print_list(next);
-              }
-              Nil => {}
-          }
-      }
-      print_list(&list);
-  }
-  ```
-
-- 큰 데이터 사용 시
-
-  ```rs
-  #[derive(Debug)]
-  struct BigData {
-      arr: [u8; 1000], // 큰 데이터
-  }
-
-  let big = Box::new(BigData { arr: [0; 1000] });
-
-  println!("{:?}", big.arr)
-
-  ```
-
-#### [Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html)
+#### [std::vec::Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html) - prelude
 
 특징
 
@@ -914,11 +846,29 @@ match third {
 }
 ```
 
-<br />
+#### [std::option::Option](https://doc.rust-lang.org/std/option/enum.Option.html) - prelude
 
-#### [역참조 강제 변환 (deref coercions)](#역참조-강제-변환-deref-coercions-1)
+```rs
+enum Option<T> {
+    Some(T), // 값이 있는 경우
+    None,    // 값이 없는 경우
+}
+```
 
-### [Macros](https://doc.rust-lang.org/std/index.html#macros)
+예제
+
+```rs
+fn main() {
+    let some_number = Some(10).unwrap_or(1);
+    let none_number = None.unwrap_or(1);
+
+    println!("{}, {}", some_number * 100, none_number * 100);
+}
+```
+
+---
+
+## [Macros](https://doc.rust-lang.org/std/index.html#macros)
 
 - `println!`
   - 소유권을 가져가지 않음
@@ -933,9 +883,9 @@ match third {
 - `panic!`: 복구 불가능한 에러 처리
 - `assert_eq!`: 유닛 테스트 또는 디버깅에 사용, 설정한 두 값이 다르면 panic 발생
 
-<br />
+---
 
-### [Attribute](https://doc.rust-lang.org/rust-by-example/attribute.html)
+## [Attribute](https://doc.rust-lang.org/rust-by-example/attribute.html)
 
 > `#![...]`
 > crate 전체$^1$에 특정 동작을 지정하거나 메타데이터를 추가
@@ -960,41 +910,106 @@ match third {
 
 - `#[tokio::main]`
 
-<br />
-
-### [prelude](https://doc.rust-lang.org/std/prelude/index.html) - 프렐루드
-
-#### [std::result::Result](https://doc.rust-lang.org/std/result/enum.Result.html)
-
-#### [std::option::Option](https://doc.rust-lang.org/std/option/enum.Option.html)
-
-```rs
-enum Option<T> {
-    Some(T), // 값이 있는 경우
-    None,    // 값이 없는 경우
-}
-```
-
-예제
-
-```rs
-fn main() {
-    let some_number = Some(10).unwrap_or(1);
-    let none_number = None.unwrap_or(1);
-
-    println!("{}, {}", some_number * 100, none_number * 100);
-}
-```
-
 ---
 
 ## Advanced
 
-### 역참조 강제 변환 (deref coercions)
+### [std::ops::Deref](https://doc.rust-lang.org/std/ops/trait.Deref.html) - 역참조
 
-내부적으로 Deref를 구현하는 Trait
+> `Deref`를 구현하고 있어야 하며, 참조값(&)에 대해 `*`를 사용시 역참조하여 실제 값을 얻음
+> `*y`는 `*(y.deref())`로 동작
+> `&y`는 `y.deref()`를 호출: 자동 역참조 강제 변환 (deref coercions)
 
-- `String`: String은 str의 Wrapper이며(실제로는 `Vec<u8>`), &str으로 변환됨
+- `Deref`: 불변참조 또는 가변참조 -> 불변참조 변환
+- `DerefMut`: 가변참조 -> 가변참조 변환
+
+`&`사용 시, `단순 참조` 또는 `자동 역참조 강제 변환`
+
+- Deref 트레이트를 구현하지 않은 타입에 대해 & 사용시, 해당 값의 `단순 참조값을 반환`
+- Deref 트레이트를 구현한 타입에 대해 & 사용시, `deref`를 호출하며 `자동 역참조 강제 변환`
+
+```rs
+fn main() {
+    let x = 5;
+    let y = &x;
+    let z = Box::new(x);  // x의 복제된 값을 가르킴
+
+    assert_eq!(5, x);
+    assert_eq!(5, *y);
+    assert_eq!(5, *z);
+}
+```
+
+```rs
+use std::ops::Deref;
+
+#[derive(Debug)]
+struct MyBox<T>(T);
+
+impl<T> MyBox<T> {
+    fn new(x: T) -> Self {
+        MyBox(x)
+    }
+}
+
+impl<T> Deref for MyBox<T> {
+    type Target = T;  // 연관 타입 (associated type)
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+fn main() {
+    let a = MyBox::new(10);
+    println!("{:?}", *a);
+
+    let m = MyBox::new(String::from("Rust"));
+    hello(&m);  // 자동 역참조 강제 변환: &MyBox<String> -> &String -> &str
+}
+
+fn hello(name: &str) {
+    println!("Hello, {name}!");
+}
+```
+
+### [std::ops::Drop](https://doc.rust-lang.org/std/ops/trait.Drop.html) - prelude
+
+스코프 밖으로 벗어날 때(자원이 해제될 때), 자동으로 실행됨
+
+- 만들어진 순서의 역순으로 버려짐
+- 강제로 먼저 drop하기 위해서는 `std::mem::drop`(prelude)를 사용
+
+```rs
+struct MyData {
+    data: String,
+}
+
+impl Drop for MyData {
+    fn drop(&mut self) {
+        println!("MyData Dropped :: {}", self.data);
+    }
+}
+
+fn main() {
+    let a = MyData {
+        data: String::from("my stuff :: a"),
+    };
+
+    let b = MyData {
+        data: String::from("my stuff :: b"),
+    };
+
+    drop(b);
+
+    let c = MyData {
+        data: String::from("my stuff :: c"),
+    };
+
+    println!("main ended");
+    // b -> main ended -> c -> a
+}
+```
 
 ### 비동기 처리 - async
 
@@ -1368,12 +1383,106 @@ for animal in animals {
 
 <br />
 
-### clone 지양
+### 스마트 포인터 - clone을 지양하며 동시 참조 객체 사용(Rc, Arc 등)
+
+스마트 포인터는 가리킨 데이터를 소유하며 아래 트레이트를 기본적으로 구현
+
+- [Deref](#stdopsderef---역참조): 역참조
+- [Drop](#stdopsdrop---prelude): 해당 스마트 포인터와 가르키는(힙에 저장된) 데이터 모두 Drop
+
+아래와 같은 트레이트도 스마트 포인터
+
+- String
+- Vec<T>
+
+#### std::boxed::Box
+
+> 값을 힙 메모리에 할당하기 위한 스마트 포인터
+
+언제 사용하는가?
+
+- [동적 디스패치](#동적-디스패치): 특정 트레이트를 구현한 타입(dyn Trait)으로 사용 시
+- 크기를 모르는 타입을 정확한 크기를 요구하는 곳에 사용
+- 재귀적 구조체: 자기 자신을 직접 포함할 때
+- 큰 데이터 사용 시(스택 상에서 복사되는 것을 막고 힙에 저장)
+
+사용법
+
+- `Box<T>`: `T`를 힙에 저장할 수 있는 박스 타입
+- `Box::new(value)`: value를 힙에 저장하고, 그 포인터를 스택에 저장
+
+예시
+
+- 동적 디스패치
+
+  ```rs
+  trait Animal {
+      fn speak(&self);
+  }
+
+  struct Dog;
+
+  impl Animal for Dog {
+      fn speak(&self) {
+          println!("멍멍!");
+      }
+  }
+
+  let a: Box<dyn Animal> = Box::new(Dog);
+  a.speak();
+  ```
+
+- 재귀적 구조체
+
+  ```rs
+  #[allow(dead_code)]
+  enum List {
+      Cons(i32, Box<List>),
+      Nil,
+  }
+
+  use List::*;
+
+  fn main() {
+      let list = Cons(1, Box::new(Cons(2, Box::new(Nil))));
+
+      // 열거형 패턴으로 단일 실행
+      if let Cons(value, _) = list {
+          println!("첫 번째 값: {}", value);
+      }
+
+      // 순회 실행
+      fn print_list(list: &List) {
+          match list {
+              Cons(value, next) => {
+                  println!("{}", value);
+                  print_list(next);
+              }
+              Nil => {}
+          }
+      }
+      print_list(&list);
+  }
+  ```
+
+- 큰 데이터 사용 시
+
+  ```rs
+  #[derive(Debug)]
+  struct BigData {
+      arr: [u8; 1000], // 큰 데이터
+  }
+
+  let big = Box::new(BigData { arr: [0; 1000] });
+
+  println!("{:?}", big.arr)
+
+  ```
 
 #### std::rc::Rc - Reference Counted
 
 - 단일 스레드 환경
-- 다중 소유권을 지원 - 동일한 데이터에 대한 소유권을 공유
+- 다중 소유권을 지원 - 동일한 데이터에 대해 참조 카운팅을 통한 소유권을 공유
 - Deref Trait를 기본적으로 포함하여 자동 역참조
 
 ```rs
@@ -1473,8 +1582,9 @@ fn main() {
 
 - 단일 소유권만 지원
 - 단일 스레드 환경
-- 내부 가변성 패턴: 불변 참조(외부에서는 불변 속성)를 사용하면서도 값을 수정할 수 있음(unsafe)
-- 컴파일이 아님 런타임에서 체크 - 실행 오류시, 패닉이 발생하며 종료
+- 내부 가변성 패턴: 불변 참조 타입 내부에서 값을 수정(unsafe)하기 위함 - API를 노출시키거나 등
+- 대여 규칙을 컴파일 타임이 아닌 런타임에서 체크 - 실행 오류시, 패닉이 발생하며 종료
+- `Ref<T>`와 `RefMut<T>`에 접근 가능하게함
 
 ```rs
 use std::cell::RefCell;
