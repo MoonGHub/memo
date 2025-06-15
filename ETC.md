@@ -1,13 +1,11 @@
 # ETC
 
-### 메타마스크 및 이더리움 결제 참고
+## 메타마스크 및 이더리움 결제 참고
 
 - https://metamask.github.io/api-playground/api-documentation/
 - https://ethereum.org/en/developers/docs/apis/json-rpc/
 
-<br />
-
-### 포트
+## 포트
 
 > `0 ~ 1023`: Well Know Port Numbers - 국제인터넷주소관리기구(CANN)가 특정 앱용으로 예약한 포트\
 > `1024 ~ 49151`: Registered Port Numbers - 회사에서 등록, 사용가능\
@@ -18,9 +16,7 @@
 - `443`: HTTPS
 - `3306`: MySql
 
-<br />
-
-### 데이터 단위
+## 데이터 단위
 
 - bit: 0 or 1
 - Byte: 8bit
@@ -29,18 +25,14 @@
 - GB: 1024MB
 - TB: 1024GB
 
-<br />
-
-### 진수와 비트
+## 진수와 비트
 
 - 2진수 - 0, 1 (1bit)
 - 4진수 - 0 ~ 3 (2bit)
 - 8진수(0): 0 ~ 7 (3bit)
 - 16진수(0x): 0 ~ F (4bit)
 
-<br />
-
-### 문자
+## 문자
 
 - ASCII
 
@@ -62,9 +54,7 @@
       - π: 0x03C0 -> 0xCF 0x80
       - 한: 0xD55C -> 0xED 0x95 0x9C
 
-<br />
-
-### 실수를 저장하는 방법
+## 실수를 저장하는 방법
 
 - 지수와 가수
   - 비트
@@ -95,9 +85,7 @@
 
 ...[참고](https://bigpel66.oopy.io/library/c/chewing-c/4)
 
-<br />
-
-### 로컬 스토리지 vs 세션 스토리지
+## 로컬 스토리지 vs 세션 스토리지
 
 - 로컬 스토리지
   - 영구적 보존
@@ -110,9 +98,7 @@
   - 같은 브라우저 세션, 같은 도메인의 여러탭 또는 창 내에서만 공유
   - 로그인 정보, 장바구니 정보 등을 저장
 
-<br />
-
-### 서버 응답 코드
+## 서버 응답 코드
 
 - 1xx 정보
 - 2xx 성공
@@ -120,39 +106,8 @@
 - 4xx 클라이언트 에러
 - 5xx 서버 에러
 
-<br />
-
 ## ETC
 
 - `Enter`: \r(캐리지 리턴 - 13) + \n(라인피드 - 10)
 - Data from forms is normally encoded using the "media type" application/x-www-form-urlencoded.
   - But when the form includes files, it is encoded as multipart/form-data. (HTTP 프로토콜)
-
-<br />
-
-## WORD
-
-- `i.e.`: 라틴어 id est,의 약어이며, '즉', '다시 말하면'이라는 뜻
-- `Fyi`: For Your Information, 참고로
-- `코딩 컨벤션`: 관리하기 쉬운 코드를 작성하기 위한 일종의 코딩 스타일 규약
-- `UTC`: Coordinated Universal Time - 협정 세계시(영국 런던기준),
-- `KST`: 한국 표준시(UTC +9)
-- `MS949`: 한글 확장 완성형 문자집합(일본어, 중국어 등에도 사용)
-- `XML`: eXtensible Markup Language, 확장성 마크업 언어
-- `RSS`: Really Simple Syndication, 초간편 배포, XML기반의 콘텐츠 배급 포맷
-- `ECMA`: European Computer Manufacturers Association\
-  - ECMAScript(ES)는 자바스크립트를 이루는 코어(Core) 스크립트 언어
-  - ES5는 2009년에 ES6은 2015에 제작
-- `SVG`: Scalable Vector Graphic, 웹을 위한 벡터 기반 그래픽
-  - Canvas는 비트맵 그래픽
-- `TCP`: Transmission Control Protocol
-- `UDP`: User Datagram Protocol
-- `URL`(Uniform Resource Locator): 서버가 제공하는 파일들의 위치
-- `URI`(Uniform Resource Identifier): URL로부터 자원을 식별, HTTP프로토콜, 호스트명, port번호 등 제외함
-- `UUID`: Universally Unique Identifier
-- `TL;DR`: Too Long; Didn't Read, 요약이나 간추린 설명
-- `DX`: Developer Experience, 개발자 경험
-- `Framework-agnostic`: 프레임워크에서 독립적인
-- `SyntheticEvent`: 합성 이벤트
-- `stmts`: statements, 명령문, 문장
-- `IPC`: Inter-Process Communication, 프로세스 간 통신

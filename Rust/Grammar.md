@@ -1,12 +1,42 @@
 # Rust - Grammar
 
 - [Basic](#basic)
+  - [기본 지식](#기본-지식)
+  - [문법](#문법)
+  - [알뜰잡식](#알뜰잡식)
+  - [프로젝트(패키지, 크레이트, 모듈) 관리](#프로젝트패키지-크레이트-모듈-관리)
+  - [접근 제어자](#접근-제어자)
+  - [제네릭(Generic)](#제네릭generic)
 - [Crates](#crates)
 - [Type, Trait](#type-trait)
+  - [Lifetime Specifier](#lifetime-specifier)
+  - [Primitive](#primitive)
+    - [문자열](#문자열)
+    - [타입 변환](#타입-변환)
+    - [기타 예제](#기타-예제)
+  - [여러 Trait](#여러-trait)
+    - [std::result::Result - prelude](#stdresultresult---prelude)
+    - [std::collections::HashMap](#stdcollectionshashmap)
+    - [std::vec::Vec - prelude](#stdvecvec---prelude)
+    - [std::option::Option - prelude](#stdoptionoption---prelude)
+    - [std::sync::mpsc](#stdsyncmpsc)
 - [Macros](#macros)
 - [Attribute](#attribute)
 - [Advanced](#advanced)
+  - [std::ops::Deref - 역참조](#stdopsderef---역참조)
+  - [std::ops::Drop - prelude](#stdopsdrop---prelude)
+  - [비동기 처리 - async](#비동기-처리---async)
+  - [에러 핸들링](#에러-핸들링)
+  - [소유권](#소유권)
+  - [동적 디스패치](#동적-디스패치)
+  - [스마트 포인터 - clone을 지양하며 동시 참조 객체 사용(Rc, Arc 등)](#스마트-포인터---clone을-지양하며-동시-참조-객체-사용rc-arc-등)
+  - [Derive 매크로 작성(proc_macro_derive) - 커스텀 트레잇 derive 주입](#derive-매크로-작성proc_macro_derive---커스텀-트레잇-derive-주입)
+  - [속성 매크로 작성(proc_macro_attribute)](#속성-매크로-작성proc_macro_attribute)
+  - [테스트](#테스트)
 - [PBL](#pbl)
+  - [인스턴스 비교](#인스턴스-비교)
+  - [일반 함수/클로저의 구조체 필드값](#일반-함수클로저의-구조체-필드값)
+  - [async 함수/클로저의 전달](#async-함수클로저의-전달)
 
 ## Basic
 
@@ -204,7 +234,7 @@
 
 <br />
 
-#### 문법
+### 문법
 
 - if 조건식은 무조건 `bool`타입이어야 함
 
@@ -231,6 +261,8 @@
   - `&s[..2]`또는 `&s[..]`와 같이도 사용
 
 - 반복문: `loop`, `while`, `for`
+
+  - `Iterator`를 구현하고 있으면 for문 사용시, iter()를 쓰지않아도 자동 호출(into_iter)됨
 
   ```rs
   let mut counter = 0;
@@ -313,7 +345,7 @@
   }
   ```
 
-#### 알뜰잡식
+### 알뜰잡식
 
 - 메서드: 메서드는 impl 블록에서 정의되는 함수
 - 캡처: 클로저(익명 함수)가 자신이 정의된 환경의 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것\
@@ -353,7 +385,7 @@
 - 모든 반복자는 Iterator를 구현하며, 반복자 어댑터(map 등)는 새로운 반복자를 생성하기 때문에 소비 어댑터(collect 등 - 내부적으로 next를 호출)를 사용해야함
   - 원본 반복자를 소비/반환하는 경우에는 `into_iter`를, 원본을 유지할 때는 반복자 어댑터에 `cloned` 사용
 
-#### 프로젝트(패키지, 크레이트, 모듈) 관리
+### 프로젝트(패키지, 크레이트, 모듈) 관리
 
 - 패키지: Cargo.toml이 포함된 하나 이상의 크레이트로 구성된 번들 - 크레이트를 빌드하고, 테스트하고, 공유하는 데 사용하는 카고 기능
   - 라이브러리 크레이트(lib.rs)는 하나만 작성 가능
@@ -394,7 +426,7 @@
   - 파일을 로드 - 모듈 파일사용 시, 선언된 위치의 경로를 사용하여 `mod`로 프로젝트의 일부란 것을 명시해줘야 함
   - 새로운 스코프를 만듬 -> `mod`내에서 새로 `use`를 사용해야 함
 
-#### 접근 제어자
+### 접근 제어자
 
 기본적으로 `private` 접근 제어자를 가짐
 
@@ -422,7 +454,7 @@ pub fn eat_at_restaurant() {
 - 구조체(struct) 내에 비공개 필드가 존재 할 경우, 인스턴스를 생성하고 공개(반환)하는 연관 함수가 필요 - 비공개 필드에 값을 지정할 방법이 없기 때문
 - 열거형(enum)은 공개로 지정할 경우, 모든 배리언트가 공개
 
-#### 제네릭(Generic)
+### 제네릭(Generic)
 
 ```rs
 struct Point<T> {
@@ -688,8 +720,8 @@ let first = a[0];
 - `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](#async-클로저의-트레잇-전달)
 - `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
 - `Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#stdsyncarc---atomic-reference-counted)
-- `Copy`: 값을 비트 단위로 복사 가능 (얕은 복사) - 정수, bool, 작은 크기의 복사 가능한 타입
-- `Clone`: 명시적 복사 가능 (clone() 메서드 사용) - Vec, String 등
+- `Copy`: 정수, bool 등 작은 크기의 스택에 저장되는 간단한 타입 - 값을 비트 단위로 복사 가능 (얕은 복사)
+- `Clone`: Vec, String, Box 등 힙에 저장되는 복잡한 타입 - 명시적 복사 가능 (clone() 메서드 사용)
 - `Debug`: 디버그용 출력 가능 ({:?} 포맷 사용 가능) - 대부분 타입
 - `PartialEq`: 동등 비교 가능(값이 같은지) (==, != 연산자 사용 가능) - 대부분 타입
 - `Eq`: 완전한 동등 비교 가능 (추가 제약이 있는 PartialEq 확장) - 정수, bool 등
@@ -712,6 +744,10 @@ let first = a[0];
 - [std::ops::Deref](#stdopsderef---역참조)
 - [std::ops::Drop](#stdopsdrop---prelude) - prelude
 - [std::boxed::Box](#stdboxedbox) - prelude
+- std::thread
+  - `spawn`: 새로운 스레드로 실행
+  - `sleep`
+- `std::time::Duration`
 
 #### [std::result::Result](https://doc.rust-lang.org/std/result/enum.Result.html) - prelude
 
@@ -863,6 +899,72 @@ fn main() {
     let none_number = None.unwrap_or(1);
 
     println!("{}, {}", some_number * 100, none_number * 100);
+}
+```
+
+#### std::sync::mpsc
+
+> 스레드간 통신 채널 생성 - 메시지 패싱
+> multiple producer, single consumer => 복수 생산자, 단일 소비자
+
+```rs
+use std::sync::mpsc;
+use std::thread;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        let val = String::from("hi");
+        tx.send(val).unwrap();  // send가 소유권을 가져감
+    });
+
+    let received = rx.recv().unwrap();  // 채널로부터 값을 받을 때까지 기다림, 비동기 처리시 try_recv 사용
+    println!("Got: {}", received);
+}
+```
+
+```rs
+use std::sync::mpsc;
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    let tx1 = tx.clone();
+    thread::spawn(move || {
+        let vals = vec![
+            String::from("hi"),
+            String::from("from"),
+            String::from("the"),
+            String::from("thread"),
+        ];
+
+        for val in vals {
+            tx1.send(val).unwrap();
+            thread::sleep(Duration::from_millis(200));
+        }
+    });
+
+    thread::spawn(move || {
+        let vals = vec![
+            String::from("more"),
+            String::from("messages"),
+            String::from("for"),
+            String::from("you"),
+        ];
+
+        for val in vals {
+            tx.send(val).unwrap();
+            thread::sleep(Duration::from_millis(200));
+        }
+    });
+
+    // Iterator를 구현하고 있어 into_iter이 실행되며, 내부적으로 recv가 사용됨
+    for received in rx {
+        println!("Got: {}", received);
+    }
 }
 ```
 
@@ -1410,6 +1512,7 @@ for animal in animals {
 
 - `Box<T>`: `T`를 힙에 저장할 수 있는 박스 타입
 - `Box::new(value)`: value를 힙에 저장하고, 그 포인터를 스택에 저장
+- 불변 혹은 가변 대여 가능
 
 예시
 
@@ -1481,15 +1584,16 @@ for animal in animals {
 
 #### std::rc::Rc - Reference Counted
 
-- 단일 스레드 환경
-- 다중 소유권을 지원 - 동일한 데이터에 대해 참조 카운팅을 통한 소유권을 공유
+- 단일(싱글) 스레드 환경
+- 다중 소유권을 지원 - 동일한 데이터에 대해 참조 카운팅(Rc::strong_count)을 통한 소유권을 공유
 - Deref Trait를 기본적으로 포함하여 자동 역참조
+- 불변 대여만 허용
 
 ```rs
 async fn main() {
     let s1 = Rc::new(String::from("hello"));
 
-    let s2 = Rc::clone(&s1);  // Rc::clone가 s1의 rc참조 카운터를 늘림(rc참조 포인터를 복사)
+    let s2 = Rc::clone(&s1);  // Rc::clone이 s1의 rc 참조 카운터를 늘림(rc참조 포인터를 복사)
     let s3 = Rc::clone(&s1);
 }
 ```
@@ -1497,7 +1601,7 @@ async fn main() {
 #### std::sync::Arc - Atomic Reference Counted
 
 - 멀티 스레드 환경
-- 여러 스레드에서 동시에 참조 카운트를 수정해도 안전 - `Arc::strong_count`
+- 여러 스레드에서 동시에 참조 카운트(Arc::strong_count)를 수정해도 안전
 
 값을 참조시
 
@@ -1583,8 +1687,9 @@ fn main() {
 - 단일 소유권만 지원
 - 단일 스레드 환경
 - 내부 가변성 패턴: 불변 참조 타입 내부에서 값을 수정(unsafe)하기 위함 - API를 노출시키거나 등
-- 대여 규칙을 컴파일 타임이 아닌 런타임에서 체크 - 실행 오류시, 패닉이 발생하며 종료
-- `Ref<T>`와 `RefMut<T>`에 접근 가능하게함
+- 대여 규칙을 컴파일 타임이 아닌 런타임에서 체크 - 런타임 오류시, 패닉이 발생하며 종료
+  - 여러 개의 불변 대여 혹은 하나의 가변 대여만 가능
+- `Ref<T>`(borrow)와 `RefMut<T>`(borrow_mut)에 접근 가능하게함
 
 ```rs
 use std::cell::RefCell;
@@ -1593,17 +1698,18 @@ pub trait Messenger {
     fn send(&self, msg: &str);
 }
 
-pub struct LimitTracker<'a, T: 'a + Messenger> {
+pub struct LimitTracker<'a, T: Messenger> {
     messenger: &'a T,
     value: usize,
     max: usize,
 }
 
 impl<'a, T> LimitTracker<'a, T>
+// where 대신 impl<'a, T: Messenger> LimitTracker<'a, T> { 와 같이해도 됨
 where
     T: Messenger,
 {
-    pub fn new(messenger: &T, max: usize) -> LimitTracker<T> {
+    pub fn new(messenger: &'a T, max: usize) -> Self {
         LimitTracker {
             messenger,
             value: 0,
@@ -1635,7 +1741,7 @@ struct MockMessenger {
 }
 
 impl MockMessenger {
-    fn new() -> MockMessenger {
+    fn new() -> Self {
         MockMessenger {
             // sent_message: vec![],
             sent_message: RefCell::new(vec![]),
@@ -1645,7 +1751,8 @@ impl MockMessenger {
 
 impl Messenger for MockMessenger {
     fn send(&self, message: &str) {
-        // self.sent_message.push(String::from(message));  -> 불변참조 self의 필드에 값을 추가 시 오류!
+        // self.sent_message.push(String::from(message)); // 불변참조 self의 필드에 값을 추가 시 오류!
+        // borrow_mut()로 스코프 내 하나의 가변 대여만 가능
         self.sent_message.borrow_mut().push(String::from(message));
     }
 }
@@ -1665,9 +1772,7 @@ fn main() {
 
 ##### `Rc<T>`와 `RefCell<T>`의 조합
 
-> 보편적인 방법
-
-- 다중 소유권과 내부 가변성을 가짐
+> 보편적인 방법: 불변 대여의 다중 소유 + 내부 가변성
 
 ```rs
 #[derive(Debug)]
@@ -1697,11 +1802,12 @@ fn main() {
 
 #### std::rc::Weak
 
-- 소유는 하지않고, 참조만 가능
+- 약한 참조로 소유는 하지않고, 참조만 가능
 
 언제 사용하나?
 
-- 순환 참조 방지: Rc 타입 간에 순환 참조가 발생할 경우, 참조 카운트가 0이 되지 않아서 메모리 누수 발생
+- 순환 참조 방지: Rc 타입 간에 순환 참조가 발생할 경우\
+   참조 카운트(Rc::strong_count)가 0이 되지 않아서 메모리 누수 발생
 
 ```rs
 use std::{
@@ -1729,9 +1835,13 @@ fn main() {
         children: RefCell::new(vec![Rc::clone(&leaf)]),
     });
 
-    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);   // Rc를 Weak으로 변환 (약한 참조 생성) - 참조카운트 유지
+    // Rc::downgrade로 Weak<T> 반환
+    // 약한 참조 생성 - strong_count는 유지되며 weak_count가 1 증가됨
+    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
 
-    println!("leaf parent :: {:#?}", leaf.parent.borrow().upgrade());   // Weak을 Rc(살아있을 경우만) 또는 None 반환  - 참조카운트 증가(살아있을 경우만)
+    // Rc::upgrade로 Option<Rc<T>> 반환
+    // 살아있는 경우만 참조카운트(strong_count) 증가
+    println!("leaf parent :: {:#?}", leaf.parent.borrow().upgrade());
 }
 ```
 
