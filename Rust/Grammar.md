@@ -35,7 +35,7 @@
   - [테스트](#테스트)
 - [PBL](#pbl)
   - [인스턴스 비교](#인스턴스-비교)
-  - [일반 함수/클로저의 구조체 필드값](#일반-함수클로저의-구조체-필드값)
+  - [구조체 필드값에 일반 함수/클로저 설정](#구조체-필드값에-일반-함수클로저-설정)
   - [async 함수/클로저의 전달](#async-함수클로저의-전달)
 
 ## Basic
@@ -347,7 +347,7 @@
 
 ### 알뜰잡식
 
-- 메서드: 메서드는 impl 블록에서 정의되는 함수
+- 메서드: 메서드는 impl 블록에서 정의되는 함수, impl 블록에서는 메서드만 추가 할 수 있음
 - 캡처: 클로저(익명 함수)가 자신이 정의된 환경의 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것\
   _(불변 또는 가변으로 참조 - 기본동작, 소유권 이동 - move 키워드 사용)_
 - Heap 영역(런타임에 동적 메모리를 할당)은 모든 스레드가 공유
@@ -384,6 +384,9 @@
 - 댕글링 참조 (dangling reference): 이미 메모리에서 사라진 값을 가리키는 참조
 - 모든 반복자는 Iterator를 구현하며, 반복자 어댑터(map 등)는 새로운 반복자를 생성하기 때문에 소비 어댑터(collect 등 - 내부적으로 next를 호출)를 사용해야함
   - 원본 반복자를 소비/반환하는 경우에는 `into_iter`를, 원본을 유지할 때는 반복자 어댑터에 `cloned` 사용
+- Send가 구현된 타입은 스레드 사이에서 이동될 수 있으며, 대부분의 러스트 타입이 Send. Rc와 Cell연관타입들(RefCell 등)은 아님
+- 상속은 코드 재사용(기능을 물려받음)을 위한 구조이고, 다형성은 같은 인터페이스로 다양한 구현을 처리하는 능력
+- `트레이트 바운드`: '이 타입은 어떤 트레이트를 구현해야 한다'라는 제약 조건
 
 ### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -719,7 +722,7 @@ let first = a[0];
 - `Any`: `Box<dyn Any>`처럼 어떤 타입도 허용
 - `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](#async-클로저의-트레잇-전달)
 - `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
-- `Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#stdsyncarc---atomic-reference-counted)
+- `std::sync::Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#stdsyncarc---atomic-reference-counted)
 - `Copy`: 정수, bool 등 작은 크기의 스택에 저장되는 간단한 타입 - 값을 비트 단위로 복사 가능 (얕은 복사)
 - `Clone`: Vec, String, Box 등 힙에 저장되는 복잡한 타입 - 명시적 복사 가능 (clone() 메서드 사용)
 - `Debug`: 디버그용 출력 가능 ({:?} 포맷 사용 가능) - 대부분 타입
@@ -883,6 +886,8 @@ match third {
 ```
 
 #### [std::option::Option](https://doc.rust-lang.org/std/option/enum.Option.html) - prelude
+
+- `take()`: 타입의 내부 값을 꺼내면서, 해당 값을 None으로 비워주는 메서드
 
 ```rs
 enum Option<T> {
@@ -1428,11 +1433,11 @@ fn main() {
 
 ### 동적 디스패치
 
-> 공통된 트레잇을 구현한 여러 타입을 처리하기 위함
+> 공통된 트레잇을 구현한 여러 타입(다형성)을 처리하기 위함, 타입 안정성을 유지한 덕 타이핑(어떤 행동을 취하는지에 초점)
 
-- 정적 디스패치: 컴파일 타임에 결정, 인라인 최적화 => 빠름, 바이너리 커질 가능성 있음\
+- 정적 디스패치: 컴파일 시점에서 단형성화 프로세스(타입이 정해짐) 실행, 컴파일 타임에 결정, 인라인 최적화 => 빠름, 바이너리 커질 가능성 있음\
   일반 타입 또는 `&impl`를 사용한 구현타입\
-  _\* `&impl`는 매개변수나 반환값 타입으로만 지정가능, `Vec`와 같은 자료형 안에서는 사용 불가하며, 구현체 타입으로 조건분기 불가_
+  _\* `&impl`는 매개변수나 반환값 타입으로만 지정가능(구조체 필드와 let의 바인딩 타입으로 불가능), `Vec`와 같은 자료형 안에서는 사용 불가하며, 구현체 타입으로 조건분기 불가_
 
   ```rs
   pub fn notify(item: &impl Summary) -> impl Summary {
@@ -1494,8 +1499,9 @@ for animal in animals {
 
 아래와 같은 트레이트도 스마트 포인터
 
-- String
-- Vec<T>
+- `String`
+- `Vec<T>`
+- `std::sync::Mutex` - 스코프 밖으로 벗어났을 때 자동으로 락을 해제
 
 #### std::boxed::Box
 
@@ -1641,7 +1647,7 @@ fn main() {
         let handle = thread::Builder::new()
             .name(format!("thread-{}", i))
             .spawn(move || {
-                let mut data = s1_moved.lock().unwrap();
+                let mut data = s1_moved.lock().unwrap();  // 락을 얻을 차례가 될 때까지 멈춤
                 data.push_str(&format!(" from thread-{}", i));
                 println!("thread-{} :: {:?}", i, data);
             })
@@ -1665,7 +1671,7 @@ fn main() {
         let counter = Arc::clone(&counter);
 
         let handle = thread::spawn(move || {
-            let mut num = counter.lock().unwrap();
+            let mut num = counter.lock().unwrap();  // 락을 얻을 차례가 될 때까지 멈춤
             *num += 1;
 
             std::mem::drop(num);  // 잠금 해제 기능, 생략 가능, 스코프 벗어날 경우 자동 잠금 해제됨
@@ -2080,7 +2086,7 @@ let same = ptr::eq(&dog1, &dog2);
 println!("같은 인스턴스인가? {}", same); // false
 ```
 
-### 일반 함수/클로저의 구조체 필드값
+### 구조체 필드값에 일반 함수/클로저 설정
 
 기본적인 사용
 

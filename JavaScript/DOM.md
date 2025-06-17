@@ -34,7 +34,9 @@
 
 ## Element
 
-노드 종류: ELEMENT_NODE(요소), TEXT_NODE(텍스트), COMMENT_NODE(주석) 등
+- `노드 종류`: ELEMENT_NODE(요소), TEXT_NODE(텍스트), COMMENT_NODE(주석) 등
+- `NodeList`: 경우에 따라, 라이브 콜렉션 - DOM의 변경 사항을 실시간으로 콜렉션에 반영
+- `HTMLCollection`: HTML 요소만 포함하며 항상 동적 - 문서가 바뀔 때 실시간으로 업데이트됨
 
 ### 요소 정보
 
@@ -111,6 +113,12 @@
 ## 기타
 
 ### addEventListener listener의 `Event`
+
+> 캡처 -> 타깃 -> 버블링
+
+- `캡처`: window에서 대상 요소까지
+- `타켓`: 이벤트 대상 요소
+- `버블링`: 대상 요소에서 상위요소로 이벤트 전파
 
 #### MouseEvent
 

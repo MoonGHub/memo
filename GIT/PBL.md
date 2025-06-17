@@ -20,7 +20,7 @@
   4. `ssh -T git@github.com`
   - `Hi {owner}! ...` 해당 레포의 `owner`가 표시되어야 함, 실패 시, 2번 부터 재시도
 
-<br />
+---
 
 ## 이슈 브랜치 자동 생성 및 삭제
 
@@ -33,7 +33,7 @@
 2. Settings > General > Automatically delete head branches 체크
 3. 로컬에서 브랜치 동기화는 [참고](./Grammar.md#동기화)
 
-<br />
+---
 
 ## Git Action
 

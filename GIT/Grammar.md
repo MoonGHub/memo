@@ -7,8 +7,11 @@
 
 ### 초기화
 
-- `git init`\
-  .git 디렉토리 생성
+- `git init`: .git 디렉토리 생성
+- submodule
+  - `git submodule init`: .gitmodules 파일을 읽어서 .git/config에 서브모듈 정보를 등록
+  - `git submodule update`: 등록된 서브모듈 경로에 해당 커밋 기준으로 체크아웃
+  - `git submodule update --remote`
 
 ### 복제
 
@@ -35,7 +38,7 @@
 - `git remote rename origin rename`
 - `git remote rm origin`
 
-<br />
+---
 
 ## 상태 관리
 
@@ -90,15 +93,13 @@
 - `git stash drop`\
   0의 삭제
 
-<br />
-
 ### Merge
 
 - `git merge {branch_name}`
   - `--no-ff`: Fast-Forward가 가능해도 Merge Commit을 생성하고 병합
   - `--squash`: PR이 병합될 때 모든 커밋이 단일 커밋으로 압축
 
-<br />
+---
 
 ## 복원
 
@@ -157,7 +158,7 @@
 
 - `git cherry-pick commitHash`
 
-<br />
+---
 
 ## 브랜치 관리
 
@@ -189,7 +190,7 @@
 
 - `git branch --merged | egrep -v 'main|prod|dev' | xargs git branch -d`
 
-<br />
+---
 
 ## Rebase
 
@@ -214,6 +215,8 @@
 2. pick -> edit
 3. :ZZ
 4. 수정 후, `git add .` `git commit --amend`
+
+---
 
 ## ETC
 
