@@ -245,7 +245,7 @@
   println!("The value of number is: {number}");
   ```
 
-- 범위 표현식
+- 범위 표현식: 숫자 또는 char만 허용
 
   - `1..100	`: (범위표현식) 1이상 100미만 - 100 미포함
   - `1..=100`: (범위표현식) 1이상 1이하 - 100 포함
@@ -259,6 +259,7 @@
     ```
 
   - `&s[..2]`또는 `&s[..]`와 같이도 사용
+  - `'a'..='j'`
 
 - 반복문: `loop`, `while`, `for`
 
@@ -345,6 +346,81 @@
   }
   ```
 
+  ```rs
+  let mut stack = vec![1, 2, 3];
+
+  while let Some(top) = stack.pop() {
+      println!("{}", top);
+  }
+  ```
+
+- match
+
+  ```rs
+  let x = 1;
+  let y = 'c';
+
+  match x {
+      1 | 2 => println!("one or two"),  // 다중 패턴
+      3 => println!("three"),
+      _ => println!("anything"),
+  }
+
+  match x {
+    1..=5 => println!("one through five"),  // 범위 매칭, 숫자 또는 char만 허용
+    _ => println!("something else"),
+  }
+
+  match y {
+      'a'..='j' => println!("early ASCII letter"),  // 범위 매칭, 숫자 또는 char만 허용
+      'k'..='z' => println!("late ASCII letter"),
+      _ => println!("something else"),
+  }
+  ```
+
+- 구조 분해: 소유권 이동(바인딩)이 발생 - `_`로 막을수 있음, 단 `_x` 패턴은 바인딩(소유권 이전)은 되지만 사용되지 않는 것에 대한 명시
+
+  ```rs
+  struct Point {
+      x: i32,
+      y: i32,
+  }
+
+  fn main() {
+      let p = Point { x: 0, y: 7 };
+
+      let Point { x, y } = p;
+      let Point { x: a, y: b } = p;
+
+      println!("{x}, {y}");
+      println!("{a}, {b}");
+
+      let ((feet, inches), Point { x, y }) = ((3, 10), Point { x: 3, y: -10 });
+
+      println!("{feet}, {inches}, {x}, {y}");
+
+      let numbers = (2, 4, 8, 16, 32);
+
+      match numbers {
+          (first, _, third, _, fifth) => {
+              println!("Some numbers: {first}, {third}, {fifth}")
+          }
+      }
+  }
+  ```
+
+  ```rs
+  fn main() {
+      let s = Some(String::from("Hello!"));
+
+      if let Some(_s) = s {
+          println!("found a string");
+      }
+
+      // println!("{:?}", s); // 소유권이 이동되어 사용 불가능
+  }
+  ```
+
 ### 알뜰잡식
 
 - 메서드: 메서드는 impl 블록에서 정의되는 함수, impl 블록에서는 메서드만 추가 할 수 있음
@@ -387,6 +463,9 @@
 - Send가 구현된 타입은 스레드 사이에서 이동될 수 있으며, 대부분의 러스트 타입이 Send. Rc와 Cell연관타입들(RefCell 등)은 아님
 - 상속은 코드 재사용(기능을 물려받음)을 위한 구조이고, 다형성은 같은 인터페이스로 다양한 구현을 처리하는 능력
 - `트레이트 바운드`: '이 타입은 어떤 트레이트를 구현해야 한다'라는 제약 조건
+- 반박 가능한 패턴(refutable patterns)과 반박 불가능한 패턴(irrefutable patterns)은 같이 사용 못함
+  - `if let x = 5 { ... }` 또는 `let Some(x) = ...` 과 같이 사용 못함
+- `_`를 사용해서 값을 무시(소유권 이동이 발생하지않음)하거나, 와일드카드로 match와 같은 곳에서 catch-all로 사용
 
 ### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -1377,7 +1456,7 @@ println!("{:?}", read_username_from_file());
 ```rs
 fn main() {
     let opt: Option<String> = Some("hello".to_string());
-    let opt_ref: Option<&String> = opt.as_ref();
+    let opt_ref: Option<&String> = opt.as_ref();  // 내부 값이 참조로 변환
 
     if let Some(val) = opt_ref {
         println!("if :: {}", val);
@@ -1545,6 +1624,7 @@ for animal in animals {
 
   ```rs
   #[allow(dead_code)]
+  #[derive(Debug)]
   enum List {
       Cons(i32, Box<List>),
       Nil,
@@ -1556,6 +1636,8 @@ for animal in animals {
       let list = Cons(1, Box::new(Cons(2, Box::new(Nil))));
 
       // 열거형 패턴으로 단일 실행
+      // list의 열거형 튜플값들이 열거형 변수로 소유권이 이전되지만, 첫번째 값은 i32로 Copy가 일어남, 두번째는 소유권 이전을 _로 무시함
+      // 따라서 소유권 이전이 발생하지 않음
       if let Cons(value, _) = list {
           println!("첫 번째 값: {}", value);
       }
@@ -1571,6 +1653,8 @@ for animal in animals {
           }
       }
       print_list(&list);
+
+      println!("{:?}", list);
   }
   ```
 
@@ -1960,8 +2044,6 @@ fn main() {
     }
    ```
 
-<br />
-
 ### 속성 매크로 작성(proc_macro_attribute)
 
 작성 방법
@@ -2026,8 +2108,6 @@ fn main() {
         something_func();
     }
    ```
-
-<br />
 
 ### 테스트
 
