@@ -22,8 +22,6 @@
   - 운영체제 등 실행 시스템 환경을 변경 할 경우
   - 패키지 자체 문제 또는 의존성 문제 발생 시
 
-<br />
-
 ### 조회
 
 - `npm root`\
@@ -34,8 +32,6 @@
   현재 설치된 패키지의 버전과 dependencies를 트리 구조로 표현
 - `npm list -g --depth=0`\
   전역으로 설치된 패키지들을 보여줌
-
-<br />
 
 ### 로그인 및 배포
 
@@ -51,7 +47,7 @@
 - `npm deprecate`\
   출시 된 패키지를 deprecate 적용
 
-<br />
+---
 
 ## [Yarn](https://yarnpkg.com/cli/install)
 
@@ -60,8 +56,6 @@
 - `yarn add`
 - `yarn remove`
 - `yarn upgrade`
-
-<br />
 
 ### 워크스페이스
 
@@ -76,7 +70,7 @@
   # dayfly프로젝트에 react-day-picker 추가
   ```
 
-<br />
+---
 
 ## Yarn Berry
 
@@ -100,7 +94,7 @@ yarn dlx @yarnpkg/sdks vscode
 - `yarn up`\
   업그레이드
 
-<br />
+---
 
 ## pnpm
 
@@ -110,8 +104,6 @@ yarn dlx @yarnpkg/sdks vscode
 1. 호이스팅 잘 됨
 2. 기본적으로 가상 스토어(루트의 node_modules/.pnpm)에서 모든 패키지를 관리 - 빠름
 ```
-
-<br />
 
 ### 설치
 
@@ -136,16 +128,12 @@ yarn dlx @yarnpkg/sdks vscode
      - "tools/**/*"
    ```
 
-<br />
-
 ### 프로젝트 추가
 
 1. `pnpm init`(경로지정 안됨) 또는 `pnpm create vite@latest 경로` 또는 `pnpm dlx create-next-app@latest 경로`
 2. package.json 설정
 3. 루트 디렉토리에서 필요한 의존성들을 설치
    `pnpm --filter {project_name} add react react-dom @babel/cli`
-
-<br />
 
 ### 명령어
 
@@ -182,8 +170,6 @@ yarn dlx @yarnpkg/sdks vscode
   - `pnpm update --workspace`\
     루트 의존성 버전 업데이트
 
-<br />
-
 ### 의존성 관리
 
 #### dependenciesMeta.\*.injected
@@ -217,10 +203,9 @@ yarn dlx @yarnpkg/sdks vscode
 `미설정` 또는 `false`인 경우
 
 - `패키지`가 해당 프로젝트의 node_modules에 설치 됨(설치된 패키지는 가상 스토어에서 심볼릭 링크 됨 - hoist가 true이며, hoist-pattern에 포함 될 경우)
-
 - `패키지`마다의 각각의 의존성을 사용?
 
-<br />
+---
 
 ## 버전 범위
 
@@ -230,8 +215,6 @@ yarn dlx @yarnpkg/sdks vscode
 `~0.1.1` : >=0.1.1 <0.2.0\
 `~0.1` : >=0.1.0 <0.2.0\
 `~0` : >=0.0 <1.0\
-
-<br />
 
 ### **^**
 

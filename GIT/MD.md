@@ -12,13 +12,9 @@
 
 ###### Most smaller one : `######`
 
-<br>
-
 ---
 
 Drawing Line : `---` or `***`
-
-<br>
 
 ---
 
@@ -44,11 +40,11 @@ _italic_: `*TEXT*` or `_TEXT_`
 
 `<sub>`: 아랫 첨자<sub>아랫아랫</sub>
 
-<br>
-
 > Quote : `>`
 >
 > > Quote : `>>`
+
+---
 
 [기본 서식 구문 - 경고](https://docs.github.com/ko/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)
 
@@ -67,13 +63,11 @@ _italic_: `*TEXT*` or `_TEXT_`
 > [!CAUTION]
 > Advises about risks or negative outcomes of certain actions.
 
-<br>
-
 ---
 
 Inline code is used `like this` using <strong style="background:#8056ff;color:yellow">``</strong>
 
-Block code is the followings :
+Code Block is the followings :
 
 - [supported language](https://docs.github.com/en/contributing/writing-for-github-docs/using-markdown-and-liquid-in-github-docs#code-sample-syntax-highlighting)
 
@@ -88,6 +82,8 @@ Block code is the followings :
 ```javascript
 console.log("print");
 ```
+
+---
 
 ```mermaid
 graph TD;
