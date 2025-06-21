@@ -33,6 +33,11 @@
   - [Derive 매크로 작성(proc_macro_derive) - 커스텀 트레잇 derive 주입](#derive-매크로-작성proc_macro_derive---커스텀-트레잇-derive-주입)
   - [속성 매크로 작성(proc_macro_attribute)](#속성-매크로-작성proc_macro_attribute)
   - [테스트](#테스트)
+  - [unsafe](#unsafe)
+    - [원시 포인터](#원시-포인터)
+    - [사용 예제](#사용-예제)
+  - [extern](#extern)
+    - [다른 언어에서 러스트 함수 호출하기](#다른-언어에서-러스트-함수-호출하기)
 - [PBL](#pbl)
   - [인스턴스 비교](#인스턴스-비교)
   - [구조체 필드값에 일반 함수/클로저 설정](#구조체-필드값에-일반-함수클로저-설정)
@@ -229,6 +234,17 @@
 
   fn area(dimensions: (u32, u32)) -> u32 {
       dimensions.0 * dimensions.1
+  }
+  ```
+
+- `static`: 전역 변수 (global variable)를 정적 (static) 변수라고 부름
+
+  ```rs
+  // 변수명은 SCREAMING_SNAKE_CASE로 작성
+  static HELLO_WORLD: &str = "Hello, world!";
+
+  fn main() {
+      println!("name is: {}", HELLO_WORLD);
   }
   ```
 
@@ -452,9 +468,9 @@
   - 불변 참조자를 사용하는 쪽에서는 사용 중 값이 중간에 변경되리라 예상하지 않음
   - **가변 참조가 존재 하며, 그 가변 참조가 사용되는 구문 이전에 다른 참조는 허용되지 않음**
 - 사용되지 않는 변수에 대해서는 최적화를 통해 "사실상 없는 것처럼" 취급
-- 슬라이스 == 연속된 데이터, 슬라이스는 참조형 타입(&)로만 사용
+- 슬라이스란 연속된 데이터(포인터와 슬라이스의 길이), 슬라이스는 참조형 타입(&)로만 사용
 - 백트레이스 (backtrace): 어떤 지점에 도달하기까지 호출한 모든 함수의 목록
-- mangle: minify + uglify
+- `맹글링(mangling)`: minify + uglify, 컴파일러가 컴파일 과정에서 함수 오버로딩이나 네임스페이스 구분을 위해 고유한 이름으로 변경하는 것
 - `&self`: impl 구현체 함수의 첫 파라미터로 쓰며 사용(명시) 시 인스턴스의 함수로 호출, `&self`가 없으면 정적 메서드로 인스턴스 생성없이 바로 호출
 - `Self`: 해당 impl 블록의 별칭
 - 댕글링 참조 (dangling reference): 이미 메모리에서 사라진 값을 가리키는 참조
@@ -467,6 +483,8 @@
   - `if let x = 5 { ... }` 또는 `let Some(x) = ...` 과 같이 사용 못함
 - `_`를 사용해서 값을 무시(소유권 이동이 발생하지않음)하거나, 와일드카드로 match와 같은 곳에서 catch-all로 사용
   - `_x` 패턴은 바인딩(소유권 이전)은 되지만 사용되지 않는 것에 대한 명시 - 경고 메세지 안뜸
+- 외래 함수 인터페이스 (Foreign Function Interface, FFI)의 생성과 사용에는 `extern`을 사용하며 호출 시, 항상 `unsafe`
+- 정적(static) 변수(=전역 변수)는 `'static` 라이프타임을 가진 참조자에만 저장 가능, 메모리에 주소값이 고정됨
 
 ### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -1064,6 +1082,7 @@ fn main() {
     `{}`: 일반 출력 - [Display 트레잇](https://doc.rust-lang.org/std/fmt/trait.Display.html#examples)을 구현해야함
     `{:?}`: 디버깅용 출력 - `#[derive(Debug)]` 속성을 추가해주면 사용 가능
     `{:#?}`: `{:?}`의 포맷팅 출력
+    `{:p}`: 메모리 주소 출력
 - `format!`
   - 소유권을 가져가지 않음
 - `dbg!`: 디버그 출력을 하며 결과값을 그대로 반환함, 넘기는 값이 소유권을 가지는 타입이면, 그 소유권이 dbg!로 이동
@@ -1084,13 +1103,13 @@ fn main() {
 
 [Referrence - built in attributes](https://doc.rust-lang.org/reference/attributes.html#built-in-attributes-index)
 
-- `derive($, ...)`: $ 트레잇을 상속\
-  ex) `#[derive(Clone, Debug, PartialEq)]`
+- `derive($, ...)`: $ 트레잇을 상속
+  - ex) `#[derive(Clone, Debug, PartialEq)]`
   - Debug: 디버깅용 출력 제공, {:?}, {:#?}
   - Default: 지정된 타입에 대해서 기본값이 설정, i32 -> 0, String -> "", bool -> false
-- `no_mangle`: C와 같은 다른 언어와의 FFI(Foreign function interface - 외부 함수 인터페이스)에서, 컴파일러가 함수 이름을 변경하지 않도록 지시하는 속성
-- `cfg($)`: $(조건)이 참일 때만 포함(컴파일)\
-  ex) `#[cfg(target_os = "linux")]`, `#[cfg(target_os = "macos")]`
+- `no_mangle`: C와 같은 다른 언어와의 FFI(Foreign function interface - 외부 함수 인터페이스)를 위해, 컴파일러가 함수 이름을 변경하지 않도록 지시하는 속성
+- `cfg($)`: $(조건)이 참일 때만 포함(컴파일)
+  - ex) `#[cfg(target_os = "linux")]`, `#[cfg(target_os = "macos")]`
 - `cfg_attr($1, $2)`: \$1(조건)이 참일 때만, \$2(속성) 부여, 단 컴파일은 됨
 
 여러 속성들
@@ -2135,6 +2154,125 @@ test my_fn ... ok
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 ```
 
+### unsafe
+
+> 다른 언어 또는 하드웨어와 인터페이싱하기 위함
+
+아래의 메모리 안전성을 검사하지 않는 기능만을 허용하며, 대여 검사기를 끄거나 러스트의 다른 안전성 검사를 비활성화하지 않음
+
+- 원시 포인터(raw pointer) 역참조하기
+- 안전하지 않은 함수 혹은 메서드 호출하기
+  - `unsafe fn dangerous() {}`와 같은 함수를 `unsafe`블록 내에서 호출
+- 가변 정적 변수에 접근하기 및 수정하기
+- 안전하지 않은 트레이트 구현하기
+- union의 필드 접근하기
+
+**_unsafe 블록을 작게 유지하며, 안전한 추상화 안에 넣고 안전한 API를 제공하는 방법을 사용할 것_**
+
+기타 사용 사례
+
+- 원시 포인터와 같이 Send 혹은 Sync가 아닌 타입을 구현하고, Send 또는 Sync로 표시하려면 unsafe를 사용
+- 유니온 필드(C코드의 유니온과 상호작용)에 접근할 때 사용
+
+#### 원시 포인터
+
+`*const T`또는 `*mut T`로 작성되며, \*는 타입 이름의 일부
+
+- 원시 포인터는 대여 규칙을 무시할 수 있으며, 같은 위치에 대해 불변과 가변 포인터를 동시에 가질 수 있거나 여러 개의 가변 포인터를 가질 수 있음
+- 원시 포인터는 유효한 메모리를 가리키는 것을 보장받지 못함
+- 원시 포인터는 널(null) 이 될 수 있음
+- 원시 포인터는 자동 메모리 정리를 구현하지 않음
+
+```rs
+let mut num = 5;
+
+// 참조자로부터 원시 포인터 생성 - 원시 포인터 타입으로 캐스팅
+// 원시 포인터는 안전한 코드에서 생성될 수 있음, 안전한 블록에서 unsafe블록내 원시 포인터를 역참조는 불가능
+// r1,r2는 num이 저장된 메모리 위치를 가리키는 포인터
+let r1 = &num as *const i32;
+let r2 = &mut num as *mut i32;
+
+// 메모리 주소 출력
+println!("{:p}", &num);
+println!("r1,r2 addr :: {:p} :: {:p}", r1, r2);
+
+unsafe {
+      println!("r1 is: {}", *r1); // 5
+      println!("r2 is: {}", *r2); // 5
+}
+```
+
+#### 사용 예제
+
+**안전한 함수 내, unsafe 호출**
+
+```rs
+use std::slice;
+
+fn split_at_mut(values: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
+    let len = values.len();
+    let ptr = values.as_mut_ptr();  // *mut i32 타입의 원시 포인터 반환
+
+    assert!(mid <= len);  // 슬라이스 내의 데이터에 대한 유효함을 확인
+
+    // (&mut values[..mid], &mut values[mid..]) -> 러스트의 대여 검사기는 슬라이스의 서로 다른 부분을 빌린다는 것을 이해못함
+    unsafe {
+        (
+            slice::from_raw_parts_mut(ptr, mid),
+            slice::from_raw_parts_mut(ptr.add(mid), len - mid),
+        )
+    }
+}
+```
+
+**ABI (application binary interface) 사용**
+
+```rs
+// "C"는 C프로그래밍 언어의 ABI
+extern "C" {
+    fn abs(input: i32) -> i32;
+}
+
+fn main() {
+    unsafe {
+        println!("Absolute value of -3 according to C: {}", abs(-3));
+    }
+}
+```
+
+**가변 정적 변수를 읽거나 쓰는 것은 안전하지 않음**
+
+```rs
+static mut COUNTER: u32 = 0;
+
+fn add_to_count(inc: u32) {
+    unsafe {
+        COUNTER += inc;
+    }
+}
+
+fn main() {
+    add_to_count(3);
+
+    unsafe {
+        println!("COUNTER: {}", COUNTER);
+    }
+}
+```
+
+### extern
+
+#### 다른 언어에서 러스트 함수 호출하기
+
+아래와 같이 만들고, 공유 라이브러리로 컴파일하고 C에서 링크한 후, C코드에서 함수에 접근
+
+```rs
+#[no_mangle]
+pub extern "C" fn call_from_c() {
+    println!("Just called a Rust function from C!");
+}
+```
+
 ---
 
 ## PBL
@@ -2160,11 +2298,16 @@ println!("{}", dog1 == dog2); // true
 ```rs
 use std::ptr;
 
+#[derive(PartialEq)]
+struct Dog;
+
 let dog1 = Dog;
 let dog2 = Dog;
 
 let same = ptr::eq(&dog1, &dog2);
 println!("같은 인스턴스인가? {}", same); // false
+
+println!("{:p} :: {:p}", &dog1, &dog2); // 메모리 주소 출력
 ```
 
 ### 구조체 필드값에 일반 함수/클로저 설정
