@@ -2,7 +2,19 @@
 
 - [Basic](#basic)
   - [기본 지식](#기본-지식)
+    - [Trait](#trait)
+    - [Struct](#struct)
+    - [Closure](#closure)
+    - [Module](#module)
+    - [Enum](#enum)
+    - [튜플(Tuple)](#튜플tuple)
+    - [static](#static)
   - [문법](#문법)
+    - [if](#if)
+    - [범위 표현식](#범위-표현식)
+    - [반복문](#반복문)
+    - [match](#match)
+    - [구조 분해](#구조-분해)
   - [알뜰잡식](#알뜰잡식)
   - [프로젝트(패키지, 크레이트, 모듈) 관리](#프로젝트패키지-크레이트-모듈-관리)
   - [접근 제어자](#접근-제어자)
@@ -20,6 +32,7 @@
     - [std::vec::Vec - prelude](#stdvecvec---prelude)
     - [std::option::Option - prelude](#stdoptionoption---prelude)
     - [std::sync::mpsc](#stdsyncmpsc)
+    - [std::ops::Add](#stdopsadd)
 - [Macros](#macros)
 - [Attribute](#attribute)
 - [Advanced](#advanced)
@@ -38,404 +51,423 @@
     - [사용 예제](#사용-예제)
   - [extern](#extern)
     - [다른 언어에서 러스트 함수 호출하기](#다른-언어에서-러스트-함수-호출하기)
-- [PBL](#pbl)
-  - [인스턴스 비교](#인스턴스-비교)
-  - [구조체 필드값에 일반 함수/클로저 설정](#구조체-필드값에-일반-함수클로저-설정)
-  - [async 함수/클로저의 전달](#async-함수클로저의-전달)
+  - [슈퍼트레이트(supertrait)](#슈퍼트레이트supertrait)
+  - [뉴타입 패턴](#뉴타입-패턴)
 
 ## Basic
 
 ### 기본 지식
 
-- `Trait`: Interface 와 비슷하지만 다름
+#### Trait
 
-  ```rs
-  trait Greet {
-      fn say_hello1(&self);
+Interface 와 비슷하지만 다름
 
-      fn say_hello2(&self) {
-          println!("Hello!2")
-      }
-  }
+```rs
+trait Greet {
+    fn say_hello1(&self);
 
-  struct Person;
+    fn say_hello2(&self) {
+        println!("Hello!2")
+    }
+}
 
-  impl Greet for Person {
-      fn say_hello1(&self) {
-          println!("Hello!1");
-      }
-  }
+struct Person;
 
-  Person.say_hello1();
-  Person.say_hello2();
-  ```
+impl Greet for Person {
+    fn say_hello1(&self) {
+        println!("Hello!1");
+    }
+}
 
-  ```rs
-  trait Displayable {
-      type Output;  // 연관 타입 (associated type)
+Person.say_hello1();
+Person.say_hello2();
+```
 
-      fn display(&self) -> Self::Output;
-  }
+```rs
+trait Displayable {
+    type Output;  // 연관 타입(associated type) 정의
 
-  struct MyStruct;
+    fn display(&self) -> Self::Output;
+}
 
-  impl Displayable for MyStruct {
-      type Output = String;  // 연관 타입 (associated type)
+struct MyStruct;
 
-      fn display(&self) -> Self::Output {
-          "Hello from MyStruct!".to_string()
-      }
-  }
-  ```
+impl Displayable for MyStruct {
+    type Output = String;  // 연관 타입(associated type) 지정
 
-- `Struct`: 상속 없는 클래스 느낌
+    fn display(&self) -> Self::Output {
+        "Hello from MyStruct!".to_string()
+    }
+}
+```
 
-  ```rs
-  struct Point1 {
-      x: i32,
-      y: i32,
-  } // 일반 구조체
-  struct Point2(i32, i32, i32); // 튜플 구조체
+#### Struct
 
-  impl Point1 {
-      fn p(&self) {
-          println!("{}, {}", self.x, self.y)
-      }
-  }
+상속 없는 클래스 느낌
 
-  let p1 = Point1 { x: 1, y: 2 };
-  println!("({}, {})", p1.x, p1.y);
-  p1.p();
+```rs
+struct Point1 {
+    x: i32,
+    y: i32,
+} // 일반 구조체
+struct Point2(i32, i32, i32); // 튜플 구조체
 
-  let p2 = Point2(1, 2, 3);
-  println!("{}, {}, {}", p2.0, p2.1, p2.2);
-  ```
+impl Point1 {
+    fn p(&self) {
+        println!("{}, {}", self.x, self.y)
+    }
+}
 
-  ```rs
-  #[derive(Default, Debug)]
-  struct User {
-      active: bool,
-      nickname: String,
-  }
+let p1 = Point1 { x: 1, y: 2 };
+println!("({}, {})", p1.x, p1.y);
+p1.p();
 
-  impl User {
-      fn new() -> Self {
-          Self {
-              ..Default::default()
-          }
-      }
-  }
+let p2 = Point2(1, 2, 3);
+println!("{}, {}, {}", p2.0, p2.1, p2.2);
+```
 
-  fn main() {
-      let user1 = User {
-          active: true,
-          ..User::default() // 스프레드는 마지막에 위치해야 함
-      };
+```rs
+#[derive(Default, Debug)]
+struct User {
+    active: bool,
+    nickname: String,
+}
 
-      let user2 = User::new();
+impl User {
+    fn new() -> Self {
+        Self {
+            ..Default::default()
+        }
+    }
+}
 
-      println!("{:?}, {:?}", user1, user2);
-  }
-  ```
+fn main() {
+    let user1 = User {
+        active: true,
+        ..User::default() // 스프레드는 마지막에 위치해야 함
+    };
 
-- `Closure`: 익명 함수, 람다와 유사, 클로저들이 사용된 곳에서 타입이 추론
+    let user2 = User::new();
 
-  > let 변수명 = |매개변수| 표현식;
+    println!("{:?}, {:?}", user1, user2);
+}
+```
 
-  ```rs
-  let add = |a: i32, b: i32| a + b;
+#### Closure
 
-  println!("{}", add(2, 3)); // 5
-  ```
+익명 함수, 람다와 유사, 클로저들이 사용된 곳에서 타입이 추론
 
-- `Module`: 네임스페이스
+> let 변수명 = |매개변수| 표현식;
 
-  ```rs
-  mod math {
-      pub fn add(a: i32, b: i32) -> i32 {
-          a + b
-      }
-  }
+```rs
+let add = |a: i32, b: i32| a + b;
 
-  let result = math::add(1, 2);
-  println!("{}", result);
-  ```
+println!("{}", add(2, 3)); // 5
+```
+
+#### Module
+
+> 네임스페이스
+
+```rs
+mod math {
+    pub fn add(a: i32, b: i32) -> i32 {
+        a + b
+    }
+}
+
+let result = math::add(1, 2);
+println!("{}", result);
+```
 
 - `Option`: Maybe monad
 
-  ```rs
-  fn get_age(name: &str) -> Option<u8> {
-      if name == "Alice" {
-          Some(30)
-      } else {
-          None
-      }
-  }
+```rs
+fn get_age(name: &str) -> Option<u8> {
+    if name == "Alice" {
+        Some(30)
+    } else {
+        None
+    }
+}
 
-  match get_age("Alice") {
-      Some(age) => println!("Age is {}", age),
-      None => println!("No age found"),
-  }
-  ```
+match get_age("Alice") {
+    Some(age) => println!("Age is {}", age),
+    None => println!("No age found"),
+}
+```
 
-- `Enum`: Algebraic data type - 서로 다른 variant(타입)들의 묶음, 어떤 종류의 타입도 담을 수 있음
+#### Enum
 
-  ```rs
-  enum Direction {
-      North,
-      South,
-      East,
-      West,
-  }
+Algebraic data type - 서로 다른 variant(타입)들의 묶음, 어떤 종류의 타입도 담을 수 있음
 
-  let dir = Direction::North;
+```rs
+enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
 
-  match dir {
-      Direction::North => println!("Going up"),
-      _ => println!("Not going up"),  // 포괄적인 갈래는 마지막에 위치 할 것
-  }
-  ```
+let dir = Direction::North;
 
-  ```rs
-  #[derive(Debug)]
-  enum IpAddr {
-      V4(u8, u8, u8, u8),
-      V6(String),
-      Other { name: String },
-  }
+match dir {
+    Direction::North => println!("Going up"),
+    _ => println!("Not going up"),  // 포괄적인 갈래는 마지막에 위치 할 것
+}
+```
 
-  impl IpAddr {
-      fn p(&self) {
-          println!("{:?}", self);
-      }
-  }
+```rs
+#[derive(Debug)]
+enum IpAddr {
+    V4(u8, u8, u8, u8),
+    V6(String),
+    Other { name: String },
+}
 
-  fn main() {
-      let home = IpAddr::V4(127, 0, 0, 1);
-      let loopback = IpAddr::V6(String::from("::1"));
-      let other = IpAddr::Other {
-          name: String::from("good"),
-      };
+impl IpAddr {
+    fn p(&self) {
+        println!("{:?}", self);
+    }
+}
 
-      home.p();
-      loopback.p();
-      other.p();
-  }
-  ```
+fn main() {
+    let home = IpAddr::V4(127, 0, 0, 1);
+    let loopback = IpAddr::V6(String::from("::1"));
+    let other = IpAddr::Other {
+        name: String::from("good"),
+    };
 
-- `Tuple`: 튜플
+    home.p();
+    loopback.p();
+    other.p();
+}
+```
 
-  ```rs
-  fn main() {
-      let rect1 = (30, 50);
+#### 튜플(Tuple)
 
-      println!("{}", area(rect1));
-  }
+```rs
+fn main() {
+    let rect1 = (30, 50);
 
-  fn area(dimensions: (u32, u32)) -> u32 {
-      dimensions.0 * dimensions.1
-  }
-  ```
+    println!("{}", area(rect1));
+}
 
-- `static`: 전역 변수 (global variable)를 정적 (static) 변수라고 부름
+fn area(dimensions: (u32, u32)) -> u32 {
+    dimensions.0 * dimensions.1
+}
+```
 
-  ```rs
-  // 변수명은 SCREAMING_SNAKE_CASE로 작성
-  static HELLO_WORLD: &str = "Hello, world!";
+#### static
 
-  fn main() {
-      println!("name is: {}", HELLO_WORLD);
-  }
-  ```
+전역 변수 (global variable)를 정적 (static) 변수라고 부름
+
+```rs
+// 변수명은 SCREAMING_SNAKE_CASE로 작성
+static HELLO_WORLD: &str = "Hello, world!";
+
+fn main() {
+    println!("name is: {}", HELLO_WORLD);
+}
+```
 
 <br />
 
 ### 문법
 
-- if 조건식은 무조건 `bool`타입이어야 함
+#### if
 
-  ```rs
-  let condition = true;
-  let number = if condition { 5 } else { 6 };
+조건식은 무조건 `bool`타입이어야 함
 
-  println!("The value of number is: {number}");
-  ```
+```rs
+let condition = true;
+let number = if condition { 5 } else { 6 };
 
-- 범위 표현식: 숫자 또는 char만 허용
+println!("The value of number is: {number}");
+```
 
-  - `1..100	`: (범위표현식) 1이상 100미만 - 100 미포함
-  - `1..=100`: (범위표현식) 1이상 1이하 - 100 포함
+#### 범위 표현식
 
-    ```rs
-    fn main() {
-        let a: Vec<u32> = (1..=100).collect();
+숫자 또는 char만 허용
 
-        println!("{:?}", a);
+- `1..100	`: (범위표현식) 1이상 100미만 - 100 미포함
+- `1..=100`: (범위표현식) 1이상 1이하 - 100 포함
+- `&s[..2]`또는 `&s[..]`와 같이도 사용
+- `'a'..='j'`
+
+```rs
+fn main() {
+    let a: Vec<u32> = (1..=100).collect();
+
+    println!("{:?}", a);
+}
+```
+
+#### 반복문
+
+> loop, while, for
+
+`Iterator`를 구현하고 있으면 for문 사용시, iter()를 쓰지않아도 자동 호출(into_iter)됨
+
+```rs
+let mut counter = 0;
+
+let result = loop {
+    counter += 1;
+
+    if counter == 10 {
+        break counter * 2;  // 이 값을 반환하며 반복문을 빠져나감
     }
-    ```
+};
 
-  - `&s[..2]`또는 `&s[..]`와 같이도 사용
-  - `'a'..='j'`
+println!("The result is {result}");
+```
 
-- 반복문: `loop`, `while`, `for`
+```rs
+let mut count = 0;
+'counting_up: loop {
+    println!("count = {count}");
+    let mut remaining = 10;
 
-  - `Iterator`를 구현하고 있으면 for문 사용시, iter()를 쓰지않아도 자동 호출(into_iter)됨
+    loop {
+        println!("remaining = {remaining}");
+        if remaining == 9 {
+            break;
+        }
+        if count == 2 {
+            break 'counting_up;
+        }
+        remaining -= 1;
+    }
 
-  ```rs
-  let mut counter = 0;
+    count += 1;
+}
+println!("End count = {count}");
+```
 
-  let result = loop {
-      counter += 1;
+```rs
+let mut number = 3;
 
-      if counter == 10 {
-          break counter * 2;  // 이 값을 반환하며 반복문을 빠져나감
-      }
-  };
+while number != 0 {
+    println!("{number}!");
 
-  println!("The result is {result}");
-  ```
+    number -= 1;
+}
 
-  ```rs
-  let mut count = 0;
-  'counting_up: loop {
-      println!("count = {count}");
-      let mut remaining = 10;
+println!("LIFTOFF!!!");
+```
 
-      loop {
-          println!("remaining = {remaining}");
-          if remaining == 9 {
-              break;
-          }
-          if count == 2 {
-              break 'counting_up;
-          }
-          remaining -= 1;
-      }
+```rs
+for number in (1..4).rev() {
+    println!("{number}!");
+}
+```
 
-      count += 1;
-  }
-  println!("End count = {count}");
-  ```
+```rs
+fn main() {
+    let mut str = String::from("test goood");
 
-  ```rs
-  let mut number = 3;
+    let word = first_word(&str); // 불변 참조
 
-  while number != 0 {
-      println!("{number}!");
+    str.clear(); // 가변 참조로 에러! - 하지만 word가 사용되지 않으면 word는 없는 것으로 취급하여 허용됨
 
-      number -= 1;
-  }
+    // println!("the first word is: {}", word); // word 사용시, 가변참조 str.clear(); 에서 에러 발생
+}
 
-  println!("LIFTOFF!!!");
-  ```
+fn first_word(s: &String) -> &str { // 라이프타임 생략 규칙 1~2에 해당되어 추론 가능
+    let bytes = s.as_bytes();
 
-  ```rs
-  for number in (1..4).rev() {
-      println!("{number}!");
-  }
-  ```
+    // iter: 요소의 참조값(&T)으로 순회
+    // into_iter: 요소의 소유권(T)을 가지고 순회
+    // iter_mut: 요소의 가변 참조값(&mut T)으로 순회
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
 
-  ```rs
-  fn main() {
-      let mut str = String::from("test goood");
+    &s[..]
+}
+```
 
-      let word = first_word(&str); // 불변 참조
+```rs
+let mut stack = vec![1, 2, 3];
 
-      str.clear(); // 가변 참조로 에러! - 하지만 word가 사용되지 않으면 word는 없는 것으로 취급하여 허용됨
+while let Some(top) = stack.pop() {
+    println!("{}", top);
+}
+```
 
-      // println!("the first word is: {}", word); // word 사용시, 가변참조 str.clear(); 에서 에러 발생
-  }
+#### match
 
-  fn first_word(s: &String) -> &str { // 라이프타임 생략 규칙 1~2에 해당되어 추론 가능
-      let bytes = s.as_bytes();
+```rs
+let x = 1;
+let y = 'c';
 
-      // iter: 요소의 참조값(&T)으로 순회
-      // into_iter: 요소의 소유권(T)을 가지고 순회
-      // iter_mut: 요소의 가변 참조값(&mut T)으로 순회
-      for (i, &item) in bytes.iter().enumerate() {
-          if item == b' ' {
-              return &s[0..i];
-          }
-      }
+match x {
+    1 | 2 => println!("one or two"),  // 다중 패턴
+    3 => println!("three"),
+    _ => println!("anything"),
+}
 
-      &s[..]
-  }
-  ```
+match x {
+  1..=5 => println!("one through five"),  // 범위 매칭, 숫자 또는 char만 허용
+  _ => println!("something else"),
+}
 
-  ```rs
-  let mut stack = vec![1, 2, 3];
-
-  while let Some(top) = stack.pop() {
-      println!("{}", top);
-  }
-  ```
-
-- match
-
-  ```rs
-  let x = 1;
-  let y = 'c';
-
-  match x {
-      1 | 2 => println!("one or two"),  // 다중 패턴
-      3 => println!("three"),
-      _ => println!("anything"),
-  }
-
-  match x {
-    1..=5 => println!("one through five"),  // 범위 매칭, 숫자 또는 char만 허용
+match y {
+    'a'..='j' => println!("early ASCII letter"),  // 범위 매칭, 숫자 또는 char만 허용
+    'k'..='z' => println!("late ASCII letter"),
     _ => println!("something else"),
-  }
+}
+```
 
-  match y {
-      'a'..='j' => println!("early ASCII letter"),  // 범위 매칭, 숫자 또는 char만 허용
-      'k'..='z' => println!("late ASCII letter"),
-      _ => println!("something else"),
-  }
-  ```
+#### 구조 분해
 
-- 구조 분해: 소유권 이동(바인딩)이 발생 - `_`로 막을수 있음, 단 `_x` 패턴은 바인딩(소유권 이전)은 되지만 사용되지 않는 것에 대한 명시
+소유권 이동(바인딩)이 발생 - `_`로 막을수 있음, 단 `_x` 패턴은 바인딩(소유권 이전)은 되지만 사용되지 않는 것에 대한 명시
 
-  ```rs
-  struct Point {
-      x: i32,
-      y: i32,
-  }
+```rs
+struct Point {
+    x: i32,
+    y: i32,
+}
 
-  fn main() {
-      let p = Point { x: 0, y: 7 };
+fn main() {
+    let p = Point { x: 0, y: 7 };
 
-      let Point { x, y } = p;
-      let Point { x: a, y: b } = p;
+    let Point { x, y } = p;
+    let Point { x: a, y: b } = p;
 
-      println!("{x}, {y}");
-      println!("{a}, {b}");
+    println!("{x}, {y}");
+    println!("{a}, {b}");
 
-      let ((feet, inches), Point { x, y }) = ((3, 10), Point { x: 3, y: -10 });
+    let ((feet, inches), Point { x, y }) = ((3, 10), Point { x: 3, y: -10 });
 
-      println!("{feet}, {inches}, {x}, {y}");
+    println!("{feet}, {inches}, {x}, {y}");
 
-      let numbers = (2, 4, 8, 16, 32);
+    let numbers = (2, 4, 8, 16, 32);
 
-      match numbers {
-          (first, _, third, _, fifth) => {
-              println!("Some numbers: {first}, {third}, {fifth}")
-          }
-      }
-  }
-  ```
+    match numbers {
+        (first, _, third, _, fifth) => {
+            println!("Some numbers: {first}, {third}, {fifth}")
+        }
+    }
+}
+```
 
-  ```rs
-  fn main() {
-      let s = Some(String::from("Hello!"));
+```rs
+fn main() {
+    let s = Some(String::from("Hello!"));
 
-      if let Some(_s) = s {
-          println!("found a string");
-      }
+    if let Some(_s) = s {
+        println!("found a string");
+    }
 
-      // println!("{:?}", s); // 소유권이 이동되어 사용 불가능
-  }
-  ```
+    // println!("{:?}", s); // 소유권이 이동되어 사용 불가능
+}
+```
+
+<br />
 
 ### 알뜰잡식
 
@@ -449,20 +481,6 @@
 - 스코프 밖으로 벗어났을 때 특정 동작이 요구되는 타입(Drop 등)에 Copy 어노테이션 추가 불가
 - 대여(borrow): `&`참조자로 스택에 저장된 값(힙을 가르키는 - 포인터 + 길이 + 용량 등)을 참조(가르키는)하겠다는 값을 생성, 소유하지 않으니 drop도 없음
 - 파라미터로 `&self`를 받는 함수들(clone, cloned 등)은 자동참조가 일어남(T => &T)
-- `*`는 역참조
-
-  ```rs
-  let mut x = 5;  // x는 포인터가 아님, 값 5를 저장한 스택 메모리 공간의 이름
-
-  x += 2; // 따라서 바로 수정 가능
-  println!("{}", x); // 7
-
-  let y = &mut x; // y는 x의 주소를 저장하는 참조자
-  *y += 1;  // 따라서 역참조로 수정
-
-  println!("{}", x); // 8
-  ```
-
 - **동일 스코프에서 어떤 값에 대한 불변 참조자 또는 가변 참조자가 존재시, 추가적인 가변 참조자 `&mut`를 만들지 못함**
   - 여러 개의 불변 참조가 생성 가능, 가변 참조자는 하나만 생성 가능
   - 불변 참조자를 사용하는 쪽에서는 사용 중 값이 중간에 변경되리라 예상하지 않음
@@ -472,7 +490,7 @@
 - 백트레이스 (backtrace): 어떤 지점에 도달하기까지 호출한 모든 함수의 목록
 - `맹글링(mangling)`: minify + uglify, 컴파일러가 컴파일 과정에서 함수 오버로딩이나 네임스페이스 구분을 위해 고유한 이름으로 변경하는 것
 - `&self`: impl 구현체 함수의 첫 파라미터로 쓰며 사용(명시) 시 인스턴스의 함수로 호출, `&self`가 없으면 정적 메서드로 인스턴스 생성없이 바로 호출
-- `Self`: 해당 impl 블록의 별칭
+- `Self`: 해당 `trait` 또는 `impl` 블록의 별칭
 - 댕글링 참조 (dangling reference): 이미 메모리에서 사라진 값을 가리키는 참조
 - 모든 반복자는 Iterator를 구현하며, 반복자 어댑터(map 등)는 새로운 반복자를 생성하기 때문에 소비 어댑터(collect 등 - 내부적으로 next를 호출)를 사용해야함
   - 원본 반복자를 소비/반환하는 경우에는 `into_iter`를, 원본을 유지할 때는 반복자 어댑터에 `cloned` 사용
@@ -485,6 +503,15 @@
   - `_x` 패턴은 바인딩(소유권 이전)은 되지만 사용되지 않는 것에 대한 명시 - 경고 메세지 안뜸
 - 외래 함수 인터페이스 (Foreign Function Interface, FFI)의 생성과 사용에는 `extern`을 사용하며 호출 시, 항상 `unsafe`
 - 정적(static) 변수(=전역 변수)는 `'static` 라이프타임을 가진 참조자에만 저장 가능, 메모리에 주소값이 고정됨
+- `연관 타입`은 `트레이트 메서드`의 `타입 자리표시자(제네릭)`를 내부에서 정의할 때 사용
+  - 제네릭으로 사용 시, 같은 구조체(struct)에 대해 사용되는 타입별로 구현(impl)이 필요하여 번거로움
+  - 그리고 특정한 타입만을 반환할 때 사용하면 효과적
+- `타입 별칭`: `type Result<T> = std::result::Result<T, std::io::Error>;`와 같이 별칭 지정하여 사용
+- `! 타입`: 빈 타입 (empty type) 또는 부정 타입 (never type), 반환 값이 없음을 뜻함
+  - `fn bar() -> ! {...}`의 경우 절대로 반환하지 않는 함수 `발산 함수`로 지칭
+  - `continue`, `panic!`등 은 `!` 값을 가짐
+- `&`는 포인터이자 참조자임
+- 동적 크기 타입(DST - 크기가 정해지지 않음)은 `&dyn Trait` 또는 `Box<dyn Trait>`와 같이 포인터와 같이 사용해야함
 
 ### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -557,6 +584,8 @@ pub fn eat_at_restaurant() {
 
 ### 제네릭(Generic)
 
+> "타입 자리표시자"로도 불림
+
 ```rs
 struct Point<T> {
     x: T,
@@ -598,7 +627,9 @@ pub fn notify(item: &impl Summary) {
 - [prelude(프렐루드)](https://doc.rust-lang.org/std/prelude/index.html) - 바로 사용가능한 내장 트레이트
 - Trait: 메서드 시그니처를 그룹화하여 특정 목적을 달성하는 데 필요한 일련의 동작을 정의
 - Trait를 구현한 구조체에서 해당 Trait의 메서드를 사용할 때는, 트레이트도 사용하는 스코프내로 가져와야함
-- 외부 타입에 외부 트레이트 구현은 못함, 하나 이상이 자신의 것이어야 함(내 타입 + 외부 트레잇 또는 외부타입 + 내 트레잇)
+- `고아규칙`: 외부 타입에 외부 트레이트 구현은 못함, 하나 이상이 자신의 것이어야 함(내 타입 + 외부 트레잇 또는 외부타입 + 내 트레잇)
+
+  - 뉴타입 패턴(래퍼를 사용)으로 우회 가능
 
   ```rs
   use std::fmt;
@@ -619,7 +650,7 @@ pub fn notify(item: &impl Summary) {
 
 > 라이프타임은 제네릭의 일종으로, 어떤 참조자가 필요한 기간 동안 유효함을 보장하여 댕글링 참조를 방지
 
-- `'`(어퍼스트로피)로 시작d
+- `'`(어퍼스트로피)로 시작
 - `'static`: 정적 라이프타임 - 전역 변수와 같이 프로그램 전체 생애 동안 유효한 참조 또는 소유 값을 의미
 - `&'static str`: 고정된 메시지나 변경되지 않는 데이터 일 때 사용 - 정적 메모리에 저장됨
 - `&'static mut str`: `'static` 수명을 가진 가변 참조
@@ -1071,6 +1102,55 @@ fn main() {
 }
 ```
 
+#### std::ops::Add
+
+기본 연산자 오버로딩
+
+```rs
+use std::ops::Add;
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Add for Point {
+    type Output = Self;
+
+    fn add(self, other: Point) -> Self::Output {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+fn main() {
+    println!("{:?}", Point { x: 1, y: 0 } + Point { x: 2, y: 3 })
+}
+```
+
+```rs
+fn main() {
+    use std::ops::Add;
+
+    #[derive(Debug)]
+    struct Millimeters(u32);
+    struct Meters(u32);
+
+    impl Add<Meters> for Millimeters {
+        type Output = Self;
+
+        fn add(self, other: Meters) -> Self::Output {
+            Millimeters(self.0 + (other.0 * 1000))
+        }
+    }
+
+    println!("{:?}", Millimeters(2121) + Meters(1))
+}
+```
+
 ---
 
 ## [Macros](https://doc.rust-lang.org/std/index.html#macros)
@@ -1133,6 +1213,18 @@ fn main() {
 
 - Deref 트레이트를 구현하지 않은 타입에 대해 & 사용시, 해당 값의 `단순 참조값을 반환`
 - Deref 트레이트를 구현한 타입에 대해 & 사용시, `deref`를 호출하며 `자동 역참조 강제 변환`
+
+```rs
+let mut x = 5;  // x는 포인터가 아님, 값 5를 저장한 스택 메모리 공간의 이름
+
+x += 2; // 따라서 바로 수정 가능
+println!("{}", x); // 7
+
+let y = &mut x; // y는 x의 주소를 저장하는 참조자
+*y += 1;  // 따라서 역참조로 수정
+
+println!("{}", x); // 8
+```
 
 ```rs
 fn main() {
@@ -2273,220 +2365,69 @@ pub extern "C" fn call_from_c() {
 }
 ```
 
----
+<br />
 
-## PBL
+### 슈퍼트레이트(supertrait)
 
-### 인스턴스 비교
+> 트레이트 정의가 의존하고 있는 트레이트
 
-`==`(PartialEq)를 사용 시, 내부 값을 비교
-
-> `Eq`: 완전한 동치성 비교라는 명시적 표시
+트레이트 정의가 슈퍼트레이트(의존하고 있는 트레이트)의 연관 아이템을 활용 가능
 
 ```rs
-#[derive(PartialEq)]
-struct Dog;
+use std::fmt;
 
-let dog1 = Dog;
-let dog2 = Dog;
-
-println!("{}", dog1 == dog2); // true
-```
-
-메모리 주소 비교
-
-```rs
-use std::ptr;
-
-#[derive(PartialEq)]
-struct Dog;
-
-let dog1 = Dog;
-let dog2 = Dog;
-
-let same = ptr::eq(&dog1, &dog2);
-println!("같은 인스턴스인가? {}", same); // false
-
-println!("{:p} :: {:p}", &dog1, &dog2); // 메모리 주소 출력
-```
-
-### 구조체 필드값에 일반 함수/클로저 설정
-
-기본적인 사용
-
-```rs
-struct MyStruct<F>
-where
-    F: Fn(i32) -> i32,
-{
-    func: F,
+struct Point {
+    x: i32,
+    y: i32,
 }
 
-fn main() {
-    let s = MyStruct { func: |x| x + 10 };
+// to_string을 사용하기 위해 fmt::Display(슈퍼트레이트)를 구현해야 함
+trait OutlinePrint: fmt::Display {
+    fn outline_print(&self) {
+        let output = self.to_string();
+        let len = output.len();
 
-    println!("{}", (s.func)(5));
-}
-```
-
-Box와 함께 사용시
-
-```rs
-struct MyStruct {
-    func: Box<dyn Fn(i32) -> i32>,
-}
-
-fn main() {
-    let s = MyStruct {
-        func: Box::new(|x| x + 10),
-    };
-
-    println!("{}", (s.func)(5));  // impl로 구현한 메소드가 아닌, 필드값이어서 괄호 필요
-}
-```
-
-기타 예제
-
-```rs
-struct Adder<F>
-where
-    F: Fn(i32, i32) -> i32,
-{
-    op: F,
-}
-
-impl<F> Adder<F>
-where
-    F: Fn(i32, i32) -> i32,
-{
-    fn new(op: F) -> Self {
-        Self { op }
+        println!("{}", "*".repeat(len + 4));
+        println!("* {} *", output);
+        println!("{}", "*".repeat(len + 4));
     }
+}
 
-    fn calc(&self, a: i32, b: i32) -> i32 {
-        (self.op)(a, b) // impl로 구현한 메소드가 아닌, 필드값이어서 괄호 필요
+impl fmt::Display for Point {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
+impl OutlinePrint for Point {}
+
+fn main() {
+    let p = Point { x: 3, y: 7 };
+
+    p.outline_print();
+}
+```
+
+### 뉴타입 패턴
+
+외부 트레이트와 외부 타입을 튜플 구조체로 래퍼해서 고아규칙을 우회
+
+- 래퍼의 내부 타입의 모든 메서드를 갖게 할려면 `Deref`도 래퍼에 구현
+
+```rs
+use std::fmt;
+
+struct Wrapper(Vec<String>);
+
+impl fmt::Display for Wrapper {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.0.join(", "))
     }
 }
 
 fn main() {
-    let add = Adder::new(|x, y| x + y);
-    println!("{}", add.calc(3, 4)); // 7
-}
-```
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
 
-### async 함수/클로저의 전달
-
-async 함수/클로저는 반환 타입이 `impl Future<Output = T>`임
-
-기본적인 사용
-
-```rs
-use std::future::Future;
-use std::time::Duration;
-use tokio::runtime::Runtime;
-use tokio::time::sleep;
-
-async fn task() -> String {
-    println!("start!");
-    sleep(Duration::from_secs(1)).await;
-    println!("completed!");
-
-    "result".to_string()
-}
-
-async fn call<F, Fut>(f: F) -> String
-where
-    F: Fn() -> Fut,
-    Fut: Future<Output = String>,
-{
-    f().await
-}
-
-fn main() {
-    let rt = Runtime::new().unwrap();
-
-    let result1 = rt.block_on(call(task));
-    println!("{}", result1);
-
-    let result2 = rt.block_on(call(|| async {
-        println!("closure task start");
-        sleep(Duration::from_secs(1)).await;
-        println!("closure task completed");
-
-        "result2".to_string()
-    }));
-    println!("{}", result2);
-}
-```
-
-Pin과 Box와 함께 사용시
-
-```rs
-use std::future::Future;
-use std::pin::Pin;
-use std::time::Duration;
-use tokio::runtime::Runtime;
-use tokio::time::sleep;
-
-async fn task() -> String {
-    println!("start!");
-    sleep(Duration::from_secs(1)).await;
-    println!("completed!");
-
-    "result".to_string()
-}
-
-async fn call(f: impl Fn() -> Pin<Box<dyn Future<Output = String>>>) -> String {
-    f().await
-}
-
-fn main() {
-    let rt = Runtime::new().unwrap();
-
-    let result1 = rt.block_on(call(|| Box::pin(task())));
-    println!("{}", result1);
-
-    let result2 = rt.block_on(call(|| {
-        Box::pin(async {
-            println!("closure task start");
-            sleep(Duration::from_secs(1)).await;
-            println!("closure task completed");
-
-            "result2".to_string()
-        })
-    }));
-    println!("{}", result2);
-}
-```
-
-트레잇의 async 함수 선언/사용시
-
-> `cargo add async_trait`로 `async_trait` 크레잇 설치
-
-```rs
-use async_trait::async_trait;
-use tokio::runtime::Runtime;
-
-#[async_trait]
-trait MyTrait {
-    async fn call(&self) -> String;
-}
-struct MyStruct;
-
-#[async_trait]
-impl MyTrait for MyStruct {
-    async fn call(&self) -> String {
-        println!("async trait method");
-
-        "result".to_string()
-    }
-}
-
-fn main() {
-    let rt = Runtime::new().unwrap();
-
-    let result = rt.block_on(MyStruct.call());
-
-    println!("main ended :: {}", result);
+    println!("w = {}", w);
 }
 ```

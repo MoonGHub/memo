@@ -101,3 +101,5 @@ explicit use: 명시적인 사용
 - `deadlock`: 두 스레드가 서로를 기다려서 양쪽 스레드 모두 계속 실행되는 것을 막음
 - `tx`: transmitter, 송신자
 - `rx`: receiver, 수신자
+- `Rhs`: Right-hand side, 오른쪽 피연산자
+- `DST`: dynamically sized type, 동적 크기 타입
