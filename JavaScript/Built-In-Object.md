@@ -1,83 +1,94 @@
 # JavaScript - Built In Object
 
-## Math
-
-- abs(num)
-- max(num, ...)
-- min(num, ...)
-- pow(num, 제곱값)
-- random() // 0~1사이 무작위 생성
-- round(num) // 소숫점 한자리에서
-- ceil(num)
-  - .floor(num)
-  - .sqrt(num) // 제곱근값
-- PI
-
-<br />
-
-## Array
-
-- join(delimiter)
-- reverse()
-- sort() // 오름차순
-- slice(index1, index2) // index1앞까지, index2(포함)~끝 자름
-- splice(index1, num, data, ...) // index1부터 num개를 삭제 후, data삽입
-- concat(arr2) // 배열 합침
-- pop()
-- push(date)
-- shift()
-- unshift(data) // 앞에서 넣음
-- length
-- find(func) // 순회하며 true인 첫 번째 요소 반환
-- findIndex(func)
-- filter(func) // true인 요소 배열로 반환
-- forEach((item, index)=>{...})
-- indexOf(data)
-- lastIndexOf(data)
-- reverse() // 역순 정렬
-- map((item, index)=>{...}) // 각 요소의 return값으로 배열 반환
-- join(str)
-- isArray(arr)
-- reduce((acc, cur, index)=>{...})
-
-<br />
-
 ## String
 
-- charAt(index)
-- indexOf(str2) // 없으면 -1
-- lastIndexOf(str2) // 없으면 -1
-- match(str2) // 없으면 null
-- replace(target, str2)
-- search(str2) // index반환
-- slice(index1, index2) // index1앞까지, index2(포함)~끝을 자름
-- / -1은 뒤에서 첫 번째 글자
-- substring(index1, index2) // index1부터 index2이전
-- substr(index, num) // index부터 num개의 문자 반환
-- split(delimiter) // 배열반환
-- toLowercase()
-- toUpperCase()
-- length
-- concat(str2)
-- charCodeAt(index) // index의 문자를 ascii코드 값으로 변환
-- trim() // str의 전후 공백만 제거
-- repeat(n) // n번 반복시킴
-- includes(str)
+- `charAt`
+- `indexOf`: 없으면 -1
+- `lastIndexOf`: 없으면 -1
+- `match`: 없으면 null
+- `replace`
+- `search`: 해당 인덱스 반환
+- `slice`
+- `substring`
+- `substr`
+- `split`
+- `toLowercase`
+- `toUpperCase`
+- `length`
+- `concat`: 원본 유지
+- `charCodeAt`: 문자를 ascii코드 값으로 변환
+- `trim`: 전후 공백 제거
+- `repeat`: 반복시킴
+- `includes`
 
-<br />
+---
 
 ## Number
 
-- toString(16) // 16진수 문자열
-- parseInt(hex, 16).toString(2) // 16진수 문자열 -> 10진수 -> 2진수 문자열
-- toFixed(num) // 소수점 num자리까지 표현(num+1자리에서 반올림 됨)해 문자열로 반환
-- isNaN(obj) // obj가 Number인지 판단
+- `toString(16)`: 16진수 문자열
+- `parseInt(hex, 16).toString(2)`: hex(16진수 문자열) -> 10진수 -> 2진수 문자열
+- `toFixed`: 지정한 소수점 자리까지 표현, 지정수 + 1 자리에서 반올림, 문자열 반환
+- `isNaN`: Number 여부 판단, Not a Number
 
-<br />
+---
+
+## Array
+
+- `join`
+- `reverse`
+- `sort`: 기본 오름차순
+- `slice`
+- `splice(idx, num, data...)`: `idx`부터 `num`개를 삭제 후, `data...`를 삽입
+- `concat`: 원본 유지
+- `pop`
+- `push`
+- `shift`
+- `unshift`: 앞에서 넣음
+- `length`
+- `find`
+- `findIndex`
+- `filter`
+- `forEach`
+- `indexOf`
+- `lastIndexOf`
+- `reverse`
+- `map`
+- `join`
+- `isArray`
+- `reduce`
+- `some`
+- `every`
+- `at`
+
+---
 
 ## Boolean
 
-<br />
+...
+
+---
+
+## Date
+
+- `getDate`
+- `toLocaleDateString`
+
+---
+
+## Math
+
+- `abs`: 절대 값을 반환
+- `max`
+- `min`
+- `pow`: 제곱, `**`연산자와 동일
+- `random`: 0~1사이 무작위 생성
+- `round`: 반올림
+- `ceil`
+- `floor`
+- `sqrt`: 제곱근 값
+- `PI`: 상수
+
+---
 
 ## RegExp
 
@@ -85,24 +96,17 @@ temp.txt 1346 line 정리..
 
 - `(?! ...)`: 부정형 전방 탐색, 특정 패턴이 앞에 오지 않는 경우에만 매칭
 
-<br />
-
-## Date
-
-- getDate()
-- toLocaleDateString()
-
-<br />
+---
 
 ## Function
 
-- prototype // 부모(상속) 지정
-- apply
+- `prototype`: 생성자 함수가 생성할 객체의 프로토타입 정의 - 상속
+- `apply`
 
   > func.apply(thisArg, [argsArray])
 
-  - thisArg: 함수 내부의 this에 바인딩할 객체
-  - argsArray: 함수에 전달할 argument의 배열
+  - `thisArg`: 함수 내부의 `this`에 바인딩할 객체
+  - `argsArray`: 함수에 전달할 `argument`의 배열
 
   ```javascript
   function request(url, options, callback) {...}
@@ -118,7 +122,7 @@ temp.txt 1346 line 정리..
   // arguments.slice()와 동일
   ```
 
-- call
+- `call`
 
   > func.call(thisArg, ...arg);
 
@@ -138,7 +142,7 @@ temp.txt 1346 line 정리..
 
 - bind
 
-<br />
+---
 
 ## XMLHttpRequest // xhr는 크로스 도메인 문제를 해결 못함?
 
@@ -163,13 +167,13 @@ temp.txt 1346 line 정리..
 .responseXML
 .status
 
-<br />
+---
 
 ## JSON
 
 - parse(str)
 
-<br />
+---
 
 ## Object
 
@@ -214,15 +218,7 @@ temp.txt 1346 line 정리..
 - create
 - freeze
 
-<br />
-
-## Array
-
-- some
-- every
-- at
-
-<br />
+---
 
 ## 기본 제공 함수
 
@@ -240,7 +236,7 @@ temp.txt 1346 line 정리..
 - eval('1+2') // 문자열을 코드로 처리, JSON은 JSON.parse를 사용하자
 - JSON.parse('{"name":"man", "age":"12"}')
 
-<br />
+---
 
 ## [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)
 
@@ -277,7 +273,7 @@ eventSource.addEventListener("Custom Event", (event) => {});
   - message
   - open
 
-<br />
+---
 
 ## [WebSocket](https://developer.mozilla.org/ko/docs/Web/API/WebSocket)
 

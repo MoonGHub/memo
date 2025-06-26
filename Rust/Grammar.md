@@ -34,6 +34,7 @@
     - [std::sync::mpsc](#stdsyncmpsc)
     - [std::ops::Add](#stdopsadd)
 - [Macros](#macros)
+  - [기본 macro_rules! 매크로 종류](#기본-macro_rules의-매크로-종류)
 - [Attribute](#attribute)
 - [Advanced](#advanced)
   - [std::ops::Deref - 역참조](#stdopsderef---역참조)
@@ -199,7 +200,8 @@ match get_age("Alice") {
 
 #### Enum
 
-Algebraic data type - 서로 다른 variant(타입)들의 묶음, 어떤 종류의 타입도 담을 수 있음
+- Algebraic data type - 서로 다른 variant(타입)들의 묶음, 어떤 종류의 타입도 담을 수 있음
+- 이니셜라이저 함수로 사용 가능
 
 ```rs
 enum Direction {
@@ -242,6 +244,18 @@ fn main() {
     loopback.p();
     other.p();
 }
+```
+
+```rs
+#[derive(Debug)]
+enum Status {
+    Value(u32),
+    Stop,
+}
+
+let list_of_statuses: Vec<Status> = (0u32..20).map(Status::Value).collect();
+
+println!("{:?}", list_of_statuses)
 ```
 
 #### 튜플(Tuple)
@@ -512,6 +526,7 @@ fn main() {
   - `continue`, `panic!`등 은 `!` 값을 가짐
 - `&`는 포인터이자 참조자임
 - 동적 크기 타입(DST - 크기가 정해지지 않음)은 `&dyn Trait` 또는 `Box<dyn Trait>`와 같이 포인터와 같이 사용해야함
+- 러스트에는 리플렉션 기능이 없기 때문에 런타임에 타입의 이름을 조회할 수 없음
 
 ### 프로젝트(패키지, 크레이트, 모듈) 관리
 
@@ -823,27 +838,6 @@ let first = a[0];
 
 - `Fn`, `FnMut`, `FnOnce`: 호출 가능한 객체(클로저, 함수 포인터 등)의 추상 타입
 
-  ```rs
-  fn make_adder(x: i32) -> impl Fn(i32) -> i32 {
-      move |y| x + y
-  }
-
-  fn run_with_callback1(x: i32, callback: impl Fn(i32)) {
-      callback(x);
-  }
-  // 또는
-  fn run_with_callback2<F>(x: i32, callback: F)
-  where
-      F: Fn(i32),
-  {
-      callback(x);
-  }
-  // 또는
-  fn run_with_callback3<F: Fn(i32)>(x: i32, callback: F) {
-      callback(x);
-  }
-  ```
-
   - `Fn()`: 외부 변수(환경)를 불변 참조(&x)로 캡처하거나 캡처하지 않는 클로저
   - `FnMut()`: 외부 변수(환경)를 가변 참조(&mut x)로 캡처, FnMut 클로저를 호출하려면 클로저 변수 자체도 mut여야 함
   - `FnOnce()`: move로 소유권을 클로저 내부로 이동시켜 소비하기 때문에, 한 번만 호출 가능
@@ -880,6 +874,7 @@ let first = a[0];
   - `spawn`: 새로운 스레드로 실행
   - `sleep`
 - `std::time::Duration`
+- `ToString::to_string`: `Display`를 구현하는 모든 타입에 대해 구현되어 있음
 
 #### [std::result::Result](https://doc.rust-lang.org/std/result/enum.Result.html) - prelude
 
@@ -1155,6 +1150,17 @@ fn main() {
 
 ## [Macros](https://doc.rust-lang.org/std/index.html#macros)
 
+- 선언적 (declarative) 매크로
+  - `macro_rules!`
+  - [작성법 참고](https://doc.rust-lang.org/reference/macros-by-example.html)
+  - [기타 참고](https://lukaswirth.dev/tlborm/)
+- 절차적 (procedural) 매크로
+  - 커스텀 파생 `#[derive]` 매크로 - [작성 참고](#derive-매크로-작성proc_macro_derive---커스텀-트레잇-derive-주입)
+  - `속성형 (attribute-like)` 매크로 - [작성 참고](#속성-매크로-작성proc_macro_attribute)
+  - `함수형 (function-like)` 매크로 - `#[proc_macro]`를 사용해서 구현, 추후 작성...
+
+### 기본 `macro_rules!`의 매크로 종류
+
 - `println!`
   - 소유권을 가져가지 않음
   - 자리표시자 출력 형식:\
@@ -1168,6 +1174,7 @@ fn main() {
 - `dbg!`: 디버그 출력을 하며 결과값을 그대로 반환함, 넘기는 값이 소유권을 가지는 타입이면, 그 소유권이 dbg!로 이동
 - `panic!`: 복구 불가능한 에러 처리
 - `assert_eq!`: 유닛 테스트 또는 디버깅에 사용, 설정한 두 값이 다르면 panic 발생
+- `stringify!`: 계산과 평가를 하지 않고, 코드조각 그대로 문자열로 변환
 
 ---
 
@@ -2084,6 +2091,11 @@ fn main() {
 
 ### Derive 매크로 작성(proc_macro_derive) - 커스텀 트레잇 derive 주입
 
+`커스텀 파생 매크로`라고 지칭, 구조체와 열거형에만 기능
+
+- [DeriveInput 참고](https://docs.rs/syn/1.0.109/syn/struct.DeriveInput.html)
+- [quote 참고](https://docs.rs/quote/latest/quote/)
+
 작성 방법
 
 1. `cargo new ./lib/my_macro_hello --lib`\
@@ -2121,14 +2133,15 @@ fn main() {
 
     #[proc_macro_derive(MyMacroHello)]
     pub fn my_macro_hello(input: TokenStream) -> TokenStream {
-        // 매크로가 적용된 타입의 정보
+        // 데이터 구조로 파싱 - 매크로가 적용된 타입의 정보
         let ast = parse_macro_input!(input as DeriveInput);
 
-        // 타입의 이름
+        // 타입의 이름 - 식별자
         let name = &ast.ident;
 
-        // 함수 주입
-        let expanded = quote! {
+        // 러스트 코드로 변환
+        let gen = quote! {
+            // 함수 주입
             impl #name {
                 pub fn hello(&self) {
                     println!("Hello from {}!", stringify!(#name));
@@ -2136,9 +2149,8 @@ fn main() {
             }
         };
 
-        // 생성된 코드를 토큰 스트림으로 변환
-        expanded.into()
-        // 또는 TokenStream::from(expanded)
+        gen.into() // 생성된 코드를 토큰 스트림으로 변환
+        // 또는 TokenStream::from(gen)
     }
    ```
 
@@ -2169,17 +2181,19 @@ fn main() {
     use syn::{ItemFn, parse_macro_input};
 
     #[proc_macro_attribute]
+    // _attr는 속성에 전달할 값, item은 연결된 아이템 본문
     pub fn auth_required(_attr: TokenStream, item: TokenStream) -> TokenStream {
-        //  파싱
+        // 데이터 구조로 파싱 - 매크로가 적용된 타입의 정보
         let input = parse_macro_input!(item as ItemFn);
 
         // 파싱된 함수에서 정보 추출
-        let fn_name = &input.sig.ident; // 함수 이름
+        let fn_name = &input.sig.ident; // 식별자 - 함수 이름
         let fn_block = &input.block; // 함수 본문
         let fn_vis = &input.vis; // 함수 가시성(pub, private)
         let fn_sig = &input.sig; // 함수 정의 타입
 
-        let expanded = quote! {
+        // 러스트 코드로 변환
+        let gen = quote! {
             #fn_vis #fn_sig {
                 println!("[auth_required] 인증 체크 중...");
 
@@ -2199,9 +2213,8 @@ fn main() {
             }
         };
 
-        // 생성된 코드를 토큰 스트림으로 변환
-        expanded.into()
-        // 또는 TokenStream::from(expanded)
+        gen.into() // 생성된 코드를 토큰 스트림으로 변환
+        // 또는 TokenStream::from(gen)
     }
    ```
 

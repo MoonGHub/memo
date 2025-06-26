@@ -1,6 +1,9 @@
 # Rust - PBL
 
 - [인스턴스 비교](#인스턴스-비교)
+- [콜백 함수](#콜백-함수)
+  - [Fn, FnMut, FnOnce](#fn-fnmut-fnonce)
+  - [fn 함수 포인터](#fn-함수-포인터)
 - [구조체 필드값에 일반 함수/클로저 설정](#구조체-필드값에-일반-함수클로저-설정)
 - [async 함수/클로저의 전달](#async-함수클로저의-전달)
 - [오버라이딩](#오버라이딩)
@@ -38,6 +41,72 @@ let same = ptr::eq(&dog1, &dog2);
 println!("같은 인스턴스인가? {}", same); // false
 
 println!("{:p} :: {:p}", &dog1, &dog2); // 메모리 주소 출력
+```
+
+---
+
+## 콜백 함수
+
+### Fn, FnMut, FnOnce
+
+- `Fn()`: 외부 변수(환경)를 불변 참조(&x)로 캡처하거나 캡처하지 않는 클로저
+- `FnMut()`: 외부 변수(환경)를 가변 참조(&mut x)로 캡처, FnMut 클로저를 호출하려면 클로저 변수 자체도 mut여야 함
+- `FnOnce()`: move로 소유권을 클로저 내부로 이동시켜 소비하기 때문에, 한 번만 호출 가능
+
+> `impl Fn(...)` 또는 `Box<dyn Fn(...)>` 와 같은 형식을 사용하며 일반 함수도 허용
+
+```rs
+fn make_adder(x: i32) -> impl Fn(i32) -> i32 {
+    move |y| x + y
+}
+
+fn adder(x: i32) -> i32 {
+    x + 1
+}
+
+fn run_with_callback1(x: i32, callback: impl Fn(i32) -> i32) -> i32 {
+    callback(x)
+}
+
+fn run_with_callback2<F>(x: i32, callback: F) -> i32
+where
+    F: Fn(i32) -> i32,
+{
+    callback(x)
+}
+
+fn run_with_callback3<F: Fn(i32) -> i32>(x: i32, callback: F) -> i32 {
+    callback(x)
+}
+
+let result1 = run_with_callback1(10, make_adder(1));
+let result2 = run_with_callback2(20, make_adder(2));
+let result3 = run_with_callback3(30, make_adder(3));
+let result4 = run_with_callback3(30, adder);
+
+println!("{result1}, {result2}, {result3}, {result4}");
+```
+
+### fn 함수 포인터
+
+- 함수 포인터는 세 가지 클로저 트레이트 (Fn, FnMut, FnOnce) 을 모두 구현
+- 고정 크기이고 비용 적음
+
+```rs
+fn add_one(x: i32) -> i32 {
+    x + 1
+}
+
+fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+    f(arg) + f(arg)
+}
+
+fn main() {
+    let answer1 = do_twice(add_one, 5);
+    let answer2 = do_twice(|x| x + 1, 5);
+
+    println!("{answer1}, {answer2}");
+}
 ```
 
 ---
