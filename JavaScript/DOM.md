@@ -14,6 +14,7 @@
 - `scrollWidth`
 - `lastModified`
 - `documentElement`
+- `write`
 
 ### 요소 선택
 

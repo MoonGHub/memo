@@ -602,7 +602,7 @@ pub fn eat_at_restaurant() {
 > "타입 자리표시자"로도 불림
 
 ```rs
-struct Point<T> {
+struct Point<T = u32> { // 기본 타입 매개변수 지정
     x: T,
     y: T,
 }

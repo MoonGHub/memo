@@ -1,41 +1,6 @@
-★bind
-
-ES5에 추가된 Function.prototype.bind
-함수를 실행하지 않기 때문에 명시적으로 함수를 호출할 필요가 있다.
-
-function Person(name) {
-  this.name = name;
-}
-
-Person.prototype.doSomething = function (callback) {
-  if (typeof callback == 'function') {
-    // callback.call(this);
-    // this가 바인딩된 새로운 함수를 호출
-    callback.bind(this)();		// this가 바인딩된 새로운 함수를 리턴 -> 명시적 함수호출
-  }
-};
-
-function foo() {
-  console.log('#', this.name);
-}
-
-var p = new Person('Lee');
-p.doSomething(foo);  // 'Lee'
-
 ★
 생성자함수는 대문자로
 arguments.callee는 호출된 함수의 이름
-
-
-★
-실행 컨텍스트는 실행 가능한 코드가 실행되기 위해 필요한 환경
-
-전역 코드 : 전역 영역에 존재하는 코드
-Eval 코드 : eval 함수로 실행되는 코드
-함수 코드 : 함수 내에 존재하는 코드
-
-
-
 
 ★클로저
  var box = document.querySelector('.box');
@@ -409,7 +374,7 @@ for (let [key, value] of Object.entries(object1)) {
 
 *defer
 웹페이지 파싱과 외부 스크립트 파일의 다운로드가 동시에 진행된다.
- 스크립트는 웹페이지 파싱 완료 직후 실행된다. 
+ 스크립트는 웹페이지 파싱 완료 직후(DOMContentLoaded 직전) 실행된다. 
 IE9 이하 버전에서 정상적으로 동작하지 않을 수 있다.
 ex)
 <script async src="extern.js"></script>
@@ -477,8 +442,6 @@ function deepFreeze(obj) {
 }
 
 
-Math.min(1,2,3);
-Math.max(1,2,3);
 1 + undefined // NaN (undefined → NaN)
 
 new Array(1,2,3)      //
@@ -489,62 +452,8 @@ new WeakSet()
 new WeakMap()
 참조가 있는 값만 저장 가능(배열, 객체, 함수)
 
-*정규 표현식(RegExp) 객체
-var 변수 = /패턴/플래그;		// i:대소문자 구별않함, g: 전체문자열(발견시 중지)
-var 변수 = new RegExp("패턴", "플래그");
--메소드 
-search()	->  str.search(/java/i); // 찾은 인덱스 반환
-replace()	->  str.replace(/java/i,"HTML5");
-test()		->  regPtn.test(str);	//true or false
-exec()		->  regPtn.exec(str);	// 일치 문자열 반환
-match()		->  str.match(regPtn);	// 일치 문자열 반환(여러개면 배열로)
-\w -> 모든문자
-\W -> 대소문자,숫자 _를 제외한 모든 문자
-\d -> 숫자
-\D -> 숫자를 제외한 모든 문자
-\s -> 공백문자(공백, 탭, 줄바꿈 등)
-\S -> 공백문자를 제외한 모든 문자
-p{n} -> p가 n개인 문자열
-n+ -> 적어도 n개 이상, // ?? n개의 문자열을 찾음
-n* -> 0개이상, //?? n개가 포함된 문자열을 찾음
-n? -> n이 0또는 1회있는 문자열
-[0-9] -> 0~9중의 하나
-[a-z] -> a~z중 하나
-[^abc] -> a 또는 b 또는 c가 아닌 문자
-[qwer] -> 네 문자중 하나
-(a|b) -> a 또는 b
-
-* -> 0개 이상
-+ -> 1개 이상
-? -> 0개 or 1개
-{m, n} -> m회 이상 n회 이하
-
-전방탐색
-(?=정규식) // 정규식에는 매칭 조건에는 넣고 싶지만 리턴받고 싶지 않은 정규식
-(?!정규식) // 부정형
-
-후방탐색
-(?<=정규식)
-(?<!정규식) // 부정형
 
 *Array객체의 메소드
-slice
-join	// 하나의 문자열로, 구분자 매개로 줘도댐
-concat	// 두 배열을 결합
-toString
-splice	// 지정된 배열값을 추가 또는 삭제, (start index, delete conunt, 추가할 요소, 추가할 요소,...) 
-	start부터 count만큼 지우고 추가, 지운배열 리턴
-shift	// 배렷 첫 요소 삭제
-unshift	// 배열 첫 요소에 추가
-pop	// 배열 마지막요소 삭제
-push	// 배열 마지막요소에 추가
-reverse
-indexOf	// 없으면 -1
-sort
-arr.sort(function(a, b){
-	return a-b;});	// 오름차순 정렬
-arr.sort(function(a, b){
-	return 0.5 - Math.random()});	// 랜덤 배치
 객체의 속성과 메서드는 delete 연산자로 삭제가능
 ex) delete myCar.color;		// 인덱스 요소는 그대로, 값만 undefined
 
@@ -569,31 +478,6 @@ valueOf()
 
 *Date객체 분홍책 178P참고
 now.setSeconds(now.getSeconds()+1);
-
-*내장 함수
-encodeURI("...")	// 영문,숫자,일부기호제외, 문자를 유니코드값으로 인코딩
-encodeURIComponent("...") 	// 영문,숫자제외, 문자를 유니코드로
-decodeURI("...")	
-decodeURIComponent("...")
-parseInt(String[, nBase])	// 정수로 변경, nBase는 몇진수? 8진수 -> 8,  ex) 5.12 -> 5, 15px -> 15
-parseFloat("...")
-String(값)	// 5 -> "5"
-Number("...")	// "5" -> 5
-Boolean(값)	// 5 -> true, null -> false
-eval("...")	// 전달 문자열을 자바스크립트 문장으로 인식하여 처리
-isFinite(...);	//유한수인가?
-isNaN(...);	//숫자가 아닌가?
-var str = String(123);		// "123"
-var num = Number("123");	// 123
-var num = parseInt("123");	// 123
-document.write(typeof str);	// str의 자료형을 보여줌
-escape()	// 16진수 아스키코드로 변경
-unescape()	// ISO-Latin-1로 변경
-call()		// 함수.call(...) -> 함수기능을 사용하여 매개이용(this같은게 매개를 가르키게됨)
-apply()		// Math.max.apply(null,[3,4,5]); -> 배열로 이용( 배열메소드에는 max()가 없어서 이렇게 이용)
-
-
-
 
 지연평가 ex)
 const array = ["9", "91", "95", "96", "99"];
@@ -733,24 +617,6 @@ _getMovies = async () => {
  })
 }	// 비동기로 실행
 
-@@통신
-var xhr = new XMLHttpRequest();
-xhr.open('GET','./~.html');
-xhr.onreadystatechange = function(){
- if(xhr.readyState ===4 && xhr.status ===200) { console.log(xhr.responseText) }
- }
-xhr.send();
-4 : 통신이 끝났음
-200 : 성공
-
-xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-xhr.send('data1=123&data2=456');
-
-const list1 = ['apple','orange']
-const list2 = [].concat(list1, 'banana');   // es6?
-
-func.apply(null, arr)
---> null.func(arr)
 
 const newObj = Object.setPrototypeOf( 타켓, 추가 )
 	// 타겟에 추가, 타겟반환 (* 타겟의 __proto__로 추가)
@@ -1096,28 +962,6 @@ onclick="func(this)" 로 전달 해야함;
 	// 원시 -> 임시 래퍼객체는 참조가 끝나면 객체의 기능 소멸
 *내장객체 : String, Date, Array, Math, RegExp(Regular Expressions), Function, Object
 
-*내장 함수
-encodeURI("...")	// 영문,숫자,일부기호제외, 문자를 유니코드값으로 인코딩
-encodeURIComponent("...") 	// 영문,숫자제외, 문자를 유니코드로
-decodeURI("...")	
-decodeURIComponent("...")
-parseInt(String[, nBase])	// 정수로 변경, nBase는 몇진수? 8진수 -> 8,  ex) 5.12 -> 5, 15px -> 15
-parseFloat("...")
-String(값)	// 5 -> "5"
-Number("...")	// "5" -> 5
-Boolean(값)	// 5 -> true, null -> false
-eval("...")	// 전달 문자열을 자바스크립트 문장으로 인식하여 처리
-isFinite(...);	//유한수인가?
-isNaN(...);	//숫자가 아닌가?
-var str = String(123);		// "123"
-var num = Number("123");	// 123
-var num = parseInt("123");	// 123
-document.write(typeof str);	// str의 자료형을 보여줌
-escape()	// 16진수 아스키코드로 변경
-unescape()	// ISO-Latin-1로 변경
-call()		// 함수.call(...) -> 함수기능을 사용하여 매개이용(this같은게 매개를 가르키게됨)
-apply()		// Math.max.apply(null,[3,4,5]); -> 배열로 이용( 배열메소드에는 max()가 없어서 이렇게 이용)
-
 
 **브라우저 객체 (BOM)
 window
@@ -1299,8 +1143,6 @@ document.myForm.submit();
 
 document.form_name.input_name.value="값";
 
-★★★★★★★★내장객체 메서드
-
 *Array객체의 메소드
 slice
 join	// 하나의 문자열로, 구분자 매개로 줘도댐
@@ -1340,40 +1182,6 @@ toLowerCase()
 toUpperCase()
 toString()
 valueOf()
-
-*Date객체 분홍책 178P참고
-
-*정규 표현식(RegExp) 객체
-var 변수 = /패턴/플래그;		// i:대소문자 구별않함, g: 전체문자열(발견시 중지)
-var 변수 = new RegExp("패턴", "플래그");
--메소드 
-search()	->  str.search(/java/i); // 찾은 인덱스 반환
-replace()	->  str.replace(/java/i,"HTML5");
-test()		->  regPtn.test(str);	//true or false
-exec()		->  regPtn.exec(str);	// 일치 문자열 반환
-match()		->  str.match(regPtn);	// 일치 문자열 반환(여러개면 배열로)
-
-\w -> 모든문자
-\W -> 대소문자,숫자 _를 제외한 모든 문자
-\d -> 숫자
-\D -> 숫자를 제외한 모든 문자
-\s -> 공백문자(공백, 탭, 줄바꿈 등)
-\S -> 공백문자를 제외한 모든 문자
-p{n} -> p가 n개인 문자열
-n+ -> 적어도 n개 이상, // ?? n개의 문자열을 찾음
-n* -> 0개이상, //?? n개가 포함된 문자열을 찾음
-n? -> n이 0또는 1회있는 문자열
-[0-9] -> 0~9중의 하나
-[a-z] -> a~z중 하나
-[qwer] -> 네 문자중 하나
-(qwer) -> "qwer"
-* -> 0개 이상
-+ -> 1개 이상
-? -> 0개 or 1개
-{m, n} -> m회 이상 n회 이하
-
-
-★★★★★★★★
 
 암묵적 전역 변수
 x = 1;
@@ -1816,24 +1624,6 @@ $.merge(Array1, Array2)
 요소.index(지정 요소)
 
 
-
-*Ajax : Asynchronous JavaScript and XML
-메소드
- load()		//외부 콘텐츠를 가져올 때 사용
- $.ajax()	// $.post(), $.get(), $.getJSON()을 하나로 합친 것
- $.post()	// post방식 전송, 받기
- $.get()	// get방식 전송, 받기
- $.getJSON()	// get방식 전송, JSON으로 받기
- $.getScript()	// Ajax를 이용해 외부 자바스크립트 불러옴
-	ex) 버튼클릭 -> $.getScript("~.js");
- .ajaxStop(function(){ ... })	//	응답요청이 완료되었을 때
- .ajaxSuccess(function(){ ... })	// ajax 요청이 성공적 완료되면
- ajaxComplete(function(){ ... })	// Ajax 통신 완료되면
-
-
-요소.load(url,data,콜백함수)	// 요청 할 url, 전송 할 data
-$("#div1").load("~~.txt #p1");	// #div1 요소에 삽입
-
 $.ajax({
 	url: "전송페이지",
 	type: "전송방식(get,post)",
@@ -2102,44 +1892,6 @@ $("div","li")	-> li안에 div가 있는 div요소만 선택
 요소.each(function(index, element));	//element는 this와 같음
 요소.has(하위요소)	//하위요소를 가진 요소들을 선택
 요소.is(체킹)		// 체킹요소와 1개 이상 일치면 true
-
-*ajax
-브라우저 내정객체 XMLHttpRequest(웹서버에 데이터 요청)
--> HttpRequest send -> 서버에서 처리 -> 페이지로 응답 -> 처리, 수정
-자바스크립트로 구현 -> 559P
-
-POST방식은 크기제한이 없음
-
-403 -> 접근 거부
-
-
-$.ajax()
-$.ajaxSetup()	// 향후 $.ajax 요청에 대한 설정 ({ name: value, ...})
-
-$.ajax()의 속성
-url
-data
-type	// GET,POST
-dataType	// 서버로부터 응답받을 데이터의 형식
-success		//콜백함수, 매개result -> 응답받을 데이터
-error
-complete	// 콜백함수 후 실행할 함수
-
-핵심 메서드
-get()		// 보통 서버에서 일부 데이터를 가져오는데 	
-getScript()
-post()		// 데이터를 캐시하지 않아 요청과 함꼐 데이터를 보내는데 사용
-load()	//데이터요청 , 해당하는 HTML코드 수정
-	// 요소.load(url, data, function(response, tatus, xhr));	//async:false
-	// ex) 요소.load("url #p1");	// url의 id=p1의 내용을 요소의 html로 삽입
-	// response : 호출이 성공하면 결과내용 
-	// statusTxt : 통화 상태 ( success, error )
-	// xhr : XMLHttpRequest 객체
-
-ex)
-$.get(" url", function(data){ ... });
-$.post(url, data, function(data, status, xhr), dataType);
-
 
 *JSON ( JavaScript Object Notation ) -> js 객체 표기법으로된 텍스트
 JSON.stringify(obj)	-> 객체(배열도 가능)를 텍스트로

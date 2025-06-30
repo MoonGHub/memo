@@ -1,4 +1,4 @@
-# Platform - Node
+# Javascript - Node
 
 - [Built-in module](#built-in-module)
 - [CLI Options](#cli-options)

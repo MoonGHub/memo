@@ -1,5 +1,64 @@
 # JavaScript - Built In Object
 
+- [Object](#object)
+  - [defineProperty](#defineproperty)
+- [String](#string)
+- [Number](#number)
+- [Array](#array)
+- [Boolean](#boolean)
+- [JSON](#json)
+- [Date](#date)
+- [Math](#math)
+- [RegExp](#regexp)
+  - [패턴](#패턴)
+  - [String에서 패턴 찾기](#string에서-패턴-찾기)
+- [Function](#function)
+- [XMLHttpRequest](#xmlhttprequest)
+- [EventSource](#eventsource)
+- [WebSocket](#websocket)
+- [Built in Function](#built-in-function)
+
+## Object
+
+- `propertyIsEnumerable`: 해당 속성이 존재하며 for/in으로 열거 가능 여부
+- `assign`
+- `keys`
+- `values`
+- `entries`
+- `fromEntries`
+- `defineProperty`
+- `create`
+- `freeze`
+
+### defineProperty
+
+```javascript
+let obj1 = {};
+let obj2 = {};
+
+function withValue(value) {
+  const config =
+    withValue.config ||
+    (withValue.config = {
+      enumerable: true, // for...in 또는 Object.keys 등 열거 가능 여부
+      writable: false, // 변경 가능 여부
+      configurable: false, // 설정 가능 여부
+      value: null, // 실제 값
+      // get: value를 대신 반환
+      // set
+    });
+
+  return { ...config, value };
+}
+
+Object.defineProperty(obj1, "a", withValue("hello"));
+Object.defineProperty(obj2, "b", withValue("world"));
+
+console.log(obj1, obj2, withValue.config);
+```
+
+---
+
 ## String
 
 - `charAt`
@@ -36,14 +95,14 @@
 
 - `join`
 - `reverse`
-- `sort`: 기본 오름차순
+- `sort`: 기본 오름차순, `(a, b) => a-b` - 오름차순, `(a, b) => 0.5 - Math.random()` - 랜덤 배치
 - `slice`
-- `splice(idx, num, data...)`: `idx`부터 `num`개를 삭제 후, `data...`를 삽입
+- `splice(idx, num, data...)`: `idx`부터 `num`개를 삭제 후, `data...`를 삽입, 삭제한 배열 반환
 - `concat`: 원본 유지
 - `pop`
 - `push`
 - `shift`
-- `unshift`: 앞에서 넣음
+- `unshift`: 배열 첫 요소에 추가
 - `length`
 - `find`
 - `findIndex`
@@ -51,9 +110,7 @@
 - `forEach`
 - `indexOf`
 - `lastIndexOf`
-- `reverse`
 - `map`
-- `join`
 - `isArray`
 - `reduce`
 - `some`
@@ -65,6 +122,12 @@
 ## Boolean
 
 ...
+
+---
+
+## JSON
+
+- `parse`
 
 ---
 
@@ -86,15 +149,52 @@
 - `ceil`
 - `floor`
 - `sqrt`: 제곱근 값
-- `PI`: 상수
+- `PI`: 파이 상수
 
 ---
 
 ## RegExp
 
-temp.txt 1346 line 정리..
+> `new RegExp("패턴", "플래그");`
 
-- `(?! ...)`: 부정형 전방 탐색, 특정 패턴이 앞에 오지 않는 경우에만 매칭
+- `test`: true or false
+- `exec`: 일치 문자열 반환
+
+### 패턴
+
+- `*`: 0개 이상
+- `+`: 1개 이상
+- `?`: 0개 또는 1개
+- `\w`: 모든 문자
+- `\W`: 대소문자,숫자 \_를 제외한 모든 문자
+- `\d`: 숫자
+- `\D`: 숫자를 제외한 모든 문자
+- `\s`: 공백 문자(공백, 탭, 줄바꿈 등)
+- `\S`: 공백 문자를 제외한 모든 문자
+- `p{n}`: p가 n개인 문자열
+- `[0-9]`: 0~9중의 하나
+- `[a-z]`: a~z중 하나
+- `[qwer]`: qwer 문자중 하나
+- `[^abc]`: a 또는 b 또는 c가 아닌 문자
+- `(qwer)`: "qwer" 연속 문자열
+- `(a|b)`: a 또는 b
+- `{m, n}`: m회 이상 n회 이하
+
+**전방탐색**
+
+- `(?=정규식)`: 정규식에는 매칭 조건에는 넣고 싶지만 리턴받고 싶지 않은 정규식
+- `(?!정규식)`: 부정형 전방 탐색, 특정 패턴이 앞에 오지 않는 경우에만 매칭
+
+**후방탐색**
+
+- `(?<=정규식)`
+- `(?<!정규식)`: 부정형
+
+### String에서 패턴 찾기
+
+- `str.search()`: 인덱스 반환
+- `str.replace()`
+- `str.match()`: 일치 문자열 반환(여러개면 배열로)
 
 ---
 
@@ -122,6 +222,8 @@ temp.txt 1346 line 정리..
   // arguments.slice()와 동일
   ```
 
+  `Math.max.apply(null,[3,4,5])`
+
 - `call`
 
   > func.call(thisArg, ...arg);
@@ -140,22 +242,20 @@ temp.txt 1346 line 정리..
   }
   ```
 
-- bind
+- `bind`: this 바인딩
 
 ---
 
-## XMLHttpRequest // xhr는 크로스 도메인 문제를 해결 못함?
+## XMLHttpRequest
 
-.open("GET", url + data(GET방식일때, 인코딩해줌), 옵션...) // 요청 초기화, 비동기 디폴트
-.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset-UTF-8")
-.send(data) // 요청 보낼때 호출, 보낼 데이터가 없으면 파라미터 생략
+> `new XMLHttpRequest();`
 
----
+- .open("GET", url + data(GET방식일때, 인코딩해줌), 옵션...) // 요청 초기화, 비동기 디폴트
+  .setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset-UTF-8")
+  .send(data) // 요청 보낼때 호출, 보낼 데이터가 없으면 파라미터 생략
 
 .onreadystatechange // 이벤트, readyState변경 시 발생
 .onload // 이벤트, 응답 완료시 발생
-
----
 
 .readyState // onload이벤트 사용시 불필요
 0: open호출 전(UNINITIALIZED)
@@ -167,74 +267,25 @@ temp.txt 1346 line 정리..
 .responseXML
 .status
 
----
+@@통신
+xhr.open('GET','./~.html');
+xhr.onreadystatechange = function(){
+if(xhr.readyState ===4 && xhr.status ===200) { console.log(xhr.responseText) }
+}
+xhr.send();
+4 : 통신이 끝났음
+200 : 성공
 
-## JSON
+xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+xhr.send('data1=123&data2=456');
 
-- parse(str)
+브라우저 내정객체 XMLHttpRequest(웹서버에 데이터 요청)
+-> HttpRequest send -> 서버에서 처리 -> 페이지로 응답 -> 처리, 수정
+자바스크립트로 구현 -> 559P
 
----
+POST방식은 크기제한이 없음
 
-## Object
-
-- propertyIsEnumerable(att) // 해당 속성이 존재하며 for/in으로 열거가능판단 false or true
-- assign(target, ...sources)\
-  첫 인수의 객체로 합쳐서(덮어씌움), 첫 인수를 반환
-- keys(obj) // [] 반환
-- values(obj) // [] 반환
-- entries(obj) // [[]] 반환
-- fromEntries(arr)
-- defineProperty
-
-  ```javascript
-  function withValue(value) {
-    var d =
-      withValue.d ||
-      (withValue.d = {
-        enumerable: false,
-        writable: false,
-        configurable: false,
-        value: null,
-      });
-    d.value = value;
-
-    return d;
-  }
-
-  Object.defineProperty(obj, "key", withValue("static"));
-  ```
-
-  - enumerable\
-    열거(for...in 또는 Object.keys 등)
-  - configurable\
-    설정
-  - writable\
-    변경
-  - value
-  - get\
-    함수의 리턴 값으로 value를 대신하여 해당 key값을 반환
-  - set
-
-- create
-- freeze
-
----
-
-## 기본 제공 함수
-
-- encodeURI('?query=값') // 유니코드로 인코딩, 영숫자 및 일부문자 제외
-- encodeURIComponent('?query=값') // 영숫자만 제외, GET방식에 사용(form은 기본구현되있음)
-- decodeURI('?query=%EA%B0%92')
-- decodeURIComponent('?query=%EA%B0%92')
-- parseInt('5.12')
-- parseInt('5px') // 숫자로 시작해 첫 문자까지
-- parseFloat('13.2%')
-- String(123)
-- Number('123')
-- Boolean(1)
-- isNaN('a') // is not a number, 문자존재 시 false
-- eval('1+2') // 문자열을 코드로 처리, JSON은 JSON.parse를 사용하자
-- JSON.parse('{"name":"man", "age":"12"}')
+403 -> 접근 거부
 
 ---
 
@@ -294,3 +345,22 @@ ws.addEventListener("message", (event) => {
   - error
   - message
   - open
+
+---
+
+## Built in Function
+
+- `encodeURI`: 유니코드로 인코딩, 영숫자 및 일부문자 제외
+- `encodeURIComponent`: 영숫자만 제외, rest GET방식에 사용(form은 기본구현)
+- `decodeURI`
+- `decodeURIComponent`
+- `parseInt`: 숫자로 시작해 첫 문자까지 전까지 파싱
+- `parseFloat`
+- `String`
+- `Number`
+- `Boolean`
+- `isNaN`: is Not a Number
+- `eval`: 문자열을 코드로 처리
+- `isFinite`: 유한수 여부
+- `escape`: 16진수 아스키코드로 변환
+- `unescape`: ISO-Latin-1로 변환

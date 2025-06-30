@@ -69,9 +69,9 @@
          "envFile": "${workspaceFolder}/.env"
        },
        {
-         "name": "Run gradle continuous",
          "type": "node-terminal",
-         "command": "./gradlew build --warning-mode=all -t --parallel --build-cache --configuration-cache",
+         "name": "Run gradle continuous",
+         "command": "./gradlew :{project_name}:build --warning-mode=all -t --parallel --build-cache --configuration-cache -x test",
          "request": "launch",
          "cwd": "${workspaceFolder}"
        }
@@ -96,4 +96,4 @@
 아래 두 명령어를 각각의 터미널로 실행
 
 - `./gradlew :{project_name}:bootRun --args='--spring.profiles.active=local'`
-- `./gradlew build --warning-mode=all -t --parallel --build-cache --configuration-cache`
+- `./gradlew :{project_name}:build --warning-mode=all -t --parallel --build-cache --configuration-cache -x test`

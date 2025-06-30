@@ -1,4 +1,4 @@
-# Platform - Nest JS
+# Javascript - Nest JS
 
 - [Basic](#basic)
   - [어노테이션](#어노테이션)
