@@ -42,6 +42,7 @@
 - `th:include`: deprecated
 - `th:remove`
 - `th:inline`: `th:inline="javascript"`와 같이 사용하며, `[[${user}]]`와 같이 서버 데이터 파싱
+- `th:id`
 
   ```html
   <script th:inline="javascript">

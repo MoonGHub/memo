@@ -43,55 +43,46 @@
 ## 상태 관리
 
 - `git status`
-- `git reflog`\
-  헤더 및 브랜치 이동, 리셋 이력 확인
+- `git reflog`: 헤더 및 브랜치 이동, 리셋 이력 확인
 - `git log`
   - --stat: 커밋한 상태도 표시
   - --oneline: 한 줄로 표시
   - --branches: 다른 브랜치들도 함께 표시
   - --graph
   - ex) `git log --oneline --branches --graph`
-- `git diff`\
-  스테이징 파일과 비교, 없으면 최신(HEAD)과 비교
+- `git diff`: 스테이징 파일과 비교, 없으면 최신(HEAD)과 비교
 - `git diff HEAD origin/main`\
   로컬의 최신 커밋인 HEAD와 원격 브랜치를 비교(origin/main이 비교 기준브랜치가 됨)\
   ![git_diff](../assets/git_diff.png)
 
 ### Staging
 
-- `git add file`\
-  `git add .`\
-  Untracked files를 Tracked상태로 변경(스테이징)
+- `git add {file}`: Untracked files를 Tracked상태로 변경(스테이징)
+- `git add .`
 
 ### Commit
 
 - `git commit -m "msg"`
   - --allow-empty: 수정사항 없이 커밋 가능
-- `git commit --amend "msg"`\
-  최근 커밋으로 합치기 - 스테이징에 변화가 없을 경우, 메세지만 변경
+- `git commit --amend "msg"`: 최근 커밋으로 합치기 - 스테이징에 변화가 없을 경우, 메세지만 변경
 
 ### 업데이트(Pull / Push / Fetch)
 
-- `git pull`
-  - 현재 브랜치를 업데이트
+- `git pull`: 현재 브랜치를 업데이트
   - --all: 로컬의 모든 브랜치를 업데이트
   - --prune(또는 -p): 유효하지 않은 참조를 제거\
     원격에서는 지워진 브랜치지만 로컬(git branch -r)에서는 계속 남아 있는 경우
 - `git push -u origin master`
   - -u: 처음 연결을 위한 것으로 최초 사용 이후는 생략
-- `git fetch`
-  - 위 pull옵션과 동일
+- `git fetch`: 위 pull옵션과 동일
 
 ### Stash
 
 - `git stash`
 - `git stash list`
-- `git stash pop`\
-  0(가장 최근)부터 꺼냄 - 0 삭제
-- `git stash apply`\
-  0을 삭제하지 않고 꺼냄
-- `git stash drop`\
-  0의 삭제
+- `git stash pop`: 가장 최근(0)부터 꺼내고 제거
+- `git stash apply`: 가장 최근(0)을 제거하기 않고 적용
+- `git stash drop`: 가장 최근(0)을 제거
 
 ### Merge
 
