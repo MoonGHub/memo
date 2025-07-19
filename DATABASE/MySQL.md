@@ -14,6 +14,7 @@
 ## 기본 명령어
 
 - `mysql -u {유저명} -p [{DB명}]`: 패스워드 입력으로 mysql접속
+- `SHOW VARIABLES LIKE '%VERSION%'`: 서버 버전 확인
 
 ### 유저
 

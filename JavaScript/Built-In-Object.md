@@ -13,6 +13,7 @@
   - [패턴](#패턴)
   - [String에서 패턴 찾기](#string에서-패턴-찾기)
 - [Function](#function)
+- [Intl](#intl)
 - [XMLHttpRequest](#xmlhttprequest)
 - [EventSource](#eventsource)
 - [WebSocket](#websocket)
@@ -246,46 +247,58 @@ console.log(obj1, obj2, withValue.config);
 
 ---
 
+## Intl
+
+Internationalization: 국제화
+
+```javascript
+const dateFormat = new Intl.DateTimeFormat("ko", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+console.log(dateFormat.format(new Date()));
+```
+
+---
+
 ## XMLHttpRequest
 
-> `new XMLHttpRequest();`
+> `new XMLHttpRequest();`로 생성하여 사용하며, 기본적으로 비동기
 
-- .open("GET", url + data(GET방식일때, 인코딩해줌), 옵션...) // 요청 초기화, 비동기 디폴트
-  .setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset-UTF-8")
-  .send(data) // 요청 보낼때 호출, 보낼 데이터가 없으면 파라미터 생략
+- `open(method, url)`
+  - method: `GET`, `POST`, `PUT`, `DELETE`
+- `setRequestHeader`
+- `send`: 요청 호출
+- `onreadystatechange`: readyState변경 시 발생
+  - readyState
+    - `0`: `UNSENT` - open 호출 전
+    - `1`: `OPENED` - send 호출 전 => open
+    - `2`: `HEADERS_RECEIVED` - 처리 중
+    - `3`: `LOADING` - 부분적으로 응답 => onprogress
+    - `4`: `DONE` - 응답 완료 => onload
+- `response`: responseType에 자동 파싱
+- `responseText`: 응답 데이터를 문자열 형태로 반환
+- `responseXML`: 응답 데이터를 DOM 형태로 파싱하여 반환
+- `status`: 응답 상태 값
 
-.onreadystatechange // 이벤트, readyState변경 시 발생
-.onload // 이벤트, 응답 완료시 발생
+예제
 
-.readyState // onload이벤트 사용시 불필요
-0: open호출 전(UNINITIALIZED)
-1: send호출 전(LOADING)
-2: 처리 중(LOADED)
-3: 부분적으로 응답(INTERACTIVE)
-4: 응답 완료(COMPLETED)
-.responseText // 응답받은 데이터의 참조 속성
-.responseXML
-.status
+```javascript
+const xhr = new XMLHttpRequest();
 
-@@통신
-xhr.open('GET','./~.html');
-xhr.onreadystatechange = function(){
-if(xhr.readyState ===4 && xhr.status ===200) { console.log(xhr.responseText) }
-}
+xhr.open("GET", "./sample.html");
+xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    console.log(xhr.responseText);
+
+    document.body.innerHTML = xhr.responseText;
+  }
+};
+
 xhr.send();
-4 : 통신이 끝났음
-200 : 성공
-
-xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-xhr.send('data1=123&data2=456');
-
-브라우저 내정객체 XMLHttpRequest(웹서버에 데이터 요청)
--> HttpRequest send -> 서버에서 처리 -> 페이지로 응답 -> 처리, 수정
-자바스크립트로 구현 -> 559P
-
-POST방식은 크기제한이 없음
-
-403 -> 접근 거부
+```
 
 ---
 
@@ -293,21 +306,25 @@ POST방식은 크기제한이 없음
 
 > [server sent events(SSE)](../Python/FastApi.md#sseserver-sent-events)와 같이 사용
 
-```javascript
-// example
+기본 이벤트
 
-const eventSource = new EventSource(`http://localhost:8000`, {
-  // withCredentials: true,
+- open
+- message
+- error
+
+```javascript
+const eventSource = new EventSource(`http://localhost:8000`);
+
+eventSource.addEventListener("open", (event) => {
+  console.log("open :: ", event);
 });
 
 eventSource.addEventListener("message", (event) => {
-  console.log(event.data);
+  console.log("message :: ", event.data);
 });
 
-eventSource.addEventListener("open", (event) => {});
-
 eventSource.addEventListener("error", (error) => {
-  console.error("SSE Error:", error);
+  console.error("error :: ", error);
 
   if (error.readyState == EventSource.CLOSED) {
     // Connection was closed.
@@ -319,32 +336,26 @@ eventSource.addEventListener("error", (error) => {
 eventSource.addEventListener("Custom Event", (event) => {});
 ```
 
-- addEventListener 이벤트
-  - error
-  - message
-  - open
-
 ---
 
 ## [WebSocket](https://developer.mozilla.org/ko/docs/Web/API/WebSocket)
 
 > [FastApi 참고](../Python/FastApi.md#websocket)
 
-```javascript
-// example
+기본 이벤트
 
+- open
+- message
+- close
+- error
+
+```javascript
 const ws = new WebSocket("ws://localhost:8000/ws");
 
 ws.addEventListener("message", (event) => {
-  console.log(event.data);
+  console.log("message :: ", event.data);
 });
 ```
-
-- addEventListener 이벤트
-  - close
-  - error
-  - message
-  - open
 
 ---
 

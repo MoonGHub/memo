@@ -66,6 +66,9 @@
 
 ### layout
 
+> 의존성 필요: nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:{version}
+> html에 `xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"` 추가
+
 - `layout:decorate`: 사용할 레이아웃 선택
 - `layout:fragment`: 대치하거나 대치될 슬롯 지정, 문자열이어야 함
 - `layout:insert`

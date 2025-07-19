@@ -108,6 +108,7 @@
 - `innerText`: 주석, script, style은 제외됨
 - `cloneNode(boolen)`
   - `true`: 해당 노드의 children까지 복제
+- `scrollIntoView`: 해당 요소가 뷰포트의 **top 0**이 되도록 스크롤 이동
 
 ---
 

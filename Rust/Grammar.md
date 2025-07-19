@@ -181,9 +181,11 @@ let result = math::add(1, 2);
 println!("{}", result);
 ```
 
-- `Option`: Maybe monad
+#### Option
 
-```rs
+> Maybe monad
+
+```rust
 fn get_age(name: &str) -> Option<u8> {
     if name == "Alice" {
         Some(30)
@@ -304,7 +306,7 @@ println!("The value of number is: {number}");
 
 숫자 또는 char만 허용
 
-- `1..100	`: (범위표현식) 1이상 100미만 - 100 미포함
+- `1..100`: (범위표현식) 1이상 100미만 - 100 미포함
 - `1..=100`: (범위표현식) 1이상 1이하 - 100 포함
 - `&s[..2]`또는 `&s[..]`와 같이도 사용
 - `'a'..='j'`
@@ -334,7 +336,7 @@ let result = loop {
     }
 };
 
-println!("The result is {result}");
+println!("The result is {result}, count :: {counter}");
 ```
 
 ```rs
@@ -487,14 +489,14 @@ fn main() {
 
 - 메서드: 메서드는 impl 블록에서 정의되는 함수, impl 블록에서는 메서드만 추가 할 수 있음
 - 캡처: 클로저(익명 함수)가 자신이 정의된 환경의 변수에 접근할 때 그 값을 내부에서 사용하기 위해 가져오는 것\
-  _(불변 또는 가변으로 참조 - 기본동작, 소유권 이동 - move 키워드 사용)_
+  _(불변 또는 가변으로 참조, 소유권 이동시 move 키워드 사용)_
 - Heap 영역(런타임에 동적 메모리를 할당)은 모든 스레드가 공유
 - 정수형 등 컴파일 타임에 크기가 고정되는 타입은 모두 스택에 저장
 - `"hello"`과 같은 문자열 리터럴은 바이너리 내(읽기 전용 메모리 영역 - static 영역)에 저장되며 `&'static str`타입으로 사용
 - 스택에 저장되는 값은 빠른 복사본 생성으로 계속 사용 가능
-- 스코프 밖으로 벗어났을 때 특정 동작이 요구되는 타입(Drop 등)에 Copy 어노테이션 추가 불가
-- 대여(borrow): `&`참조자로 스택에 저장된 값(힙을 가르키는 - 포인터 + 길이 + 용량 등)을 참조(가르키는)하겠다는 값을 생성, 소유하지 않으니 drop도 없음
-- 파라미터로 `&self`를 받는 함수들(clone, cloned 등)은 자동참조가 일어남(T => &T)
+- 스코프 밖으로 벗어났을 때 특정 동작이 요구되는 타입(Drop 등)에 Copy Trait 추가 불가
+- 대여(borrow): `&`참조자로 스택에 저장된 값을 참조(가르키는)하겠다는 값(포인터 + 길이 + 용량 등)을 생성, 소유하지 않으니 drop도 없음
+- 파라미터로 `&self`를 받는 함수들(clone, cloned(iter()에서 사용) 등)은 자동참조가 일어남(T => &T)
 - **동일 스코프에서 어떤 값에 대한 불변 참조자 또는 가변 참조자가 존재시, 추가적인 가변 참조자 `&mut`를 만들지 못함**
   - 여러 개의 불변 참조가 생성 가능, 가변 참조자는 하나만 생성 가능
   - 불변 참조자를 사용하는 쪽에서는 사용 중 값이 중간에 변경되리라 예상하지 않음
@@ -507,7 +509,7 @@ fn main() {
 - `Self`: 해당 `trait` 또는 `impl` 블록의 별칭
 - 댕글링 참조 (dangling reference): 이미 메모리에서 사라진 값을 가리키는 참조
 - 모든 반복자는 Iterator를 구현하며, 반복자 어댑터(map 등)는 새로운 반복자를 생성하기 때문에 소비 어댑터(collect 등 - 내부적으로 next를 호출)를 사용해야함
-  - 원본 반복자를 소비/반환하는 경우에는 `into_iter`를, 원본을 유지할 때는 반복자 어댑터에 `cloned` 사용
+  - 원본 반복자를 소비/반환하는 경우에는 `into_iter` 등을, 원본을 유지할 때는 반복자 어댑터에 `cloned` 사용
 - Send가 구현된 타입은 스레드 사이에서 이동될 수 있으며, 대부분의 러스트 타입이 Send. Rc와 Cell연관타입들(RefCell 등)은 아님
 - 상속은 코드 재사용(기능을 물려받음)을 위한 구조이고, 다형성은 같은 인터페이스로 다양한 구현을 처리하는 능력
 - `트레이트 바운드`: '이 타입은 어떤 트레이트를 구현해야 한다'라는 제약 조건
@@ -527,15 +529,16 @@ fn main() {
 - `&`는 포인터이자 참조자임
 - 동적 크기 타입(DST - 크기가 정해지지 않음)은 `&dyn Trait` 또는 `Box<dyn Trait>`와 같이 포인터와 같이 사용해야함
 - 러스트에는 리플렉션 기능이 없기 때문에 런타임에 타입의 이름을 조회할 수 없음
+- 구조체의 모든 필드가 `Copy`를 구현하면, 구조체도 `Copy`가 가능해짐
 
 ### 프로젝트(패키지, 크레이트, 모듈) 관리
 
 - 패키지: Cargo.toml이 포함된 하나 이상의 크레이트로 구성된 번들 - 크레이트를 빌드하고, 테스트하고, 공유하는 데 사용하는 카고 기능
   - 라이브러리 크레이트(lib.rs)는 하나만 작성 가능
-  - `cargo new 경로 --lib`로 만든건 라이브러리 패키지이자 크레잇 - 여러개 가능(Cargo.toml를 포함하고있는 패키지임으로)
+  - `cargo new 경로 --lib`로 만든건 라이브러리 패키지이자 크레이트 - 여러개 가능(Cargo.toml를 포함하고있는 패키지임으로)
 - 크레이트: 라이브러리나 실행 가능한 모듈로 구성된 트리 구조
 
-  - 바이너리 크레이트: 실행 가능한 실행파일로 컴파일할 수 있는 프로그램
+  - 바이너리 크레이트: 실행 가능한 실행 파일로 컴파일 할 수 있는 프로그램
     - 기본적으로 src/main.rs가 크레이트 루트
     - src/bin안에 둘 시, 여러 바이너리 크레이트를 패키지에 포함할 수 있음
   - 라이브러리 크레이트: main 함수를 가지고 있지 않고 실행파일 형태로 컴파일되지 않음
@@ -837,16 +840,14 @@ let first = a[0];
 ### 여러 Trait
 
 - `Fn`, `FnMut`, `FnOnce`: 호출 가능한 객체(클로저, 함수 포인터 등)의 추상 타입
-
   - `Fn()`: 외부 변수(환경)를 불변 참조(&x)로 캡처하거나 캡처하지 않는 클로저
   - `FnMut()`: 외부 변수(환경)를 가변 참조(&mut x)로 캡처, FnMut 클로저를 호출하려면 클로저 변수 자체도 mut여야 함
   - `FnOnce()`: move로 소유권을 클로저 내부로 이동시켜 소비하기 때문에, 한 번만 호출 가능
-
 - `Any`: `Box<dyn Any>`처럼 어떤 타입도 허용
-- `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](#async-클로저의-트레잇-전달)
+- `Future`: `impl Future<Output = T>`와 같이 async 클로저의 반환 타입으로 사용 - [참고](./PBL.md#async-함수클로저의-전달)
 - `Pin`: 고정 시킨 포인터, 비동기의 Future를 await하기위해 사용
 - `std::sync::Mutex`: Mutual Exclusion(상호 배제), 여러 스레드나 비동기 작업이 동시에 데이터를 건드리지 못하게 잠그는 도구 - [참고](#stdsyncarc---atomic-reference-counted)
-- `Copy`: 정수, bool 등 작은 크기의 스택에 저장되는 간단한 타입 - 값을 비트 단위로 복사 가능 (얕은 복사)
+- `Copy`: 값을 비트 단위로 복사 가능 (얕은 복사), 정수, bool 등 작은 크기의 스택에 저장되는 간단한 타입에 기본 구현
 - `Clone`: Vec, String, Box 등 힙에 저장되는 복잡한 타입 - 명시적 복사 가능 (clone() 메서드 사용)
 - `Debug`: 디버그용 출력 가능 ({:?} 포맷 사용 가능) - 대부분 타입
 - `PartialEq`: 동등 비교 가능(값이 같은지) (==, != 연산자 사용 가능) - 대부분 타입
@@ -861,9 +862,9 @@ let first = a[0];
 - `Sync`: 여러 스레드에서 동시에 접근 가능 - 대부분 불변 데이터
   - `&T`가 `Sync`이면 `T`는 `Send`임
 - `T: Debug + PartialEq + Clone`: 복수 트레잇 조합 - T는 디버그 출력 가능, 동등 비교 가능, 복사 가능함
-  - `pub fn notify(item: &(impl Summary + Display)) {`
-  - `pub fn notify<T: Summary + Display>(item: &T) {`
-- `std::cmp::Ordering`: cmp의 결과 타입으로 사용
+  - `pub fn notify(item: &(impl Summary + Display)) { ... }`
+  - `pub fn notify<T: Summary + Display>(item: &T) { ... }`
+- `std::cmp::Ordering`: cmp의 결과 타입으로 사용, 왼쪽값 기준이며 `Less`, `Equal`, `Greater`
 - `std::collections::HashMap` - O(1)
 - [std::ptr](https://doc.rust-lang.org/std/ptr/index.html#functions): raw pointer를 다룰 때 사용
   - `eq`: 메모리 주소 비교
@@ -1048,7 +1049,7 @@ fn main() {
         tx.send(val).unwrap();  // send가 소유권을 가져감
     });
 
-    let received = rx.recv().unwrap();  // 채널로부터 값을 받을 때까지 기다림, 비동기 처리시 try_recv 사용
+    let received = rx.recv().unwrap();  // 채널로부터 값을 받을 때까지 기다림, 비동기 처리(기다리지 않을 때)시 try_recv 사용
     println!("Got: {}", received);
 }
 ```
@@ -1211,7 +1212,6 @@ fn main() {
 
 > `Deref`를 구현하고 있어야 하며, 참조값(&)에 대해 `*`를 사용시 역참조하여 실제 값을 얻음
 > `*y`는 `*(y.deref())`로 동작
-> `&y`는 `y.deref()`를 호출: 자동 역참조 강제 변환 (deref coercions)
 
 - `Deref`: 불변참조 또는 가변참조 -> 불변참조 변환
 - `DerefMut`: 가변참조 -> 가변참조 변환
@@ -1318,7 +1318,7 @@ fn main() {
 
 ### 비동기 처리 - async
 
-> `cargo add tokio --features full`로 `tokio` 크레잇 설치
+> `cargo add tokio --features full`로 `tokio` 크레이트 설치
 
 예제
 
@@ -2100,7 +2100,7 @@ fn main() {
 
 1. `cargo new ./lib/my_macro_hello --lib`\
    프로시저 매크로는 별도의 라이브러리 패키지(크레이트)로 작성해야 함
-2. 생성된 크레잇 경로에서 `cargo add syn quote`으로 필요 의존성 설치
+2. 생성된 크레이트 경로에서 `cargo add syn quote`으로 필요 의존성 설치
 3. 생성된 `Cargo.toml`에 아래 내용이 포함되어야 함
 
    ```toml
@@ -2444,3 +2444,8 @@ fn main() {
     println!("w = {}", w);
 }
 ```
+
+### 기타 프렐루드
+
+- `size_of::<T>()`: 타입의 실제 크기(바이트 단위)
+- `align_of::<T>()`: 타입의 정렬 경계(바이트 단위)

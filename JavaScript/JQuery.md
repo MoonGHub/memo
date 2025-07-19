@@ -1,34 +1,27 @@
 # JavaScript - JQuery
 
 - [Plugin](#plugin)
-  - [Selectize](#selectize)
-  - [Flatpickr](#flatpickr)
-  - [bootstrap-select](#bootstrap-select)
 
 ## Plugin
+
+**사용**
+
+- `bootstrap-select`: 검색 가능
+- `flatpickr`: Date Time Picker
 
 **보류**
 
 - inputmask
 - datatables
+- selectize
 
 **안씀**
 
-- Magnific Popup: 모달, 중복 오픈 안됨 => 안씀
-
-### Selectize
-
-> 검색 가능한 셀렉터
-
-### Flatpickr
-
-> Date Time Picker
-
-### bootstrap-select
-
-> 부트스트랩기반 셀럭터
-
-- 검색 가능
-- 중복 오픈 가능, 단, backdrop 별도 처리 필요
+- Magnific Popup: 모달, 중복 오픈 안됨
 
 ---
+
+## 기능
+
+- `load`: `$("#target").load("/page.html #content");` -> #target내로 삽입
+- `getScript`: 스크립트 동적 로딩

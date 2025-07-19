@@ -104,3 +104,4 @@ explicit use: 명시적인 사용
 - `Rhs`: Right-hand side, 오른쪽 피연산자
 - `DST`: dynamically sized type, 동적 크기 타입
 - `CSRF`: Cross-Site Request Forgery, 요청 위조
+- `Intl`: Internationalization, 국제화
