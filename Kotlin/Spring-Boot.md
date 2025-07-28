@@ -1,6 +1,12 @@
 # Kotlin - Spring Boot
 
+- [빌드 & 실행](#빌드--실행)
+  - [빌드](#빌드)
+  - [실행](#실행)
+- [기본 어노테이션](#기본-어노테이션)
 - [build.gradle.kts 의존성](#buildgradlekts-의존성)
+  - [lombok](#lombok)
+  - [thymeleaf](#thymeleaf)
 - [CLI](#cli)
   - [gradlew](#gradlew)
 - [PBL](#pbl)
@@ -8,10 +14,58 @@
     - [실행 및 디버그에서 버튼 실행](#실행-및-디버그에서-버튼-실행)
     - [CLI로 실행](#cli로-실행)
 
+---
+
+## 빌드 & 실행
+
+### 빌드
+
+`./gradlew clean build`
+
+- `clean`: 이전 빌드 결과 삭제
+
+### 실행
+
+jar 파일 실행
+
+- `java -jar build/libs/my-app-0.0.1-SNAPSHOT.jar`
+- `/usr/bin/java -jar {/path/to/jar}`
+
+---
+
+## 기본 어노테이션
+
+- `@Component`: 해당 클래스를 자동으로 Bean으로 등록
+
+---
+
 ## build.gradle.kts 의존성
 
+키워드
+
+- `implementation`: 일반 라이브러리 의존성, 빌드 결과물에 포함되며 런타임 사용 가능
+- `annotationProcessor`: 애노테이션 기반 코드 생성을 위함, 컴파일 시점에만 사용되며 런타임에는 포함되지 않음
+- `compileOnly`: 런타임에는 필요 없지만 코드에서 참조는 필요한 경우
+
+### lombok
+
+> org.projectlombok:lombok
+
+반복적인 코드를 자동으로 생성해주며, 어노테이션 기반으로 작동
+
+- `@Builder`: 빌더 패턴을 자동 생성/적용
+- `@Getter`
+- `@Setter`
+- `@Slf4j`: 로그 객체(Logger)를 자동으로 추가, `log.info(...)` 사용 가능
+- 생성자
+  - `@NoArgsConstructor`
+  - `@AllArgsConstructor`
+  - `@RequiredArgsConstructor`: final 필드 또는 @NonNull 필드를 매개변수로 갖는 생성자를 자동 생성, DI의 생성자 자동 생성
+
+### thymeleaf
+
 - `org.springframework.boot:spring-boot-starter-thymeleaf`: Thymeleaf 템플릿 파서 및 렌더링 엔진, ViewResolver 자동 설정
-  - @Controller → `return "templateName"` 하면 `resources/templates/templateName.html`를 렌더링
+  - `@Controller` → `return "templateName"` → `resources/templates/templateName.html`를 렌더링
 - `org.thymeleaf.extras:thymeleaf-extras-springsecurity6`: 권한/인증 여부에 따른 분기처리 가능
   - `sec:authorize="isAuthenticated()"` 또는 `sec:authorize="!isAuthenticated()"`와 같이 사용
 - `org.springframework.boot:spring-boot-devtools`: LiveReload

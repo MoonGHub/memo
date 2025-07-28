@@ -67,7 +67,7 @@
 - `more [파일명]`
   파일을 읽어 화면 단위로 끊어서 출력(지나간 내용 다시 볼 수 없음)
 
----
+<br />
 
 - FHS
 - 프롬프트 단축기
@@ -97,9 +97,7 @@
      - 초기 계정의 로그인 아이디
 2. 추가적 설치는 불필요
 
-<br />
-
-설치 후, 업데이트 및 필요 패키지 설치
+**설치 후, 업데이트 및 필요 패키지 설치**
 
 ```shell
 apt update
@@ -121,8 +119,6 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 ---
 
-<br />
-
 ## PBL - 여러 설정 및 명령어
 
 ### 방화벽 및 SSH 설정, 접속(Ubuntu/Debian)
@@ -137,8 +133,6 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   Status: active
   ```
 - `ufw disable`
-
-<br />
 
 #### 방화벽 SSH 설정
 
@@ -168,24 +162,14 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 > **root계정 ssh 접속 허용**\
 > /etc/ssh/sshd_config에서 PermitRootLogin 라인 주석 해제
 
-<br />
-
 #### 접속
 
-`ssh username@host`
-
-<br />
+- `ssh username@host`
+- `ssh -i [pem/file/path] ubuntu@3.35.129.200`
+  - `*.pem`파일의 권한은 `chmod 400` 부여
+  - 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
 
 #### 접속 IP 제한
-
-<br/>
-
-#### Lightsail
-
-1. 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
-2. `ssh -i pem파일경로 ubuntu@3.35.129.200`
-
-- Permissions 관련 에러가 발생 시, `chmod 400 pem파일`로 권한 변경 후, 재시도
 
 <br />
 
@@ -286,9 +270,40 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 ### 서비스 등록
 
-1. initd
+#### initd
 
-2. systemd
+#### systemd
+
+1. 서비스 유닛 파일 생성
+
+   - `/etc/systemd/system/myapp.service`
+
+     ```ini
+     [Unit]
+     Description=My App Service
+     After=network.target # 네트워크가 준비된 다음에 이 서비스를 시작
+
+     [Service]
+     WorkingDirectory=/var/services
+     ExecStart=/usr/bin/node myapp/index.js
+     User=ubuntu
+     SuccessExitStatus=143 # 128 + 15(SIGTERM)
+     Restart=on-failure
+     Environment=NODE_ENV=production
+
+     [Install]
+     WantedBy=multi-user.target # systemd의 대상, CLI 기반 시스템/서버 모드일 때 사용
+     ```
+
+2. 권한 부여
+   - `sudo chmod 644 /etc/systemd/system/myapp.service`
+3. 서비스 인식
+   - `sudo systemctl daemon-reload`
+4. 서비스 실행 및 확인
+   - `sudo systemctl start myapp`
+   - `sudo systemctl status myapp`
+5. 서비스 자동 실행(부팅시)
+   - `sudo systemctl enable myapp`
 
 <br />
 
