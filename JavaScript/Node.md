@@ -29,11 +29,39 @@
 
 - `--experimental-specifier-resolution=node`
   - 지원 버전: `16.15.1`, `18.19.0`
-  - 미지원 버전: `22.14.0`
+  - 미지원 버전:
+  - 미기능 버전: `22.14.0`, `23.10.0`
 - `--es-module-specifier-resolution=node`
   - 지원 버전: `16.15.1`, `18.19.0`
+  - 미지원 버전: `22.14.0`, `23.10.0`
+  - 미기능 버전:
 
-> 기능(지원)하지 않는 버전 해결: `tsc-alias`의 resolveFullPaths 옵션 이용
+<br />
+
+기능(지원)하지 않는 버전 해결
+
+**Vite**
+
+- `tsconfig.json`에서 `tsc-alias`이용
+
+  ```json
+  {
+    "tsc-alias": {
+      "resolveFullPaths": true
+    }
+  }
+  ```
+
+- `vite.config.ts`에서 직접 설정
+  ```json
+  {
+    "resolve": {
+      "alias": {
+        "@": path.resolve(__dirname, './src'),
+      }
+    }
+  }
+  ```
 
 ### import시, ts 및 tsx확장자 사용
 

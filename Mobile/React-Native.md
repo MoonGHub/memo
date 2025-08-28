@@ -16,7 +16,7 @@ PC와 연결 후 아래 명령어 실행
 adb devices
 # react-native run-android --appIdSuffix 'dev' --deviceId LGMV300Sf73feca1
 adb shell 또는 adb -s [device_name] shell
-logcat | grep io.cyclub.app.dev
+adb logcat | grep io.cyclub.app.dev
 ```
 
 ### APK 생성(aab -> apk) - bundletool을 이용
@@ -52,6 +52,10 @@ bundletool install-apks --apks app.apks
 ## IOS
 
 - 시뮬레이터 실행: `open -a Simulator`
+- Xcode 업데이트
+  - `brew install mas`
+  - `mas search Xcode`
+  - `mas install xxxxxxx`
 
 ### 디버깅
 

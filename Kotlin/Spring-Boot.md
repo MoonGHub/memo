@@ -6,6 +6,8 @@
 - [기본 어노테이션](#기본-어노테이션)
 - [build.gradle.kts 의존성](#buildgradlekts-의존성)
   - [lombok](#lombok)
+  - [QueryDSL](#QueryDSL)
+    - [jakarta](#jakarta)
   - [thymeleaf](#thymeleaf)
 - [CLI](#cli)
   - [gradlew](#gradlew)
@@ -23,6 +25,7 @@
 `./gradlew clean build`
 
 - `clean`: 이전 빌드 결과 삭제
+- 빌드 결과 경로: `build/libs/{app_name}-0.0.1-SNAPSHOT.jar`
 
 ### 실행
 
@@ -35,11 +38,17 @@ jar 파일 실행
 
 ## 기본 어노테이션
 
+org.springframework.stereotype
+
 - `@Component`: 해당 클래스를 자동으로 Bean으로 등록
 
 ---
 
 ## build.gradle.kts 의존성
+
+저장소
+
+- https://mvnrepository.com/
 
 키워드
 
@@ -61,6 +70,37 @@ jar 파일 실행
   - `@NoArgsConstructor`
   - `@AllArgsConstructor`
   - `@RequiredArgsConstructor`: final 필드 또는 @NonNull 필드를 매개변수로 갖는 생성자를 자동 생성, DI의 생성자 자동 생성
+
+### QueryDSL
+
+> com.querydsl:querydsl-jpa:5.0.0:jakarta
+
+#### jakarta
+
+> jakarta.persistence:jakarta.persistence-api
+
+- `@Convert`:
+- `@Embedded`:
+  - `@Embeddable`
+    - `@ElementCollection`: 별도 조인 테이블(테이블 명 - @Embedded\_@ElementCollection)이 생성,
+
+### flywaydb
+
+> org.flywaydb:flyway-core
+> org.flywaydb:flyway-mysql 또는 org.flywaydb:flyway-database-postgresql
+
+마이그레이션 도구
+
+```yml
+spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true # 기존 테이블을 초기 마이그레이션으로 인식
+    validate-on-migrate: true # 마이그레이션 실행 전, 현재 DB 상태와 마이그레이션 기록이 일치하는지 검증
+    locations: classpath:db/migration # src/main/resources/db/migration
+```
+
+설정 locations 경로에 `V + 버전 + __ + 설명 + .sql` 형식으로 작성
 
 ### thymeleaf
 

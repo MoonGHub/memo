@@ -105,3 +105,4 @@ explicit use: 명시적인 사용
 - `DST`: dynamically sized type, 동적 크기 타입
 - `CSRF`: Cross-Site Request Forgery, 요청 위조
 - `Intl`: Internationalization, 국제화
+- `Base64 문자열`: 바이너리(이진) 데이터를 텍스트 문자열로 표현하는 방식

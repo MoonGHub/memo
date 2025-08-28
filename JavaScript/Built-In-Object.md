@@ -135,7 +135,14 @@ console.log(obj1, obj2, withValue.config);
 ## Date
 
 - `getDate`
+- `new Date`
+  - `new Date('2025-07-03')`: 설정 시간이 UTC 타임존으로 적용 => UTC는 '2025-07-03T00:00:00.000Z'
+  - `new Date('2025-08-02T07:10:34.086021')`: 설정 시간이 로컬 타임존으로 적용 => UTC는 '2025-08-01T22:10:34.086Z'
+  - `new Date('2025-08-02T07:10:34.086021Z')`: 설정 시간이 UTC 타임존으로 적용 => KST는 '2025. 8. 2. 오후 4:10:34'
 - `toLocaleDateString`
+  - 디폴트 타임존은 로컬 타임존
+  - `new Date('2025-08-02').toLocaleString('en-US', { timeZone: 'UTC', hour12: false })`: '8/2/2025, 00:00:00'
+  - `new Date('2025-08-02').toLocaleString('en-US', { timeZone: undefined, hour12: false })`: '8/2/2025, 09:00:00'
 
 ---
 

@@ -305,6 +305,12 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 5. 서비스 자동 실행(부팅시)
    - `sudo systemctl enable myapp`
 
+**로그 확인**
+
+- `sudo journalctl -u {서비스명}.service -f`
+  - `-u`: 서비스 지정
+  - `-f`: 실시간
+
 <br />
 
 ### LVM(Logical Volume Manager) 볼륨 사이즈 확장
