@@ -97,3 +97,42 @@
    ```
 2. 볼륨 옵션으로 마운트
    `./{local_path}/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro`
+
+<br />
+
+### Can't connect to local MySQL server through socket '/tmp/mysql.sock'
+
+- `/opt/homebrew/Cellar/mysql/버전/bin/mysql_config --socket`: socket의 위치 확인
+- `brew services list`: mysql의 status 확인
+- `brew services start mysql`: 시작 시, **/tmp/mysql.sock** 파일이 생성 됨
+  - 또는 `/opt/homebrew/Cellar/mysql/버전/bin/mysqld` 직접 실행
+
+**Error: Failure while executing; `/bin/launchctl bootstrap gui/501 /Users/moong/Library/LaunchAgents/homebrew.mxcl.mysql@8.4.plist` exited with 5.**
+**Invalid MySQL server downgrade: Cannot downgrade from**
+
+1. `brew stop mysql@8.4`
+2. `sudo rm -f /tmp/mysql.sock /tmp/mysqlx.sock`
+3. `rm -rf /opt/homebrew/var/mysql`
+4. `rm -rf /opt/homebrew/etc/my.cnf`
+5. `sudo rm -f /Library/LaunchDaemons/homebrew.mxcl.mysql@8.4.plist`
+6. `brew uninstall mysql@8.4`
+7. `brew cleanup`
+8. `sudo chown -R "$(whoami):admin" /opt/homebrew/`
+9. `brew install mysql@8.4`
+10. `brew services start mysql@8.4`
+11. `ls /tmp/mysql.sock` 생성 확인
+
+<br />
+
+### DBeaver Access denied for user 'XXX@localhost' ...
+
+`default-authentication-plugin`가 `mysql_native_password`로 설정 되어있으며, DBeaver에서 접속이 안될 경우,
+
+- `sudo vim /opt/homebrew/etc/my.cnf`
+- 아래 값으로 수정
+  ```text
+  bind-address = 0.0.0.0
+  mysqlx-bind-address = 0.0.0.0
+  ```
+- `brew services restart mysql@8.0`
+- `brew services list` 했을 때, Status 가 stopped 이어도 해결됨(?)

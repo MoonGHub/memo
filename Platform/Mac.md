@@ -15,8 +15,6 @@
 - `Ctrl Space`: 키보드 국가 변환
 - `Ctrl Shift r`: 일본어 한자 재변환
 
-<br />
-
 ## Terminal
 
 ### Commands
@@ -73,7 +71,17 @@ git reset --hard
 - `Cmd Shift f`: 전체화면에서 툴바 토글
 - `Cmd Option up`: 주소창 토글
 
----
+## Homebrew
+
+- `brew search {package}`
+- `brew install {package}`
+- `brew uninstall {package}`
+- `brew list`
+- `brew services list`
+- `brew services start {package}`
+- `brew services restart {package}`
+- `brew services stop {package}`
+- `brew services cleanup`
 
 ## ETC
 
