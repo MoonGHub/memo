@@ -286,6 +286,7 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
      [Service]
      WorkingDirectory=/var/services
      ExecStart=/usr/bin/node myapp/index.js
+     # ExecStart=/usr/bin/java -jar myapp/myapp-0.0.1-SNAPSHOT.jar
      User=ubuntu
      SuccessExitStatus=143 # 128 + 15(SIGTERM)
      Restart=on-failure

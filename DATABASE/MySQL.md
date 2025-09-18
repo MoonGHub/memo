@@ -134,5 +134,5 @@
   bind-address = 0.0.0.0
   mysqlx-bind-address = 0.0.0.0
   ```
-- `brew services restart mysql@8.0`
-- `brew services list` 했을 때, Status 가 stopped 이어도 해결됨(?)
+- ~~`brew services restart mysql@8.0`~~ `brew services stop mysql@8.0`
+- `brew services list` 했을 때, Status 가 none 또는 stopped 이어야함
