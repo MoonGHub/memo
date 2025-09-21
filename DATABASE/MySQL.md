@@ -10,14 +10,24 @@
   - [동시성](#동시성)
 - [PBL](#pbl)
   - [전역 SQL 모드](#전역-sql-모드)
+  - [Can't connect to local MySQL server through socket '/tmp/mysql.sock'](#cant-connect-to-local-mysql-server-through-socket-tmpmysqlsock)
+  - [DBeaver Access denied for user 'XXX@localhost' ...](#dbeaver-access-denied-for-user-xxxlocalhost-)
+  - [Plugin 'mysql_native_password' is not loaded (8.4 >)](#plugin-mysql_native_password-is-not-loaded-84-)
+    - [8.0에서 업그레이드 시](#80에서-업그레이드-시)
 
 ## 기본 명령어
 
-- `mysql -u {유저명} -p [{DB명}]`: 패스워드 입력으로 mysql접속
+- `mysql -u {유저명} -p {DB명}`: 패스워드 입력으로 mysql접속
 - `SHOW VARIABLES LIKE '%VERSION%'`: 서버 버전 확인
 
 ### 유저
 
+- 로그인 가능 계정 정보
+  - `SELECT user, host, plugin FROM mysql.user;`
+    - host
+      - `%`: 모든 호스트 허용 (wildcard)
+      - `localhost`: 로컬 소켓에서만 허용
+      - `127.0.0.1`: TCP 로컬만 허용
 - 생성 및 권한 부여
 
   - `create user moong@localhost identified by 'moong';`
@@ -26,12 +36,12 @@
   - `flush privileges;`
 
 - 권한 표시
-
   - `show grants for moong@localhost;`
   - `show grants for current_user;`
-
 - 비밀번호 변경
-  - `alter user 'moong'@'localhost' identified with mysql_native_password by 'moong';`\
+  - (8.0) `ALTER USER 'moong'@'localhost' IDENTIFIED WITH mysql_native_password BY 'moong';`
+  - (8.4>=) `ALTER USER '계정'@'localhost' IDENTIFIED WITH caching_sha2_password BY '새비번';`
+  - `flush privileges;`
 
 ### 데이터 베이스
 
@@ -102,6 +112,8 @@
 
 ### Can't connect to local MySQL server through socket '/tmp/mysql.sock'
 
+**`--host`의 기본값은 `localhost` -> 호스트의 `/tmp/mysql.sock`를 통해 접속**
+
 - `/opt/homebrew/Cellar/mysql/버전/bin/mysql_config --socket`: socket의 위치 확인
 - `brew services list`: mysql의 status 확인
 - `brew services start mysql`: 시작 시, **/tmp/mysql.sock** 파일이 생성 됨
@@ -109,6 +121,8 @@
 
 **Error: Failure while executing; `/bin/launchctl bootstrap gui/501 /Users/moong/Library/LaunchAgents/homebrew.mxcl.mysql@8.4.plist` exited with 5.**
 **Invalid MySQL server downgrade: Cannot downgrade from**
+
+> MySQL은 downgrade를 지원하지 않음
 
 1. `brew stop mysql@8.4`
 2. `sudo rm -f /tmp/mysql.sock /tmp/mysqlx.sock`
@@ -126,7 +140,9 @@
 
 ### DBeaver Access denied for user 'XXX@localhost' ...
 
-`default-authentication-plugin`가 `mysql_native_password`로 설정 되어있으며, DBeaver에서 접속이 안될 경우,
+**8.0**
+
+`default-authentication-plugin`가 `mysql_native_password`로 설정 되어있으며, DBeaver에서 접속이 안될 경우
 
 - `sudo vim /opt/homebrew/etc/my.cnf`
 - 아래 값으로 수정
@@ -135,4 +151,49 @@
   mysqlx-bind-address = 0.0.0.0
   ```
 - ~~`brew services restart mysql@8.0`~~ `brew services stop mysql@8.0`
-- `brew services list` 했을 때, Status 가 none 또는 stopped 이어야함
+- `brew services list` 했을 때, Status 가 none 또는 stopped 이어야함(?)
+- `ls /tmp/mysql.sock` 생성 확인
+
+**8.4 >=**
+
+루트 계정에서 `SELECT user, host, plugin FROM mysql.user;`시에,
+아래 처럼 host에 `localhost`가 없으면 접속 불가
+
+```text
++------------------+-----------+-----------------------+
+| user             | host      | plugin                |
++------------------+-----------+-----------------------+
+| root             | %         | caching_sha2_password |
+```
+
+- `ALTER USER '계정'@'localhost' IDENTIFIED WITH caching_sha2_password BY '새비번';`
+- `flush privileges;`
+
+또는
+
+- `--host=127.0.0.1`(Unix socket이 아닌 TCP 연결) 옵션 지정
+- 또는 `--host=localhost --protocol=TCP`로 지정
+
+<br />
+
+### Plugin 'mysql_native_password' is not loaded (8.4 >)
+
+> 기본 인증 플러그인이 `mysql_native_password`에서 `caching_sha2_password`로 변경됨
+
+DBeaver
+
+- 드라이버 속성 `defaultAuthenticationPlugin`을 `mysql_native_password`에서 `caching_sha2_password`로 변경
+
+도커
+
+- `command: --default-authentication-plugin=mysql_native_password` 제거
+
+#### 8.0에서 8.4 >= 업그레이드 시
+
+1. **버전 업그레이드 전, 덤프 생성 필수**
+2. 기존 컨테이너 제거
+3. 새 버전으로 컨테이너 생성 후
+4. 덤프 복구
+   - 원격 툴 실행 시, `--host=localhost` 사용 불가, `--host=127.0.0.1`로 사용
+   - 또는 원격 툴(DBeaver)에서 `Extra command args`에서 `--protocol=TCP`를 추가 지정 (`--host=localhost --protocol=TCP`)
+   - 또는 호스트 터미널에서 `docker exec -i {컨테이너명} mysql -u {계정명} -p'{패스워드}' {데이터베이스명} < {덤프파일명}.sql`

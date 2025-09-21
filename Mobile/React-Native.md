@@ -1,4 +1,4 @@
-# Mobile - React Native
+PBL# Mobile - React Native
 
 - [Android](#android)
   - [키스토어 해쉬](#키스토어-해쉬)
@@ -11,6 +11,8 @@
   - [IOS](#ios-1)
 - [배포](#배포)
   - [IOS](#ios-2)
+  - [스토어 배포 이슈](#스토어-배포-이슈)
+    - [AOS - App must support 16 KB memory page sizes](#aos---app-must-support-16-kb-memory-page-sizes)
 - [PBL](#pbl)
   - [캐시 제거 및 패키지 인식 오류](#캐시-제거-및-패키지-인식-오류)
     - [Android](#android-2)
@@ -132,6 +134,14 @@ The APKs have been extracted in the directory: /var/folders/yg/3y40k7_53tj_2k69j
 - 세자리 가능
 - 버전이 다르면, 빌드 넘버는 중복 가능
 - 배포 버전은 기업로드 버전 이상이어야 함
+
+### 스토어 배포 이슈
+
+#### AOS - App must support 16 KB memory page sizes
+
+> From Nov 1, 2025, if your app updates do not support 16 KB memory page sizes, you won't be able to release these updates.
+
+해결: [RN 버전 업데이트 >= 0.77](https://reactnative.dev/blog/2025/01/21/version-0.77#android-version-15-support--16kb-page-support)
 
 ---
 
