@@ -8,12 +8,15 @@
 - [Docker](#docker)
 - [Advanced](#advanced)
   - [동시성](#동시성)
+    - [경합 방지](#경합-방지)
 - [PBL](#pbl)
   - [전역 SQL 모드](#전역-sql-모드)
   - [Can't connect to local MySQL server through socket '/tmp/mysql.sock'](#cant-connect-to-local-mysql-server-through-socket-tmpmysqlsock)
   - [DBeaver Access denied for user 'XXX@localhost' ...](#dbeaver-access-denied-for-user-xxxlocalhost-)
   - [Plugin 'mysql_native_password' is not loaded (8.4 >)](#plugin-mysql_native_password-is-not-loaded-84-)
     - [8.0에서 업그레이드 시](#80에서-업그레이드-시)
+
+---
 
 ## 기본 명령어
 
@@ -112,6 +115,8 @@
 
 ### Can't connect to local MySQL server through socket '/tmp/mysql.sock'
 
+- 덤프 실행 시
+
 **`--host`의 기본값은 `localhost` -> 호스트의 `/tmp/mysql.sock`를 통해 접속**
 
 - `/opt/homebrew/Cellar/mysql/버전/bin/mysql_config --socket`: socket의 위치 확인
@@ -152,7 +157,7 @@
   ```
 - ~~`brew services restart mysql@8.0`~~ `brew services stop mysql@8.0`
 - `brew services list` 했을 때, Status 가 none 또는 stopped 이어야함(?)
-- `ls /tmp/mysql.sock` 생성 확인
+- `ls /tmp/mysql.sock` 이 없어야 함(?)
 
 **8.4 >=**
 

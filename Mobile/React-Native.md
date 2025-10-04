@@ -21,6 +21,8 @@ PBL# Mobile - React Native
   - [App Center](#app-center)
   - [com.kakao.sdk.common.model.AuthError: Android keyHash validation failed. (AOS 배포앱에서만)](#comkakaosdkcommonmodelautherror-android-keyhash-validation-failed-aos-배포앱에서만)
 
+---
+
 ## Android
 
 - Android SDK 경로: **~/Library/Android/sdk/emulator**
@@ -48,7 +50,12 @@ adb logcat | grep io.cyclub.app.dev
 
 ### APK 생성(aab -> apk) - [bundletool](https://developer.android.com/tools/bundletool?hl=ko)을 이용
 
-debug
+설치
+
+- [다운로드](#https://github.com/google/bundletool/releases)
+- `~/.zshrc`에 추가 `alias bundletool='java -jar /Users/moong/Documents/cli-tools/bundletool-all-1.18.1.jar'`
+
+**debug**
 
 ```shell
 cd {prj_root}/android/app/build/outputs/bundle/debug
@@ -61,7 +68,7 @@ bundletool build-apks --ks-pass 'pass:android' --bundle app-debug.aab --output a
 bundletool install-apks --apks app.apks
 ```
 
-release
+**release**
 
 ```shell
 cd {prj_root}/android/app/build/outputs/bundle/release

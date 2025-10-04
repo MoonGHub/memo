@@ -3,15 +3,20 @@
 > CYCLE: DockerFile > Image > Container(=이미지 인스턴스)
 
 - [Install](#install)
-- [Command](#command)
+- [CLI](#cli)
   - [생성](#생성)
+    - [네트워크](#네트워크)
   - [실행](#실행)
+    - [실행 중인 컨테이너의 설정 변경](#실행-중인-컨테이너의-설정-변경)
   - [삭제](#삭제)
   - [기타](#기타)
   - [Docker Hub](#docker-hub)
 - [docker-compose](#docker-compose)
+- [Dockerfile](#dockerfile)
 - [PBL](#pbl)
 - [docker swarm](#docker-swarm)
+
+---
 
 ## Install
 
@@ -22,7 +27,7 @@
 
 ---
 
-## Command
+## CLI
 
 ### 생성
 
@@ -32,6 +37,11 @@
      현재 경로에서 파일지정, clientimages이름으로 이미지 생성(태그지정 마지막에 적어야함)
 - `docker pull ubuntu:latest`: 이미지 받기
 - `docker build --tag 이미지이름:버젼`: 작성한 DockerFile로 이미지 생성하며, 버젼 생략 시 latest가 디폴트
+- `docker buildx build --platform linux/amd64 -t myimage:latest -f Dockerfile .`: 플랫폼 지정
+  - `--platform linux/amd64`: 실행되는 호스트 환경에 맞춰 추가
+    - `uname -m`
+      - `x86_64`(Intel 기반)이면 `linux/amd64`
+      - `arm64`(실리콘 맥)이면 `linux/arm64`
 
 #### 네트워크
 
@@ -56,7 +66,7 @@
 - `docker restart 컨테이너이름or컨테이너ID`
 - `docker stop 컨테이너이름`
 
-#### 업데이트
+#### 실행 중인 컨테이너의 설정 변경
 
 - `docker update --restart=always 컨테이너이름`
 
@@ -79,15 +89,16 @@
 
 - `docker ps -a`: 모든 컨테이너 목록 출력
 - `docker images`: 이미지 목록 출력
-- `docker attach 컨테이너이름or컨테이너ID`: 컨테이너에 접속
+- `docker attach {컨테이너명 or 컨테이너ID}`: 컨테이너에 접속
   - 실행시의 foreground 환경이 보여짐
   - CTRL P, CTRL Q하면 정지하지않고 쉘을 빠져나옴
-- `docker exec 컨테이너이름or컨테이너ID echo "외부에서 컨테이너에 - 명령 실행"`: 외부에서 컨테이너에 명령 전달
-- `docker exec -it 컨테이너이름or컨테이너ID /bin/sh`: 컨테이너에 접속
+- `docker exec {컨테이너명 or 컨테이너ID} echo "외부에서 컨테이너에 - 명령 실행"`: 외부에서 컨테이너에 명령 전달
+- `docker exec -it {컨테이너명 or 컨테이너ID} /bin/sh`: 컨테이너에 접속
   - `-i`: 표준입출력 STDIN를 열겠다는 의미
   - `-t`: 가상 tty(pesudo tty)를 통해 접속하겠다는 의미
-- `docker logs 컨테이너이름`: 해당 컨테이너에 출력된 로그 확인
+- `docker logs {컨테이너명}`: 해당 컨테이너에 출력된 로그 확인
   - `-f`: follow
+- `docker image inspect {이미지명}`: 이미지 상세 정보(메타데이터) 출력
 
 ### Docker Hub
 
@@ -114,7 +125,10 @@
   _서비스생성 > 이미지 빌드 > 컨테이너 생성 및 실행(서비스 실행)_
   - `-p`: image이름으로 '현재 디렉토리 명\_'가 붙는데, 이것을 수정
   - `-d`: 백그라운드 실행
-  - `--platform linux/amd64`: m1인 경우 옵션 추가
+  - `--platform linux/amd64`: 실행되는 호스트 환경에 맞춰 추가
+    - `uname -m`
+      - `x86_64`(Intel 기반)이면 `linux/amd64`
+      - `arm64`(실리콘 맥)이면 `linux/arm64`
 - `docker-compose ps`
 - `docker-compose stop`
   - `docker-compose stop 컨테이너이름`
@@ -127,6 +141,13 @@
 - `docker-compose exec 컨테이너이름 명령어`: 개별 서비스 컨트롤
 - `docker-compose logs 컨테이너이름 -f`: 해당 컨테이너에 출력된 로그 확인
   - `-f`: follow
+
+---
+
+## Dockerfile
+
+- `ENTRYPOINT`: 실행할 프로그램을 고정
+- `CMD`: 디폴트 옵션 지정
 
 ---
 

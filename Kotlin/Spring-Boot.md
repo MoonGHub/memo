@@ -8,6 +8,7 @@
   - [lombok](#lombok)
   - [QueryDSL](#QueryDSL)
     - [jakarta](#jakarta)
+  - [flywaydb](#flywaydb)
   - [thymeleaf](#thymeleaf)
 - [CLI](#cli)
   - [gradlew](#gradlew)
@@ -149,7 +150,7 @@ spring:
 
 1. `.vscode/launch.json`(디버그 설정 파일) 구성
 
-   ```javascript
+   ```json
    {
      "configurations": [
        {
@@ -158,14 +159,14 @@ spring:
          "request": "launch",
          "cwd": "${workspaceFolder}",
          "mainClass": "com.project.path",
-         "projectName": "project_name",
+         "projectName": "{settings.gradle의 rootProject.name 또는 모듈 명}", // 단일 프로젝트인 경우, 생략 가능
          "args": ["--spring.profiles.active=local"],
          "envFile": "${workspaceFolder}/.env"
        },
        {
          "type": "node-terminal",
          "name": "Run gradle continuous",
-         "command": "./gradlew :{project_name}:build --warning-mode=all -t --parallel --build-cache --configuration-cache -x test",
+         "command": "./gradlew :{settings.gradle의 rootProject.name 또는 모듈 명}:build --warning-mode=all -t --parallel --build-cache --configuration-cache -x test",
          "request": "launch",
          "cwd": "${workspaceFolder}"
        }
@@ -173,10 +174,7 @@ spring:
      "compounds": [
        {
          "name": "Auto build",
-         "configurations": [
-           "Run gradle continuous",
-           "Spring Boot-Project"
-         ],
+         "configurations": ["Run gradle continuous", "Spring Boot-Project"],
          "stopAll": true
        }
      ]
@@ -189,5 +187,5 @@ spring:
 
 아래 두 명령어를 각각의 터미널로 실행
 
-- `./gradlew :{project_name}:bootRun --args='--spring.profiles.active=local'`
-- `./gradlew :{project_name}:build --warning-mode=all -t --parallel --build-cache --configuration-cache -x test`
+- `./gradlew :{settings.gradle의 rootProject.name 또는 모듈 명}:bootRun --args='--spring.profiles.active=local'`
+- `./gradlew :{settings.gradle의 rootProject.name 또는 모듈 명}:build --warning-mode=all -t --parallel --build-cache --configuration-cache -x test`
