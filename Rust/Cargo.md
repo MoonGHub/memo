@@ -1,6 +1,6 @@
 # Rust - Cargo
 
-- rustup.rs으로 설치한 경우 바이너리 파일 저장 경로: `$HOME/.cargo/bin`
+- `rustup.rs`으로 설치한 경우 바이너리 파일 저장 경로: `$HOME/.cargo/bin`
 - [crates.io에 배포](https://doc.rust-kr.org/ch14-02-publishing-to-crates-io.html#cartesio-%EA%B3%84%EC%A0%95-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
 
 ---
@@ -54,6 +54,7 @@
   - `-p {crate_name}`
 - `cargo --list`: cargo로 실행 가능 목록
 - `cargo check`: 소스 내 오류 검출(빌드 안함)
+- `cargo +nightly fmt --verbose`: 포맷팅 적용
 
 ---
 

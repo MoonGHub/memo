@@ -26,14 +26,22 @@
 `./gradlew clean build`
 
 - `clean`: 이전 빌드 결과 삭제
+- test task 실행
+- 빌드 결과 경로: `build/libs/{app_name}-0.0.1-SNAPSHOT.jar`
+  - `*-plain.jar`는 외부 의존성이 포함되지 않음
+
+`./gradlew bootJar`
+
+- test task 실행 X
+- 앱 배포 / 실행용 jar 생성
 - 빌드 결과 경로: `build/libs/{app_name}-0.0.1-SNAPSHOT.jar`
 
 ### 실행
 
 jar 파일 실행
 
-- `java -jar build/libs/my-app-0.0.1-SNAPSHOT.jar`
-- `/usr/bin/java -jar {/path/to/jar}`
+- `java -jar build/libs/{app_name}-0.0.1-SNAPSHOT.jar`
+- 또는 `/usr/bin/java -jar {/path/to/jar}`
 
 ---
 

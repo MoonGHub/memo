@@ -1,20 +1,34 @@
 # NGINX
 
-- 설치 위치 경로 및 설정 파일
-  - /etc/nginx/
-  - /etc/nginx/nginx.conf
-  - /etc/nginx/conf.d/default.conf
-  - /usr/share/nginx/html
+- 경로 및 설정 파일
+  - `/etc/nginx/`
+  - `/etc/nginx/nginx.conf`
+  - `/etc/nginx/conf.d/default.conf`
+  - `/usr/share/nginx/html`
 
-## Command
+---
+
+- [CLI](#cli)
+- [설정](#설정)
+  - [\*.conf](#conf)
+  - [정규표현식](#정규표현식)
+  - [SSL](#ssl)
+- [PBL](#pbl)
+  - [프록시 사용 시의 host 및 hostname 재정의](#프록시-사용-시의-host-및-hostname-재정의)
+  - [SEO](#seo)
+
+---
+
+## CLI
 
 - `nginx -s reload`
-- `nginx -t`
-  syntax 체크
+- `nginx -t`: syntax 체크
 
-<br />
+---
 
-## default.conf
+## 설정
+
+### \*.conf
 
 ```
 server {
@@ -56,11 +70,29 @@ server {
 
 - location
 
-<br />
+### SSL
 
-## nginx.conf
+- `cert.pem`: 서명된 인증서
+- `chain.pem`: 중간 인증서(intermediate certificate)
+- `fullchain.pem`: cert.pem 파일과 chain.pem 파일을 합친 파일
+- `privkey.pem`: 인증서의 개인키
+- **발급 기관**:
+  - 유료: `Comodo`, `DigiCert`, `GlobalSign`
+  - 무료: `Let’s Encrypt`
 
-<br />
+```text
+server{
+  # ...
+  listen 443 ssl;
+
+  ssl_certificate /etc/nginx/ssl/fullchain.pem;
+  ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+
+  # ...
+}
+```
+
+---
 
 ## PBL
 

@@ -184,17 +184,33 @@ color: transparent;
 
   ```scss
   // 상위
+  display: flex;
   flex: auto;
   height: 0;
 
   // 중간
   display: flex;
   height: 100%; // 또는 flex: 1;
-  overflow: hidden;
-  // 방향은 상관 없음
+  overflow: hidden; // 방향은 상관 없음
 
-  // 스크롤 대상 하위 요소에
+  // 스크롤 대상 하위 요소
   flex: 1 1 0;
+  overflow-y: auto;
+  ```
+
+  또는
+
+  ```scss
+  // 상위
+  display: flex;
+  flex: 1; // 상하 full
+  overflow: hidden;
+
+  // 중간
+  display: flex;
+  height: 100%;
+
+  // 스크롤 대상 하위 요소
   overflow-y: auto;
   ```
 

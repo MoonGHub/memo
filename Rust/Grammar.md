@@ -325,6 +325,9 @@ fn main() {
 
 `Iterator`를 구현하고 있으면 for문 사용시, iter()를 쓰지않아도 자동 호출(into_iter)됨
 
+- `for_each`: 단순 반복, 에러가 발생해도 전체 실행
+- `try_for_each`: 에러 발생 시, 즉시 중단하고 Err 반환
+
 ```rs
 let mut counter = 0;
 
@@ -1176,6 +1179,7 @@ fn main() {
 - `panic!`: 복구 불가능한 에러 처리
 - `assert_eq!`: 유닛 테스트 또는 디버깅에 사용, 설정한 두 값이 다르면 panic 발생
 - `stringify!`: 계산과 평가를 하지 않고, 코드조각 그대로 문자열로 변환
+- `vec!`
 
 ---
 
@@ -1421,14 +1425,18 @@ fn main() {
 `unwrap`, `match`, `unwrap_or`, `unwrap_or_else`, `?`
 => `Option<T>`(Some, None) 또는 `Result<T, E>`(Ok, Err)와 함께 사용
 
+즉시 T값 추출
+
 - `unwrap`: 실패(Err 또는 None)일 경우 panic 발생. 즉, 프로그램이 종료
 - `unwrap_or`: 디폴트 값 설정
+- `unwrap_or_else`: 클로저로 디폴트 값 설정
 - `?`: 실패(Err 또는 None) 시, 해당 실패값으로 즉시 조기 리턴하며 panic이 발생하지 않음 - 에러 전파
 
 <br />
 
 - `Result`와 `Option` 공통
   - `expect`: 에러 발생 시 panic!의 기본메세지 대신 설정한 메세지를 표시하며 패닉을 발생, 또는 정상값 반환
+  - `expect_err`: 에러가 아닌 경우, panic
   - `map`: `Ok`또는 `Some`에 대해 변환 후, 새로운 `Result`또는 `Option` 반환
   - `and_then`
   - `or_else`
@@ -1437,6 +1445,7 @@ fn main() {
   - `map_err`: `Err`에 대해 변환 후, 새로운 `Result` 반환
 - Option
   - `ok_or`: 지정한 에러로 `Result<T, E>` 반환
+  - `ok_or_else`: `.ok_or_else(|| "Error Message")?;`
 
 <br />
 

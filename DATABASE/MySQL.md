@@ -14,7 +14,7 @@
   - [Can't connect to local MySQL server through socket '/tmp/mysql.sock'](#cant-connect-to-local-mysql-server-through-socket-tmpmysqlsock)
   - [DBeaver Access denied for user 'XXX@localhost' ...](#dbeaver-access-denied-for-user-xxxlocalhost-)
   - [Plugin 'mysql_native_password' is not loaded (8.4 >)](#plugin-mysql_native_password-is-not-loaded-84-)
-    - [8.0에서 업그레이드 시](#80에서-업그레이드-시)
+    - [8.0에서 업그레이드 시](#80에서-84--업그레이드-시)
 
 ---
 
@@ -53,7 +53,12 @@
 
 #### 덤프
 
+추출
+
 - `mysqldump -u {유저명} -p {DB명} > /root/dump/dump1.sql`: 덤프 추출
+
+복구
+
 - `mysql -u {유저명} -p {DB명} < /root/dump/dump1.sql`: 덤프 복구
 
 <br />

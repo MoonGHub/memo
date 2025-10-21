@@ -3,6 +3,7 @@
 > CYCLE: DockerFile > Image > Container(=이미지 인스턴스)
 
 - [Install](#install)
+- [Dockerfile](#dockerfile)
 - [CLI](#cli)
   - [생성](#생성)
     - [네트워크](#네트워크)
@@ -12,8 +13,11 @@
   - [기타](#기타)
   - [Docker Hub](#docker-hub)
 - [docker-compose](#docker-compose)
-- [Dockerfile](#dockerfile)
+  - [CLI](#cli-1)
+  - [설정](#설정)
 - [PBL](#pbl)
+  - [테스트용 우분투 실행(안꺼지게)](#테스트용-우분투-실행안꺼지게)
+  - [이미지를 파일로 추출, 적용](#이미지를-파일로-추출-적용)
 - [docker swarm](#docker-swarm)
 
 ---
@@ -23,7 +27,20 @@
 1. `curl -fsSL https://get.docker.com -o get-docker.sh`
 2. `sh get-docker.sh`
 3. `docker info` 또는 `systemctl status docker` 또는 `snap services`
-4. `apt install docker-compose`
+4. ~~`apt install docker-compose`~~ `docker-compose` CLI는 <u>**Docker CLI**</u>로 통합
+
+---
+
+## Dockerfile
+
+- 이미지 빌드 시점 실행
+  - `RUN`: 실행 결과가 이미지에 저장됨
+  - `COPY`: 디렉토리로 복사하는 경우, `COPY <소스> <대상>`에서 대상에 `/`를 붙여줘야 함
+- 메타데이터 명시적 표시(기능X)
+  - `EXPOSE`: 포트
+- 컨테이너 실행 시점 실행
+  - `ENTRYPOINT`: 실행할 프로그램을 고정
+  - `CMD`: 디폴트 옵션 지정
 
 ---
 
@@ -41,7 +58,7 @@
   - `--platform linux/amd64`: 실행되는 호스트 환경에 맞춰 추가
     - `uname -m`
       - `x86_64`(Intel 기반)이면 `linux/amd64`
-      - `arm64`(실리콘 맥)이면 `linux/arm64`
+      - `aarch64` 또는 `arm64`(실리콘 맥)이면 `linux/arm64`
 
 #### 네트워크
 
@@ -56,10 +73,13 @@
 
 ### 실행
 
-- `docker run --name 컨테이너이름 --restart=always -d -p 80:80 -v /root/data:/data 이미지명 실행파일명`: 컨테이너 생성 및 실행
+- `docker run --name 컨테이너이름 --restart=always -d -p 80:80 -v /root/data:/data 이미지명 [컨테이너_내부_실행파일명]`: 컨테이너 생성 및 실행
   - `-d`: 백그라운드로 실행
   - `-p`: 호스트80과 컨테이너80 포트를 - 연결하고 외부노출시킴 -> localhost:80으로 접속
-  - `-v`: 호스트의 /root/data 디렉토리를 컨테이너의 /data 디렉토리에 연결
+  - `-v`: 호스트의 /root/data 디렉토리를 컨테이너의 /data 디렉토리에 연결 - `로컬경로:컨테이너경로`로 마운트\
+    `:`사용하지 않고 단일경로로 설정 시, 설정한 로컬경로를 컨테이너의 동일 경로로 마운트
+    - `:ro`: Read-Only 마운트
+    - `:rw`: Read-Write
   - ex) `docker run --name dev -d --network my-network answlgus1122/app:app.tetherbit-dev`
   - ex) `docker run --name clientcontainer -d -p 3000:80 clientimages`
 - `docker start 컨테이너이름or컨테이너ID`
@@ -91,7 +111,7 @@
 - `docker images`: 이미지 목록 출력
 - `docker attach {컨테이너명 or 컨테이너ID}`: 컨테이너에 접속
   - 실행시의 foreground 환경이 보여짐
-  - CTRL P, CTRL Q하면 정지하지않고 쉘을 빠져나옴
+  - `CTRL P` 또는 `CTRL Q` 으로 중지하지않고 쉘을 빠져나옴
 - `docker exec {컨테이너명 or 컨테이너ID} echo "외부에서 컨테이너에 - 명령 실행"`: 외부에서 컨테이너에 명령 전달
 - `docker exec -it {컨테이너명 or 컨테이너ID} /bin/sh`: 컨테이너에 접속
   - `-i`: 표준입출력 STDIN를 열겠다는 의미
@@ -99,6 +119,7 @@
 - `docker logs {컨테이너명}`: 해당 컨테이너에 출력된 로그 확인
   - `-f`: follow
 - `docker image inspect {이미지명}`: 이미지 상세 정보(메타데이터) 출력
+- `docker cp {복사_대상} {컨테이너명}:{경로}`
 
 ### Docker Hub
 
@@ -117,6 +138,13 @@
 
 ## docker-compose
 
+**V1 -> V2**
+
+- [From July 2023, Compose v1 stopped receiving updates. It’s also no longer available in new releases of Docker Desktop.](https://docs.docker.com/compose/releases/migrate/)
+- 기존 `docker-compose` CLI는 <u>**Docker CLI**</u>로 통합
+
+### CLI
+
 - `docker-compose down --volume --rmi all`: 서비스 초기화(서비스, 네트워크 삭제)
   - `--volume`: 볼륨 삭제
   - `--rmi all`: 싹 다 지움
@@ -128,7 +156,8 @@
   - `--platform linux/amd64`: 실행되는 호스트 환경에 맞춰 추가
     - `uname -m`
       - `x86_64`(Intel 기반)이면 `linux/amd64`
-      - `arm64`(실리콘 맥)이면 `linux/arm64`
+      - `aarch64` 또는 `arm64`(실리콘 맥)이면 `linux/arm64`
+  - `--build`: 새 이미지로 재빌드 후 컨테이너 재생성(덮어씌어짐)하고 실행
 - `docker-compose ps`
 - `docker-compose stop`
   - `docker-compose stop 컨테이너이름`
@@ -142,25 +171,36 @@
 - `docker-compose logs 컨테이너이름 -f`: 해당 컨테이너에 출력된 로그 확인
   - `-f`: follow
 
----
+### 설정
 
-## Dockerfile
-
-- `ENTRYPOINT`: 실행할 프로그램을 고정
-- `CMD`: 디폴트 옵션 지정
+- `env_file`: 컨테이너 내부 환경 변수 설정
+- `volumes`: `로컬경로:컨테이너경로`로 마운트\
+  `:`사용하지 않고 단일경로로 설정 시, 설정한 로컬경로를 컨테이너의 동일 경로로 마운트
+  - `:ro`: Read-Only 마운트
+  - `:rw`: Read-Write
 
 ---
 
 ## PBL
 
-- 인스턴스 실행 시, `--build` 옵션을 주면 docker-compose의 경우 dockerfile내의 `RUN`과 같은 명령어도 수행 됨
-- dockerfile의 `COPY`에서 디렉토리로 복사하는 경우, `/` 를 붙여줘야 함
-- `env_file`옵션은 컨테이너 내부 환경 변수 설정
-- DockerFile의 `EXPOSE`는 포트 사용을 명시적으로 나타기위한 메타데이터
-- DockerFile실행 시의 CLI의 `-v`옵션 또는 `docker-compose.yml`의 `volumes`옵션을 설정 시, `로컬경로:컨테이너경로`로 마운트되며\
-  `:`사용하지 않고 단일경로로 설정 시, 설정한 로컬경로를 컨테이너의 동일 경로로 마운트
-  - `:ro`: Read-Only 마운트
-  - `:rw`: Read-Write
+### 테스트용 우분투 실행(안꺼지게)
+
+> `docker run -d --name ubuntu-test ubuntu tail -f /dev/null`
+
+<br />
+
+### 이미지를 파일로 추출, 적용
+
+추출
+
+- `docker pull --platform linux/amd64 nginx:latest`
+- `docker tag nginx:latest nginx:amd64`
+- `docker save -o image.tar nginx:amd64`
+
+적용
+
+- `docker load -i image.tar`
+- `docker tag nginx:amd64 nginx:latest`
 
 ---
 
