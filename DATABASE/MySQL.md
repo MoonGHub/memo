@@ -11,9 +11,16 @@
     - [경합 방지](#경합-방지)
 - [PBL](#pbl)
   - [전역 SQL 모드](#전역-sql-모드)
-  - [Can't connect to local MySQL server through socket '/tmp/mysql.sock'](#cant-connect-to-local-mysql-server-through-socket-tmpmysqlsock)
-  - [DBeaver Access denied for user 'XXX@localhost' ...](#dbeaver-access-denied-for-user-xxxlocalhost-)
+  - [[실행] unable to lock ./ibdata1 error](#실행-unable-to-lock-ibdata1-error)
+  - [[덤프 복구] Can't connect to local MySQL server through socket '/tmp/mysql.sock'](#덤프-복구-cant-connect-to-local-mysql-server-through-socket-tmpmysqlsock)
+    - [`--host`의 기본값은 `localhost` -> 호스트의 `/tmp/mysql.sock`를 통해 접속](#--host의-기본값은-localhost---호스트의-tmpmysqlsock를-통해-접속)
+    - [또는 --protocol=TCP 옵션 지정](#또는---protocoltcp-옵션-지정)
+  - [[DBeaver 접속] Access denied for user 'XXX@localhost' ...](#dbeaver-접속-access-denied-for-user-xxxlocalhost-)
+    - [8.0](#80)
+    - [8.4 >=](#84-)
   - [Plugin 'mysql_native_password' is not loaded (8.4 >)](#plugin-mysql_native_password-is-not-loaded-84-)
+    - [DBeaver](#dbeaver)
+    - [도커](#도커)
     - [8.0에서 업그레이드 시](#80에서-84--업그레이드-시)
 
 ---
@@ -118,11 +125,19 @@
 
 <br />
 
-### Can't connect to local MySQL server through socket '/tmp/mysql.sock'
+### [실행] unable to lock ./ibdata1 error
 
-- 덤프 실행 시
+아래 명령어 입력 후, mysql 재실행
 
-**`--host`의 기본값은 `localhost` -> 호스트의 `/tmp/mysql.sock`를 통해 접속**
+- `killall -9 mysql`
+- `killall -9 mysqld`
+- `killall -9 mysqld_safe`
+
+<br />
+
+### [덤프 복구] Can't connect to local MySQL server through socket '/tmp/mysql.sock'
+
+#### **`--host`의 기본값은 `localhost` -> 호스트의 `/tmp/mysql.sock`를 통해 접속**
 
 - `/opt/homebrew/Cellar/mysql/버전/bin/mysql_config --socket`: socket의 위치 확인
 - `brew services list`: mysql의 status 확인
@@ -146,11 +161,15 @@
 10. `brew services start mysql@8.4`
 11. `ls /tmp/mysql.sock` 생성 확인
 
+#### **또는 --protocol=TCP 옵션 지정**
+
+- Access denied 가 뜰 경우, root 유저로 시도
+
 <br />
 
-### DBeaver Access denied for user 'XXX@localhost' ...
+### [DBeaver 접속] Access denied for user 'XXX@localhost' ...
 
-**8.0**
+#### **8.0**
 
 `default-authentication-plugin`가 `mysql_native_password`로 설정 되어있으며, DBeaver에서 접속이 안될 경우
 
@@ -164,7 +183,7 @@
 - `brew services list` 했을 때, Status 가 none 또는 stopped 이어야함(?)
 - `ls /tmp/mysql.sock` 이 없어야 함(?)
 
-**8.4 >=**
+#### **8.4 >=**
 
 루트 계정에서 `SELECT user, host, plugin FROM mysql.user;`시에,
 아래 처럼 host에 `localhost`가 없으면 접속 불가
@@ -190,11 +209,11 @@
 
 > 기본 인증 플러그인이 `mysql_native_password`에서 `caching_sha2_password`로 변경됨
 
-DBeaver
+#### DBeaver
 
 - 드라이버 속성 `defaultAuthenticationPlugin`을 `mysql_native_password`에서 `caching_sha2_password`로 변경
 
-도커
+#### 도커
 
 - `command: --default-authentication-plugin=mysql_native_password` 제거
 

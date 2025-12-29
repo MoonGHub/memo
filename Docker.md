@@ -63,7 +63,7 @@
 #### 네트워크
 
 > - docker-compose를 사용하는 경우, 기본적으로 bridge 네트워크가 사용됨
-> - 개별적으로 실행하는 경우 같은 네트워크를 지정해야 컨테이너끼리 통신이 가능
+> - 다른 docker-compose 서비스 간 통신은 동일 네트워크(external: true)를 지정해야 컨테이너끼리 통신이 가능
 
 - `docker network create my-network`
 - `docker network ls`
@@ -100,7 +100,7 @@
   - ex) `docker rm dev &&  docker rmi answlgus1122/app:app.tetherbit-dev`
 - `docker container prune --force`
 - `docker image prune --force`
-  - `-all`: 사용중인 이미지도 삭제
+  - `--all`: 사용중인 이미지 제외하고 모두 삭제
 - `docker builder prune --force`: 빌드 캐시 제거
 - `docker volume prune --force`
 - `docker system prune -a --volumes --force`: 미사용 오브젝트 모두 제거
@@ -147,6 +147,8 @@
 
 - `docker-compose down --volume --rmi all`: 서비스 초기화(서비스, 네트워크 삭제)
   - `--volume`: 볼륨 삭제
+    - 컨테이너 내부 데이터는 익명 볼륨에 저장되므로, down시 같이 제거됨
+    - 별도 volumes에 저장하여 유지 시킬 수 있음
   - `--rmi all`: 싹 다 지움
 - `docker-compose -p 프로젝트명 up -d`\
   `docker-compose -f docker-compose.teamcity.yml up`\
@@ -173,11 +175,22 @@
 
 ### 설정
 
+`stop -> up` 또는 실행 중 `up` 하면 수정 옵션들이 반영됨
+
+**services**
+
 - `env_file`: 컨테이너 내부 환경 변수 설정
-- `volumes`: `로컬경로:컨테이너경로`로 마운트\
-  `:`사용하지 않고 단일경로로 설정 시, 설정한 로컬경로를 컨테이너의 동일 경로로 마운트
+- `volumes`: `{호스트경로}:{컨테이너경로}`로 마운트 ( 컨테이너가 덮어띄어짐 )
+  - `docker compose 실행 시점에 마운트가 됨`
+  - `:`사용하지 않고 단일경로로 설정 시, 설정한 로컬경로를 컨테이너의 동일 경로로 마운트
   - `:ro`: Read-Only 마운트
   - `:rw`: Read-Write
+- `extra_hosts`: `{도메인}:{IP}`로 설정, 컨테이너의 `/etc/hosts`에 등록됨
+
+**기타**
+
+- `networks`
+  - `external`: 다른 컴포즈 서비스들 간 통신 가능,
 
 ---
 

@@ -1,30 +1,35 @@
 # Platform - Linux
 
-## Shortcut
-
-- `Ctrl l`: Clear Terminal
+- [CLI](#cli)
+  - [Shortcut](#shortcut)
+- [Ubuntu]
+  - [설치 (22.04.1 live server amd64 기준)](#설치-22041-live-server-amd64-기준)
 
 ---
 
-## Command
+## CLI
 
-- man
-- history
-- mv
-- cp
-- rm
-- ls
-- tar
-- file
-- tee
-- grep
-  - -i: 대소문자 구분 없이
-  - -E: egrep과 동일하게 확장된 정규식 사용이 가능
-  - -v: 일치하는 라인을 제외하고 출력
-- egrep
+- `man`
+- `history`
+- `mv`
+- `cp`
+- `rm`
+- `ls`
+- `lsof`
+  - `lsof -i :3306`
+- `tar`
+- `file`
+- `tee`
+- `grep`
+  - `-i`: 대소문자 구분 없이
+  - `-E`: egrep과 동일하게 확장된 정규식 사용이 가능
+  - `-v`: 일치하는 라인을 제외하고 출력
+- `egrep`
   - grep보다 확장된 정규식 사용이 가능
-  - -v: 일치하는 라인을 제외하고 출력
-- head tail
+  - `-v`: 일치하는 라인을 제외하고 출력
+- `head`
+- `tail`
+  - `-f`: follow
 - tr
 - sed
 - cut
@@ -47,7 +52,8 @@
     - 엔터
     - `/{검색어}`
     - 엔터
-- ps
+- `ps`
+  - `ps aux | head -n 1; ps aux | grep mysql`
 - top
 - nice
 - renice
@@ -76,9 +82,15 @@
 - 메타캐릭터&기술자
 - 환경변수
 
+### Shortcut
+
+- `Ctrl l`: Clear Terminal
+
 ---
 
-## Ubuntu(22.04.1 live server amd64)
+## Ubuntu
+
+### 설치 (22.04.1 live server amd64 기준)
 
 [참고](https://blog.dalso.org/article/ubuntu-22-04-lts-server-install)
 [참고](https://as-you-say.tistory.com/181)
@@ -106,16 +118,23 @@ apt install curl net-tools
 apt-get update && apt-get install apt-file -y && apt-file update && apt-get install vim -y
 ```
 
-- 기타 Command
+- 기타 CLI
   - `sudo passwd root`: Root계정 패스워드 설정
   - `sudo su` or `sudo -`: Root계정 전환(설치 직후는 패스워드 설정이 필요)
-  - `uname -a` 또는 `uname -r`: 커널 버전 확인
+  - `uname`
+    - `-a`: 전체 시스템 정보 출력
+    - `-r`: 커널 버전 출력
+    - `-m`: 머신 아키텍처만 출력
 
 > 설치 후, 재설치 방법
 
 1. F2로 Bios 진입
 2. 부팅 순서에서 CD를 최상위로 설정
 3. 재부팅
+
+### CLI
+
+- `cat /etc/os-release`: OS 정보 확인
 
 ---
 
@@ -197,7 +216,7 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 - 아래 명령어들의 결합
   - `apt-get`: 패키지 설치, 업데이트 및 제거
   - `apt-cache`: 패키지 조회
-  - `dpkg`: 시스템에 설치된 패키지 조회
+  - `dpkg`: `.deb` 패키지를 설치, 제거, 정보 조회, 목록 확인 등을 할 수 있게 해주는 저수준 도구
 
 `yum`: Redhat계열에서 사용
 
@@ -305,6 +324,7 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
    - `sudo systemctl status myapp`
 5. 서비스 자동 실행(부팅시)
    - `sudo systemctl enable myapp`
+   - `sudo systemctl is-enabled myapp`
 
 **로그 확인**
 
@@ -350,9 +370,10 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 ### 용량/메모리 확인
 
 - `swapon -s`: swap 메모리 확인
-- `df -h`
-- `du -h`
-  - -s: 디렉토리의 사용량만 표시
+- `df -h`: Disk Free
+- `du -h`: Disk Usage
+  - `-s:` summary, 디렉토리의 사용량만 표시
+  - `-h`: human-readable
   - ex) `du -sh *`: 현재 경로 내의 폴더, 파일의 용량 표시
 
 <br />

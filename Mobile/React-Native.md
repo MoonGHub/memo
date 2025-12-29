@@ -1,5 +1,6 @@
 PBL# Mobile - React Native
 
+- [CLI](#cli)
 - [Android](#android)
   - [키스토어 해쉬](#키스토어-해쉬)
   - [디버깅](#디버깅)
@@ -23,6 +24,12 @@ PBL# Mobile - React Native
 
 ---
 
+## CLI
+
+- `npx react-native doctor`
+
+---
+
 ## Android
 
 - Android SDK 경로: **~/Library/Android/sdk/emulator**
@@ -38,6 +45,8 @@ React Native 0.60.x 부터는 템플릿(project/android/app)에 기본적으로 
 - `keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android -keypass android | openssl sha1 -binary | openssl base64`
 
 ### 디버깅
+
+> 에뮬레이터 개발 메뉴: `cmd` + `m`
 
 PC와 연결 후 아래 명령어 실행
 
@@ -95,12 +104,17 @@ The APKs have been extracted in the directory: /var/folders/yg/3y40k7_53tj_2k69j
 ## IOS
 
 - 시뮬레이터 실행: `open -a Simulator`
+- 시뮬레이터 버전 목록: `xcrun simctl list devices`
+- 시뮬레이터 버전 지정: `xcrun simctl boot "iPhone 14"`
+- 시뮬레이터 모두 종료: `xcrun simctl shutdown all`
 - Xcode 업데이트
   - `brew install mas`
   - `mas search Xcode`
   - `mas install xxxxxxx`
 
 ### 디버깅
+
+> 시뮬레이터 개발 메뉴: `d`
 
 ---
 
