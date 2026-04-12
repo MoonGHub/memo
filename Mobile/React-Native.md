@@ -21,6 +21,7 @@ PBL# Mobile - React Native
     - [새 프로젝트 생성 시](#새-프로젝트-생성-시)
   - [App Center](#app-center)
   - [com.kakao.sdk.common.model.AuthError: Android keyHash validation failed. (AOS 배포앱에서만)](#comkakaosdkcommonmodelautherror-android-keyhash-validation-failed-aos-배포앱에서만)
+  - [A problem occurred starting process 'command 'npx''](#a-problem-occurred-starting-process-command-npx)
 
 ---
 
@@ -42,7 +43,14 @@ PBL# Mobile - React Native
 
 React Native 0.60.x 부터는 템플릿(project/android/app)에 기본적으로 디버그 키스토어(debug.keystore)가 포함
 
-- `keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android -keypass android | openssl sha1 -binary | openssl base64`
+- `keytool -list -v -alias androiddebugkey -keystore ./android/app/debug.keystore -storepass android`
+- `keytool -exportcert -alias androiddebugkey -keystore ./android/app/debug.keystore -storepass android -keypass android | openssl sha1 -binary | openssl base64`
+
+**구글 플레이 콘솔 서명 키 위치**
+
+`Google play store > Test and release > App integrity > Play app signing > Settings > App signing key certificate`
+
+<br />
 
 ### 디버깅
 
@@ -56,6 +64,8 @@ adb devices
 adb shell 또는 adb -s [device_name] shell
 adb logcat | grep io.cyclub.app.dev
 ```
+
+<br />
 
 ### APK 생성(aab -> apk) - [bundletool](https://developer.android.com/tools/bundletool?hl=ko)을 이용
 
@@ -134,6 +144,8 @@ The APKs have been extracted in the directory: /var/folders/yg/3y40k7_53tj_2k69j
 - `./gradlew bundleRelease`
   - .aab 빌드
 
+<br />
+
 ### IOS
 
 ---
@@ -155,6 +167,8 @@ The APKs have been extracted in the directory: /var/folders/yg/3y40k7_53tj_2k69j
 - 세자리 가능
 - 버전이 다르면, 빌드 넘버는 중복 가능
 - 배포 버전은 기업로드 버전 이상이어야 함
+
+<br />
 
 ### 스토어 배포 이슈
 
@@ -183,12 +197,11 @@ yarn install
 
 ```shell
 cd ./android
-./gradlew --stop
+./gradlew --stop # (Run this command to stop old running Gradle service )
 ./gradlew clean
 
 # 삭제됨
 # ./gradlew cleanBuildCache
-
 ```
 
 #### IOS
@@ -205,7 +218,7 @@ pod install
 #### 새 프로젝트 생성 시
 
 ```shell
-rm -rf ~/Library/Developer/Xcode/DerivedData 1938
+rm -rf ~/Library/Developer/Xcode/DerivedData/*
 rm -rf ~/.gradle/caches
 ```
 
@@ -230,5 +243,11 @@ rm -rf ~/.gradle/caches
 
 해결
 
-1. Google play store > App integrity > App signing > App signing key certificate
+1. Google play store > Test and release > App integrity > Play app signing > Settings > App signing key certificate
 2. `SHA-1 certificate fingerprint`의 값을 [Hex to Base64](https://base64.guru/converter/encode/hex)로 변환하여 결과 값을 추가
+
+<br />
+
+### A problem occurred starting process 'command 'npx''
+
+- `./gradlew --stop`
