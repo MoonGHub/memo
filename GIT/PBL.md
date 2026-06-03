@@ -4,9 +4,10 @@
 
 `ssh-keygen -m PEM -t rsa -b 4096 -C answlgus1122@gmail.com`
 
-- -f ~/.ssh/moonghub_rsa: 위치(기본- ~/.ssh/) 및 파일 명 지정(rsa를 여러개 사용 시)
+- -f ~/.ssh/moonghub_rsa: 위치(디폴트: ~/.ssh/) 및 파일 명 지정(rsa를 여러개 사용 시)
+- `_rsa.pub`(공개키)를 깃에 등록
 - 파일명을 임의 지정 시, 아래와 같은 설정이 필요
-  1. config 파일 생성\
+  1. config 파일 생성
      **~/.ssh/config**
      ```
      # Git 계정 내꺼
@@ -18,7 +19,7 @@
   2. `eval $(ssh-agent -s)`
   3. `ssh-add ~/.ssh/moonghub_rsa`
   4. `ssh -T git@github.com`
-  - `Hi {owner}! ...` 해당 레포의 `owner`가 표시되어야 함, 실패 시, 2번 부터 재시도
+     - `Hi {owner}! ...` 해당 레포의 `owner`가 표시되어야 함, 실패 시, 2번 부터 재시도
 
 ---
 
@@ -26,7 +27,6 @@
 
 1. robvanderleek/create-issue-branch 을 이용\
    Issue -> Create branch -> Create pr
-
    - 할당자와 label을 부여하여 이슈 생성
    - label만 부여해 이슈를 생성하고, 나중에 할당자를 부여
 

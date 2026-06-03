@@ -47,9 +47,23 @@ jar 파일 실행
 
 ## 기본 어노테이션
 
+org.springframework.context.annotation
+
+- `@Configuration`
+- `@Bean`: 메서드가 반환하는 객체를 Bean으로 등록
+
 org.springframework.stereotype
 
 - `@Component`: 해당 클래스를 자동으로 Bean으로 등록
+- `@Repository`: JpaRepository 상속하면 생략 가능
+
+org.springframework.transaction.annotation
+
+- `@Transactional`
+
+org.springframework.beans.factory.annotation
+
+- `@Autowired`: 필드 주입, 생성자 불필요, 사용 지양 => 생성자 주입(final 필드 + 생성자)를 추천
 
 ---
 
@@ -79,7 +93,7 @@ org.springframework.stereotype
 - 생성자
   - `@NoArgsConstructor`
   - `@AllArgsConstructor`
-  - `@RequiredArgsConstructor`: final 필드 또는 @NonNull 필드를 매개변수로 갖는 생성자를 자동 생성, DI의 생성자 자동 생성
+  - `@RequiredArgsConstructor`: final 필드 또는 @NonNull 필드를 매개변수로 갖는 DI 생성자를 자동 생성
 
 ### QueryDSL
 
