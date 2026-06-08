@@ -44,6 +44,20 @@
 - **커밋 기준:** 최소 하나의 논리적 변경 단위(마일스톤)가 끝날 때 수행하며, 큰 마일스톤은 중간 단위(sub-milestone) 커밋을 허용합니다.
 - **커밋 메시지 규격:** `type(scope): summary` 형식을 사용합니다. (예: `feat(auth): add refresh token validation`)
 
+### Milestone 상세 계획 기록 규칙
+
+- 모든 마일스톤은 생성 시 아래 정보를 반드시 포함한다.
+  - Objective (목표)
+  - Implementation Plan (구현 계획)
+  - Validation Plan (검증 계획)
+  - Deliverables (예상 산출물)
+
+- Implementation Plan은 실제 수정 예정 파일, 주요 로직, 기술적 접근 방식을 구체적으로 기술한다.
+
+- 마일스톤 완료 시에는 Planned Implementation과 Actual Implementation의 차이를 반영한다.
+
+- Task 파일만 읽어도 해당 마일스톤의 구현 범위와 완료 기준을 파악할 수 있어야 한다.
+
 ## 2. 작업 상태 및 아티팩트 기록 (Work Log)
 
 - **파일명 규칙:** `work_log/{YYYY_MM_DD}_{branch_or_topic}.md`
