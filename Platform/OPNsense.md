@@ -10,6 +10,8 @@
     - [Jenkins Git webhook 연동 추가](#jenkins-git-webhook-연동-추가)
     - [http to https 리다이렉트 설정](#http-to-https-리다이렉트-설정)
     - [내부망 원격접속(SSH)](#내부망-원격접속ssh)
+      - [Predefined 방식](#predefined-방식)
+      - [Dynamic 방식](#dynamic-방식)
   - [ACME Client(SSL)](#acme-clientssl)
 - [ETC](#etc)
   - [IPS(침입탐지시스템) 활성화](#ips침입탐지시스템-활성화)
@@ -149,7 +151,7 @@ Firewall > NAT
    ~~- Listen Addresses: GW IP:80~~\
    ~~- Rules > Select Rules: 5.에서 추가한 redirect_https~~
 
-   또는 ACME Client 세팅에서 HAProxy Integration 체크로 자동 추가된 public services에서
+   또는 ACME Client 세팅에서 HAProxy Integration 체크로 자동 추가된 Public Services에서
    - Listen Addresses: GW IP:80
    - Rules > Select Rules: 5.에서 추가한 redirect_https(후 순위로 지정)
 
@@ -159,6 +161,8 @@ Firewall > NAT
 > HTTP 트래픽과 달리 SSH는 헤더 정보나 도메인 정보를 포함하지 않기 때문에, HAProxy는 요청이 어떤 도메인에 해당하는지 직접 알 수 없음
 
 > https://www.haproxy.com/blog/route-ssh-connections-with-haproxy 참고
+
+##### Predefined 방식
 
 1. 공유기 포트 포워딩 TCP로 추가(ex. 2222)
 2. OPNsense > Firewall > NAT > Port Forward > Add
@@ -170,7 +174,7 @@ Firewall > NAT
      - port range: IN 포트 지정(ex. 2222)
      - Redirect target IP: NAT IP(내부 포트망의 GW)
      - Redirect target port: NAT port(ex. 2222)
-3. HAProxy > Virtual Services > Add
+3. HAProxy > Virtual Services > Public Services > Add
    - advanced mode: 체크
    - Listen Addresses: 내부 포트망의 GW:지정 포트(ex.2222)
    - Type: SSL/HTTPS (TCP mode)
@@ -187,8 +191,54 @@ Firewall > NAT
 
 4. 접속
    > [!IMPORTANT]
-   > Real Servers에 접속할려는 서버의 22포트가 열려있어야 함
-   - `ssh -o ProxyCommand="openssl s_client -quiet -connect {ISP 공인 IP}:2222 -servername {Real Servers의 22번 포트가 열린 Server Name}" 유저명@호스트명`
+   > Real Servers에 22포트가 열려있고, 해당 서버를 Backend Pools에 등록해야 함
+   - `ssh -o ProxyCommand="openssl s_client -quiet -connect {ISP 공인 IP}:2222 -servername {Real Servers의 22번 포트가 열린 서버와 연결된 Backend Pools의 Server Name}" 유저명@호스트명`
+
+위 방법은 Predefined 방식으로, Real Servers와 Backend Pools를 각 서버마다 등록해줘야 함
+생략하는 방법은 Dynamic 방식으로 아래와 같음
+
+##### Dynamic 방식
+
+Predefined 방식의 1과 2 선행
+
+1. HAProxy > Virtual Services > Public Services > Add
+   - advanced mode: 체크
+   - Listen Addresses: 내부 포트망의 GW:지정 포트(ex.2222)
+   - Type: SSL/HTTPS (TCP mode)
+   - Enable SSL offloading: 체크
+   - Certificates: Web GUI TLS certificate
+   - Option pass-through
+
+     ```
+     log-format "%ci:%cp [%t] %ft %b/%s %Tw/%Tc/%Tt %B %ts %ac/%fc/%bc/%sc/%rc %sq/%bq dst:%[var(sess.dst)] "
+
+     tcp-request content set-var(sess.dst) ssl_fc_sni
+     default_backend ssh-all
+     ```
+
+2. HAProxy > Real Servers > Add
+   - Name or Prefix: ssh-all
+   - FQDN or IP: 0.0.0.0
+   - Port: 22
+3. HAProxy > Virtual Services > Backend Pools > Add
+   - advanced mode: 체크
+   - Name: ssh-all
+   - Mode: TCP(Layer 4)
+   - Servers: 2.에서 등록한 ssh-all
+   - Option pass-through
+
+     ```
+     acl allowed_destination var(sess.dst) -m ip {허용 내부망 ip x.x.x.x}
+     acl allowed_destination var(sess.dst) -m ip {허용 내부망 ip x.x.x.x}
+
+     tcp-request content set-dst var(sess.dst)
+
+     tcp-request content accept if allowed_destination
+     tcp-request content reject
+     ```
+
+4. 접속
+   - `ssh -o ProxyCommand="openssl s_client -quiet -connect {ISP 공인 IP}:2222 -servername {Real Servers의 IP}" 유저명@호스트명`
 
 <br />
 
