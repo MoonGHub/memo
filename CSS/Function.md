@@ -1,17 +1,26 @@
 # CSS - Function
 
-- url()
-- [linear-gradient()](#linear-gradient)
-- [attr()](#css내에서-html요소-속성-참조)
-- [minmax()](#minmax)
-- [fit-content()](#fit-content)
-- [repeat()](#repeat)
+- [url(path)](#urlpath)
+- [linear-gradient(각도 또는 위치, color-stop(시작색), [color-stop,...])](#linear-gradient각도-또는-위치-color-stop시작색-color-stop)
+- [attr(속성) - CSS내에서 HTML요소 속성 참조](#attr속성---css내에서-html요소-속성-참조)
+- [minmax(min, max)](#minmaxmin-max)
+- [fit-content(length)](#fit-contentlength)
+- [repeat(count, tracks)](#repeatcount-tracks)
+
+---
+
+### url(path)
+
+- 외부 리소스(이미지, 폰트, SVG 등)의 경로를 지정
+- 상대 경로
+
+  ```scss
+  background-image: url("./images/bg.png");
+  ```
 
 <br />
 
-### linear-gradient
-
-`linear-gradient(각도 또는 위치, color-stop(시작색), [color-stop,...])`
+### linear-gradient(각도 또는 위치, color-stop(시작색), [color-stop,...])
 
 - 위치: `to left`, `to bottom`
 - 각도: `0deg`(아래->위), `90deg`(왼->오), `270deg`(오->왼), `180deg`(위->아래), ... 등
@@ -30,7 +39,7 @@
 
 <br />
 
-### CSS내에서 HTML요소 속성 참조
+### attr(속성) - CSS내에서 HTML요소 속성 참조
 
 ```html
 <a href="home">홈</a>
@@ -42,16 +51,13 @@ a::after {
 }
 ```
 
-결과: 홈 (home)
+결과: `홈 (home)`
 
 <br />
 
-### minmax
+### minmax(min, max)
 
-`minmax( min , max )`
-
-> grid요소에서 사용
-
+- grid요소에서 사용
 - ex)
 
   ```scss
@@ -62,13 +68,10 @@ a::after {
 
 <br />
 
-### fit-content
+### fit-content(length)
 
-`fit-content( length )`
-
-> grid요소에서 사용\
-> 열의 너비를 해당 열의 내용에 맞게 조정하되, 최대 너비를 지정 크기까지만 제한
-
+- grid요소에서 사용
+- 열의 너비를 해당 열의 내용에 맞게 조정하되, 최대 너비를 지정 크기까지만 제한
 - ex)
 
   ```scss
@@ -79,13 +82,10 @@ a::after {
 
 <br />
 
-### repeat
+### repeat(count, tracks)
 
-`repeat( count, tracks )`
-
-> grid요소에서 사용\
-> count만큼 tracks를 반복
-
+- grid요소에서 사용
+- count만큼 tracks를 반복
 - ex)
 
   ```scss

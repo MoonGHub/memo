@@ -1,111 +1,68 @@
 # CSS - PBL
 
-`<link rel="stylesheet" type="text/css" href="sample />`
-
-CSS 라이브러리 참고 사이트
-
-- https://bennettfeely.com/
-- https://www.cssscript.com/
-
-<br />
-
-## 크기
-
-### 화면
-
-뷰포트: 실제 내용이 표시되는 영역
-
 ```html
+<link rel="stylesheet" type="text/css" href="sample" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- 뷰포트의 가로너비 = 단말기 가로너비 -->
 ```
 
-<br />
+- [참고 사이트](#참고-사이트)
+  - [Flex](#flex)
+- [레이아웃](#레이아웃)
+  - [Flex](#flex-1)
+    - [Flex내의 `flex: 1;`인 자식 요소가 부모에 맞춰 크기 줄어들게 하기](#flex내의-flex-1인-자식-요소가-부모에-맞춰-크기-줄어들게-하기)
+- [이미지](#이미지)
+  - [SVG](#svg)
+- [텍스트](#텍스트)
+  - [생략](#생략)
+  - [그라디언트](#그라디언트)
+- [스크롤](#스크롤)
+  - [스냅 포커싱](#스냅-포커싱)
+  - [flex내 요소 스크롤 적용](#flex내-요소-스크롤-적용)
+  - [스크롤 제한](#스크롤-제한)
+    - [모달 아래 요소 스크롤 방지](#모달-아래-요소-스크롤-방지)
+    - [당겨서 새로고침 방지](#당겨서-새로고침-방지)
+    - [이전/다음 페이지 이동 방지(사파리)](#이전다음-페이지-이동-방지사파리)
+- [기타](#기타)
+  - [용어](#용어)
 
-### 요소
+---
 
-- `box-sizing: border-box;`\
-  width 및 height 크기가 border크기를 포함하게 됨(디폴트: content-box;)
+## 참고 사이트
 
-<br />
-
-## 레이아웃
-
-[참고](https://d2.naver.com/helloworld/6807203)
-
-라이브러리
-
-- http://gridstackjs.com/
-- https://masonry.desandro.com/
-
-<br />
+- `http://gridstackjs.com/`: DnD 및 크기 조정 시 레이아웃 배치 라이브러리
 
 ### Flex
-
-참고
 
 - https://codepen.io/enxaneta/pen/adLPwv
 - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
-#### 정렬
+---
 
-- `flex-wrap: wrap;`\
-  부모 크기 오버시 아래에 정렬
+## 레이아웃
 
-<br />
+### Flex
 
 #### Flex내의 `flex: 1;`인 자식 요소가 부모에 맞춰 크기 줄어들게 하기
 
-부모가 `flex-direction: row;`이며, 자식이 `flex: 1;`인 상황에서 가로 크기를 부모에 맞춰 줄어들게 할 때,\
-자식요소에 `min-width: 0px;` 지정 필요
+부모가 `flex-direction: row;`이며, 자식이 `flex: 1;`인 상황에서 가로 크기를 부모에 맞춰 줄어들게 할 때,
+자식요소에 `min-width: 0px;` 지정
 
-<br />
-
-### Table
-
-- `table-layout: fixed;`\
-  테이블의 내부 요소가 커져도 th 및 td 크기를 고정 시킴
-
-<br />
-
-## 배경
-
-### 영상
-
-- 백그라운드 재생: tubular.js
-
-<br />
+---
 
 ## 이미지
 
-### Background
-
-- `background-clip: border-box;`\
-  이미지의 영역이 border까지 확장됨
-
-<br />
-
 ### SVG
 
-[참고](https://svgontheweb.com/ko/)
+- 요소 크기를 부모 크기에 맞추기(비율 유지 제거)
+  -> 해당 파일 태그 내의 `preserveAspectRatio` 속성을 `none`으로 변경
+- 색 변경 반영
+  -> 해당 파일 태그 내의 `fill` 또는 `stroke` 속성에 `currentColor`로 변경
 
-- 요소 크기를 부모 크기에 맞추기(비율 유지 제거)\
-  해당 파일 태그 내의 preserveAspectRatio값을 `preserveAspectRatio='none'`으로 변경
-
-- 색 변경
-  1. 해당 파일 태그 내의 fill값을 `fill="currentColor"`로 변경
-  2. 구현 부의 style속성에 `{color :’red’}`와 같이 전달
-
-#### 아이콘 사이트
-
-- http://fontello.com/
-- https://thenounproject.com/
-
-<br />
+---
 
 ## 텍스트
 
-### 생략 표시(텍스트 길이가 부모요소보다 커질 경우)
+### 생략
 
 ```scss
 overflow: hidden;
@@ -128,7 +85,7 @@ display: -webkit-box;
 
 <br />
 
-### 그라디언트 효과
+### 그라디언트
 
 ```scss
 background-image: linear-gradient(to right, #7dd3fc, #4f46e5);
@@ -136,49 +93,36 @@ background-clip: text;
 color: transparent;
 ```
 
-<br />
+---
 
-### EM
+## 스크롤
 
-부모 요소의 px크기 = 자식 요소의 1em
+### 스냅 포커싱
 
-<br />
+```scss
+// 부모 요소
+overflow-y: auto;
+scroll-snap-type: y mandatory;
 
-## 마우스
-
-### 스크롤
-
-- 자동 포커싱
-
-  ```scss
-  // 부모 요소
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-
-  // 자식 요소
-  scroll-snap-align: start;
-  ```
-
-- 화면 내 부드러운 이동\
-  `scroll-behavior: smooth;`
+// 자식 요소
+scroll-snap-align: start;
+```
 
 <br />
 
-### 스크롤 적용
+### flex내 요소 스크롤 적용
 
-- flex내 요소가 스크롤인 경우
+```scss
+// flex요소(+ 그 상위 요소)
+overflow: hidden;
 
-  ```scss
-  // flex요소(+ 그 상위 요소)
-  overflow: hidden;
-
-  // 스크롤 대상 요소
-  overflow: auto;
-  // 또는
-  flex: auto;
-  height: 0;
-  overflow: auto;
-  ```
+// 스크롤 대상 요소
+overflow: auto;
+// 또는
+flex: auto;
+height: 0;
+overflow: auto;
+```
 
 - flex요소 내 `상위 - 중간 - 하위`구조에서 하위 요소가 스크롤인 경우
 
@@ -214,24 +158,32 @@ color: transparent;
   overflow-y: auto;
   ```
 
-### 모바일의 당겨서 새로고침 막기
+<br />
 
-```css
+### 스크롤 제한
+
+#### 모달 아래 요소 스크롤 방지
+
+`overscroll-behavior: contain`: 스크롤링 체인을 제한
+
+#### 당겨서 새로고침 방지
+
+```scss
 body {
   overscroll-behavior-y: contain;
 }
 ```
 
-또는 html의 스타일에서 `overflow: hidden` 적용
+- 또는 html의 스타일에서 `overflow: hidden` 적용
+- 또는 최상위 요소에 `overscroll-behavior: none;` 적용
 
-### 커서
+#### 이전/다음 페이지 이동 방지(사파리)
 
-- 드래그 제한 \
-  `user-select: none`
+`overscroll-behavior: none`: 스크롤 영역 경계 제한
 
-<br />
+---
 
-## ETC
+## 기타
 
 ### 용어
 
@@ -239,3 +191,8 @@ body {
 - 머티리얼 디자인: 가상 빛을 이용한 입체효과로 입체감부여
 - 캐러셀: 슬라이드
 - 타이포그래피: 글자를 활용한 모든 디자인
+- 리퀴드 글라스: 글래스모피즘의 질감에 액체(Liquid)의 유기적인 움직임을 더한 인터페이스
+- Masonry 레이아웃: 벽돌을 쌓아 올린 모양처럼 동일한 너비를 가진 이미지가 엇갈려 배열(ex. Pinterest)
+- Justified 레이아웃: 한 행을 기준으로 이미지가 가득 차도록 배치
+
+<br />

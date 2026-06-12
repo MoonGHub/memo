@@ -1,6 +1,6 @@
 # Docker
 
-> CYCLE: DockerFile > Image > Container(=이미지 인스턴스)
+> CYCLE: DockerFile > Image(=스냅샷) > Container(=이미지 인스턴스)
 
 - [Install](#install)
 - [Dockerfile](#dockerfile)
@@ -18,7 +18,6 @@
 - [PBL](#pbl)
   - [테스트용 우분투 실행(안꺼지게)](#테스트용-우분투-실행안꺼지게)
   - [이미지를 파일로 추출, 적용](#이미지를-파일로-추출-적용)
-- [docker swarm](#docker-swarm)
 
 ---
 
@@ -41,6 +40,25 @@
 - 런타임(컨테이너 실행 시점) 실행
   - `ENTRYPOINT`: 실행할 프로그램을 고정
   - `CMD`: 디폴트 옵션 지정
+
+> [!CAUTION]
+> Base Image를 가져올 때, @sha256 형태의 고유 식별자 값인 Digest 를 추가 할 것
+
+> [!IMPORTANT]
+>
+> 도커 파일에 아래 내용 추가 고려
+>
+> 1. 변경 빈도가 낮은 것(종속성)은 상단, 변경 빈도가 높은 것(코드)은 하단에 배치
+> 2. root 실행 방지를 위해 아래 내용 추가(mysql은 이미 uid 999고정)
+>    ```
+>    RUN adduser --disabled-password --gecos "" appuser
+>    USER appuser
+>    ```
+> 3. 도커 앱 헬스체크
+>    ```
+>    HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+>     CMD curl -f http://localhost:8000/health || exit 1
+>    ```
 
 ---
 
@@ -214,32 +232,3 @@
 
 - `docker load -i image.tar`
 - `docker tag nginx:amd64 nginx:latest`
-
----
-
-## docker swarm
-
-- docker swarm init
-- docker swarm join-token worker
-- docker swarm leave --force
-
-- docker node ls
-- docker node demote NODE
-- docker node rm NODE
-
-- docker stack deploy -c docker-stack.yml stack_name
-- docker stack ls
-- docker stack rm STACK
-
-- docker service ps stack_name_ser/Users/moong/workspace/drill-git/Users/moong/workspace/drill-git/mysql.sql/mysql.sqlvice_name
-- docker service ls
-
-- docker stack deploy -c docker-stack.development.yml app
-
-- --Docker-compose up failing because "port is already allocated"
-
-- docker-compose down
-- docker rm -fv $(docker ps -aq)
-- lsof -i -P -n | grep 5432
-
-출처: https://nayha.tistory.com/625 [Nayha]

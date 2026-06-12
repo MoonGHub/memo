@@ -1,24 +1,18 @@
 # IDE - VSCode
 
-### 🦋 Command Palette
+## Command Palette(`F1`)
 
-- `Configure Display Language`: 언어 변경
-- `Color Theme`: 테마 변경
+- `?`: 명령 목록 확인
+- `:`: 행 이동
+- `>`: Run Commands
+  - `Configure Display Language`: 언어 변경
+  - `Color Theme`: 테마 변경
 
 ---
-
-`F1`: Command Palette
-
-- `>`: Run Commands
-- `:`: 행 이동
-- `?`: 명령 목록 확인
-
-<br />
 
 ## Windows Shortcut
 
 - Origin
-
   - `Ctrl PgUp`: Move Previous Tab
   - `Ctrl PgDown`: Move Next Tab
   - `Alt Up`: Move Left Terminal
@@ -59,12 +53,11 @@
   - `Ctrl n`: New file
   - `Ctrl Alt s`: Save Without Formatting
 
-<br />
+---
 
 ## Mac Shortcut
 
 - Origin
-
   - `Cmd \`: Split Editor/Terminal
   - `Option Shift Down/Up`: 행 복사
   - `Option Down/Up`: 행 이동
@@ -104,29 +97,26 @@
   - `Ctrl Shift [ / ]`: 코드 접기/펼치기
   - `Ctrl Shift \`: 블록 앞 뒤 이동
 
-<br />
-
-## Extension
-
-<br />
-
-## Extension Shortcut
-
-- Code runnder
-  - `Ctrl Alt(Cmd) n`: Run Code
-
-<br />
+---
 
 ## 설정(settings.json)
 
-<br />
+### JS/TS import 경로 표시
 
-### 타입스크립트를 사용 할 경우, 작성한 alias paths를 자동완성으로 사용
+alias 경로 우선 사용
 
-shortest: 상대경로와 alias로 지정한 paths 중 비교하여 짧은 경로를 Sugesstions에 표시
+```json
+{
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative"
+}
+```
 
-- 방법 1. sttings.json에 아래 구문 추가\
-  `"typescript.preferences.importModuleSpecifier": "shortest"`
+상대경로와 alias 경로 중 짧은 경로 표시
 
-- 방법 2. settings에서 **typescript importModuleSpecifier** 검색 후,\
-  TypeScript > Preferences: Import Module Specifier 값을 `shortest`로 변경
+```json
+{
+  "javascript.preferences.importModuleSpecifier": "shortest",
+  "typescript.preferences.importModuleSpecifier": "shortest"
+}
+```

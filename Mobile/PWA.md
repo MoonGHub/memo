@@ -99,7 +99,7 @@ install 이벤트는 클라이언트를 제어하기 전에 필요한 모든 것
 
 노치영역을 아래와 같은 `safe-area-inset-*`로 제어
 
-```css
+```scss
 body {
   padding-top: env(safe-area-inset-top, 0);
   padding-left: env(safe-area-inset-left, 0);
@@ -157,7 +157,6 @@ This is not supported on iOS.
   - `script`
   - `auto`: default
 - registerType
-
   - `autoUpdate`\
     injectManifest 인경우 [SW 업데이트 코드](https://vite-pwa-org.netlify.app/guide/inject-manifest.html#auto-update-behavior) 필요
 
@@ -195,9 +194,7 @@ This is not supported on iOS.
 `workbox-window` 설치 필요
 
 - useRegisterSW
-
   - [immediate](https://vite-pwa-org.netlify.app/guide/auto-update.html#automatic-reload)
-
     - `true`: registerType가 autoUpdate인 경우
 
   - onNeedRefresh

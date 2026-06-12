@@ -85,7 +85,7 @@ git reset --hard
 
 ## ETC
 
-### 🦋 D2Coding 폰트 설치
+### D2Coding 폰트 설치
 
 https://github.com/naver/d2codingfont\
 터미널 및 vscode 적용(vscode의 세팅에서 Font Family 검색 후 D2coding 설정)

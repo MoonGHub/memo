@@ -26,9 +26,7 @@
   - [PBL](HTML/PBL.md)
   - [Tag](HTML/Tag.md)
 - IDE
-  - [IntelliJ](IDE/IntelliJ.md)
   - [VSCode](IDE/VSCode.md)
-  - [WebStorm](IDE/WebStorm.md)
 - JavaScript
   - [Advanced](JavaScript/Advanced.md)
   - [BOM](JavaScript/BOM.md)

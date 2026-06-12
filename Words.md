@@ -1,8 +1,6 @@
 # Words
 
-- `i.e.`: 라틴어 id est,의 약어이며, '즉', '다시 말하면'이라는 뜻
-- `Fyi`: For Your Information, 참고로
-- `코딩 컨벤션`: 관리하기 쉬운 코드를 작성하기 위한 일종의 코딩 스타일 규약
+- `코딩 컨벤션`: 코딩 스타일 규약
 - `UTC`: Coordinated Universal Time - 협정 세계시(영국 런던기준),
 - `KST`: 한국 표준시(UTC +9)
 - `MS949`: 한글 확장 완성형 문자집합(일본어, 중국어 등에도 사용)
@@ -33,3 +31,12 @@
 - `CSRF`: Cross-Site Request Forgery, 요청 위조
 - `Intl`: Internationalization, 국제화
 - `Base64 문자열`: 바이너리(이진) 데이터를 텍스트 문자열로 표현하는 방식
+- `MIME(Multipurpose Internet Mail Extensions) 타입`
+  - 클라이언트에게 전송된 문서의 다양성을 알려주기 위함
+  - MIME으로 인코딩 한 파일은 Content-type 정보를 파일의 앞부분에 담음
+  - 타입
+    - 텍스트: text/plain, text/html, text/css, text/javascript
+    - 이미지: audio/midi, audio/mpeg, audio/webm, audio/ogg, audio/wav
+    - 오디오: audio/midi, audio/mpeg, audio/webm, audio/ogg, audio/wav
+    - 비디오: video/webm, video/ogg
+    - 이진 데이터(바이너리 데이터): application/octet-stream, application/pkcs12, application/vnd.mspowerpoint, application/xhtml+xml, application/xml, application/pdf
