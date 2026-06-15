@@ -5,11 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 ```
 
+**-webkit-**: 크롬, 사파리\
+**-moz-**: 모질라, 파이어폭스\
+**-ms-**: 익스플로러\
+**-o-**: 오페라
+
 - [참고 사이트](#참고-사이트)
-  - [Flex](#flex)
 - [레이아웃](#레이아웃)
-  - [Flex](#flex-1)
+  - [Box](#box)
+  - [Flex](#flex)
     - [Flex내의 `flex: 1;`인 자식 요소가 부모에 맞춰 크기 줄어들게 하기](#flex내의-flex-1인-자식-요소가-부모에-맞춰-크기-줄어들게-하기)
+  - [Grid](#Grid)
+  - [Table](#table)
 - [이미지](#이미지)
   - [SVG](#svg)
 - [텍스트](#텍스트)
@@ -22,7 +29,10 @@
     - [모달 아래 요소 스크롤 방지](#모달-아래-요소-스크롤-방지)
     - [당겨서 새로고침 방지](#당겨서-새로고침-방지)
     - [이전/다음 페이지 이동 방지(사파리)](#이전다음-페이지-이동-방지사파리)
+- [변형 및 애니메이션](#변형-및-애니메이션)
 - [기타](#기타)
+  - [효과](#효과)
+  - [기타 속성](#기타-속성)
   - [용어](#용어)
 
 ---
@@ -31,7 +41,11 @@
 
 - `http://gridstackjs.com/`: DnD 및 크기 조정 시 레이아웃 배치 라이브러리
 
-### Flex
+변형 관련
+
+- `https://codepen.io/vineethtr/full/XKKEgM`: Transform
+
+Flex 관련
 
 - https://codepen.io/enxaneta/pen/adLPwv
 - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
@@ -40,16 +54,64 @@
 
 ## 레이아웃
 
+### Box
+
+- `box-sizing: border-box;`: width 및 height 크기가 border크기를 포함
+
+<br />
+
 ### Flex
+
+- `flex-wrap: wrap;`: 부모 크기 오버시 아래에 정렬
+
+<br />
 
 #### Flex내의 `flex: 1;`인 자식 요소가 부모에 맞춰 크기 줄어들게 하기
 
 부모가 `flex-direction: row;`이며, 자식이 `flex: 1;`인 상황에서 가로 크기를 부모에 맞춰 줄어들게 할 때,
 자식요소에 `min-width: 0px;` 지정
 
+<br />
+
+### Grid
+
+- 상위요소
+
+  ```scss
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 2fr auto 100px; // 너비
+  grid-template-rows: repeat(2, minmax(100px, auto)); // 높이
+
+  grid-auto-flow: row; // 왼쪽에서 오른쪽으로, 위에서 아래로 배치
+  grid-auto-flow: column; // 위에서 아래로, 왼쪽에서 오른쪽으로 배치
+
+  grid-auto-flow: dense; // 순서에 상관없이 가능한 한 빈 공간을 채우도록 배치
+  grid-auto-flow: row dense; // or column dense
+
+  grid-auto-columns: max-content; // grid-template-columns를 사용하지 않고, 하위 요소의 가로길이 만큼 자동 조정 (== tw: auto-cols-max)
+  ```
+
+- 하위요소
+
+  ```scss
+  grid-column: 4; // 네 번째 열 뒤에 위치
+  grid-column: 1 / 3; // 첫 번째 열 ~ 세 번째 열 차지(두 칸)
+  grid-column: 2 / span 3; // 두 번째 열에서 3개의 열을 차지(세 칸)
+  grid-row: 2 / -1; // 두 번째 행에서 끝에서 첫 번째 행(마지막 행)까지 차지
+  ```
+
+<br />
+
+### Table
+
+- `table-layout: fixed;`: 테이블의 내부 요소가 커져도 th 및 td 크기를 고정 시킴
+
 ---
 
 ## 이미지
+
+- `background-clip: border-box;`: 배경(background-color, background-image)을 border 영역까지 표시
 
 ### SVG
 
@@ -61,6 +123,10 @@
 ---
 
 ## 텍스트
+
+- `text-indent: 10px;`: 들여쓰기
+- `letter-spacing: 10px;`: 글자간격
+- `line-height: 10px;`: 줄간격
 
 ### 생략
 
@@ -96,6 +162,8 @@ color: transparent;
 ---
 
 ## 스크롤
+
+- `scroll-behavior: smooth;`: 화면 내 부드러운 이동
 
 ### 스냅 포커싱
 
@@ -183,7 +251,32 @@ body {
 
 ---
 
+## 변형 및 애니메이션
+
+- `transform: translate(x,y) | scale(x,y) | rotateX(45deg) | skew(xdeg, ydeg)`
+- `transform-origin: left top;`: 중심점 변경
+- `transition: all 1s ease-in-out;`
+- `animation: fadeIn 1s ease infinite;`
+- `animation: fadeIn 1s ease forwards;`
+
+---
+
 ## 기타
+
+### 효과
+
+- `filter: blur(5px);`
+  - [참고](https://georapbox.github.io/css-filters-playground/)
+  - 대상 요소에 대해 적용(background-image 제외)
+- `backdrop-filter: blur(10px);`: 대상 요소 뒤의 영역에 대해 적용
+
+<br />
+
+### 기타 속성
+
+- `user-select: none;`: 드래그 제한
+
+<br />
 
 ### 용어
 
@@ -194,5 +287,3 @@ body {
 - 리퀴드 글라스: 글래스모피즘의 질감에 액체(Liquid)의 유기적인 움직임을 더한 인터페이스
 - Masonry 레이아웃: 벽돌을 쌓아 올린 모양처럼 동일한 너비를 가진 이미지가 엇갈려 배열(ex. Pinterest)
 - Justified 레이아웃: 한 행을 기준으로 이미지가 가득 차도록 배치
-
-<br />
