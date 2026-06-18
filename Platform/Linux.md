@@ -6,14 +6,18 @@
   - [파일 조회](#파일-조회)
     - [파일명 메타캐릭터 검색](#파일명-메타캐릭터-검색)
   - [파일 처리](#파일-처리)
+  - [용량/메모리 확인](#용량메모리-확인)
   - [프로세스 관리](#프로세스-관리)
   - [서비스 관리](#서비스-관리)
   - [네트워크](#네트워크)
   - [vim](#vim)
   - [기타 명령어](#기타-명령어)
   - [터미널 단축키](#터미널-단축키)
-- [Ubuntu]
+- [Ubuntu](#ubuntu)
   - [설치 (22.04.1 live server amd64 기준)](#설치-22041-live-server-amd64-기준)
+- [PBL](#pbl)
+  - [방화벽 및 SSH 설정](#방화벽-및-ssh-설정)
+  - [LVM(Logical Volume Manager) 볼륨 사이즈 확장](#lvmlogical-volume-manager-볼륨-사이즈-확장)
 
 ---
 
@@ -62,6 +66,11 @@ ex) `커맨드 > /dev/null 2>&1`: 커맨드의 표준 출력을 버리고, 에�
 
 ### 기본 시스템 조회/변경
 
+- `cat /etc/os-release`: OS 정보 확인
+- `uname`
+  - `-a`: 전체 시스템 정보 출력
+  - `-r`: 커널 버전 출력
+  - `-m`: 머신 아키텍처만 출력
 - `cat /etc/shells`: 설치된 쉘 목록 조회
 - `cat /etc/hosts`: 도메인, IP 매핑 파일
 - `chsh -s /bin/zsh`: 쉘 변경
@@ -78,7 +87,8 @@ ex) `커맨드 > /dev/null 2>&1`: 커맨드의 표준 출력을 버리고, 에�
 - `unset {변수명}`: 변수 삭제
 - `env`: 환경변수 목록
 - `man`: 명령어 매뉴얼(도움말) 출력, less의 기능을 따름
-- `su -`: root사용자로 변경, `su - root`와 동일
+- `su -`: root사용자로 변경, `su - root` 또는 `sudo -` 와 동일
+- `passwd root`: root계정 패스워드 설정
 
 top,
 
@@ -156,20 +166,55 @@ mkdir, rmdir, rm, mv, cp
 
 <br />
 
+### 용량/메모리 확인
+
+- `swapon -s`: swap 메모리 확인
+- `df -h`: Disk Free
+- `du -h`: Disk Usage
+  - `-s:` summary, 사용량 총 합 표시
+  - `-h`: human-readable
+  - ex) `du -sh *`: 현재 경로 내의 폴더, 파일의 용량 표시
+
+<br />
+
 ### 프로세스 관리
 
 - `ps`: 프로세스 조회
   - `ps aux | head -n 1; ps aux | grep mysql`: 다른 사용자의 프로세스도(a), 보기 좋게(u), 백그라운드 프로세스(x) - 자원 사용률 확인
-  - `ps -ef`: 모든 프로세스(e), 전체 형식(f) - 프로세스 디버깅
+  - `ps -efl`: 모든 프로세스(e), 상세 정보(f), 긴 포맷(l) - 프로세스 디버깅
   - `ps ax | cut -c 1-5`: 프로세스 아이디 표시
+  - `ps -o pid,comm,nice,pri`: 유저 정의 포맷(o)
+  - `ps -ef -o pri`
+  - 컬럼
+    - `PID`: 프로세스ID,
+    - `PPID`: 부모 프로세스, 없을 경우는 0
+    - `C`: 단기간 cpu 사용률
+    - `TTY`: 제어하고 있는 단말
+    - `PRI`: 실제 실행 우선도(작을수록 높음)
+    - `NI`: 설정한 우선순위(작을수록 높음, -20 ~ 19)
+    - `STAT`
+      S: 잠자고 있음, 중지가능
+      R: 동작중 또는 동작가능
+      X: 완전히 죽음
+      Z: 죽어있는 좀비
 - `top`: 실시간 프로세스 모니터링
 - `jobs`: 백그라운드 작업 확인
-- `kill`: PID 종료
-- `killall`: 프로세스명으로 종료
-- `pkill`: 조건으로 종료
-- `pgrep`: PID 검색
-- `nice`: 프로세스 우선순위 지정
-- `renice`: 우선순위 변경
+  - `ctrl + z`(포그라운드 잡 일시정지) -> `bg`(백그라운드 실행) 또는 `bg %{잡번호}` -> `fg`(포그라운드 복귀)
+- `kill`: PID 종료, 시그널 생략시 15(SIGTERM)가 기본
+  - `kill -l`: 시그널 목록 표시, `man signal`가 편함
+  - `kill -9 20000` 또는 `kill -SIGKILL 20000`
+  - `kill %3`: 잡번호 3을 종료
+  - 시그널(맥에서는 SIG 생략)
+    - `9`: SIGKILL : 강제 종료(커널에 의함)
+    - `15`: SIGTERM : 클린업(사용한 자원 반환, 잠긴파일 삭제 등) 후 종료처리(디폴트)
+- `killall`: 프로세스명으로 종료, `pkill`로 써도 됨
+  - `killall -9 testapp`
+- `pgrep`: 프로세스 이름으로 PID검색
+  - `pgrep chrome`
+- `nice`: 프로세스 우선순위(-20 ~ 19, -는 루트권한만 가능) 지정
+  - `nice -n 19 bc`: bc프로세스의 NI를 19로 지정
+- `renice`: 실행 중인 프로세스의 NI를 변경
+  - `renice -n 19 -p 500`: PID가 500인 프로세스의 NI를 19로 변경
 - `lsof`: 열린 파일 및 포트 확인
   - `lsof -i:3306`
 
@@ -281,10 +326,10 @@ history,
 
 ### 설치 (22.04.1 live server amd64 기준)
 
-[참고](https://blog.dalso.org/article/ubuntu-22-04-lts-server-install)
-[참고](https://as-you-say.tistory.com/181)
+- [참고](https://blog.dalso.org/article/ubuntu-22-04-lts-server-install)
+- [참고](https://as-you-say.tistory.com/181)
 
-> 설치 시, 주의 사항
+**설치 시, 주의 사항**
 
 1. Profile setup
    - Your name: 사용자의 실제 이름 또는 관리자의 이름
@@ -307,49 +352,29 @@ apt install curl net-tools
 apt-get update && apt-get install apt-file -y && apt-file update && apt-get install vim -y
 ```
 
-- 기타 CLI
-  - `sudo passwd root`: Root계정 패스워드 설정
-  - `sudo su` or `sudo -`: Root계정 전환(설치 직후는 패스워드 설정이 필요)
-  - `uname`
-    - `-a`: 전체 시스템 정보 출력
-    - `-r`: 커널 버전 출력
-    - `-m`: 머신 아키텍처만 출력
-
-> 설치 후, 재설치 방법
+**설치 후, 재설치 방법**
 
 1. F2로 Bios 진입
 2. 부팅 순서에서 CD를 최상위로 설정
 3. 재부팅
 
-### CLI
-
-- `cat /etc/os-release`: OS 정보 확인
-
 ---
 
-## PBL - 여러 설정 및 명령어
+## PBL
 
-### 방화벽 및 SSH 설정, 접속(Ubuntu/Debian)
+### 방화벽 및 SSH 설정
 
 #### 방화벽 설정
 
+- `ufw enable`: 방화벽 활성화
 - `ufw status`
-- `ufw enable`\
-  방화벽 활성화
-  ```text
-  # 실행 후, ufw status
-  Status: active
-  ```
 - `ufw disable`
 
 #### 방화벽 SSH 설정
 
-- `systemctl status ssh`\
-  ssh 서비스 실행 확인
-- `ss -tuln | grep ssh`\
-  ssh 접속 포트 확인
-- `ufw allow ssh`\
-  SSH 포트(기본값은 22번) 허용
+- `systemctl status ssh`: ssh 서비스 실행 확인
+- `ss -tuln | grep ssh`: ssh 접속 포트 확인
+- `ufw allow ssh`: SSH 포트(기본값은 22번) 허용
 
   ```text
   # 실행 후, ufw status
@@ -361,14 +386,14 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   22/tcp (v6) ALLOW Anywhere (v6)
   ```
 
-- `ufw deny ssh`\
-  SSH 포트 거부
+- `ufw deny ssh`: SSH 포트 거부
 
-> ~~**일반계정 비밀번호 ssh접속 허용**~~\
-> ~~/etc/ssh/sshd_config에서 PasswordAuthentication yes 주석 해제~~
-
-> **root계정 ssh 접속 허용**\
-> /etc/ssh/sshd_config에서 PermitRootLogin 라인 주석 해제
+> [!IMPORTANT]
+> **비밀번호로 ssh접속 허용**
+> /etc/ssh/sshd_config에서 PasswordAuthentication yes 라인 주석 해제
+>
+> **root계정 ssh 접속 허용**
+> /etc/ssh/sshd_config에서 PermitRootLogin yes 라인 주석 해제
 
 #### 접속
 
@@ -378,6 +403,59 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   - 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
 
 #### 접속 IP 제한
+
+1. `vim /etc/ssh/sshd_config`
+2. 아래 내용 추가
+   ```
+   AllowUsers {유저명_1}@{허용IP_1} {유저명_2}@{허용IP_2}
+   ```
+
+<br />
+
+### LVM(Logical Volume Manager) 볼륨 사이즈 확장
+
+우분투 라이브서버 기준
+
+**커널 디스크, 파티션 인식**
+
+1. `lsblk`: 블록 디바이스 sda 확인
+2. `df -h`: /dev/mapper/ubuntu--vg-ubuntu--lv 확인
+3. 물리 디스크 추가
+4. `echo 1 | sudo tee /sys/class/block/sda/device/rescan`: 디스크 재스캔
+5. `lsblk`: 디스크 인식 확인
+6. `parted /dev/sda`: sda가 파티션으로 나누어져 있음, 추가한 용량을 PV가 위치한 파티션 sda3(ubuntu--vg-ubuntu--lv 가 있는 파티션)에 확장
+   6.1. `print`: PV가 위치한 파티션 넘버 확인
+
+   > [!NOTE]
+   > 아래 에러가 나올 시, `Fix` 후 다시 `print`
+   > Warning: Not all of the space available to /dev/sda appears to be used, you can fix the GPT to use all of the space (an extra 8388608 blocks) or continue with the current setting?
+
+   6.2. `resizepart {파티션 넘버} 100%`
+   6.3. `print`: 사이즈 변경 확인
+   6.4. `quit`
+
+우분투 라이브서버는 LVM을 사용하기 때문에 pv와 lv를 확장 후 파일시스템 적용
+
+**물리 볼륨 확장**
+
+7. `pvs`: 기존 물리 볼륨 PSize 확인
+8. `pvresize /dev/sda3`: 확장된 sda3 파티션 크기를 LVM(PV)에 반영
+9. `pvs`: PSize와 추가 가능한 PFree 확인
+
+**논리 볼륨 확장**
+
+10. `lvs`: 기존 논리 볼륨 LSize 확인
+11. `lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv`
+12. `lvs`: 확인
+
+**파일 시스템 적용**
+
+13. `resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv`: ext4 형식으로 포맷
+
+**최종 확인**
+
+14. `lsblk`
+15. `df -h`
 
 <br />
 
@@ -521,10 +599,6 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
 
 <br />
 
-### LVM(Logical Volume Manager) 볼륨 사이즈 확장
-
-<br />
-
 ### 특정 (네트워크)포트 확인 및 종료
 
 - 사용 중인 포트 확인
@@ -551,34 +625,6 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
    - `ls -al /etc/localtime`
 5. 현재 시간 확인 (현재 타임존)
    - `date`
-
-<br />
-
-### 용량/메모리 확인
-
-- `swapon -s`: swap 메모리 확인
-- `df -h`: Disk Free
-- `du -h`: Disk Usage
-  - `-s:` summary, 디렉토리의 사용량만 표시
-  - `-h`: human-readable
-  - ex) `du -sh *`: 현재 경로 내의 폴더, 파일의 용량 표시
-
-<br />
-
-### [한글 설치(ubuntu live server)](https://epicarts.tistory.com/30)
-
-<!--
-- `apt-get isntall language-pack-ko`
-- `locale-gen ko.KR.UTF-8`
-- `vim /etc/default/locale`\
-  추가 `LANG=ko_KR.UTF-8`
-- `vim /etc/environment`\
-  추가
-  ```shell
-  LANG=ko_KR.UTF8
-  LANGUAGE=ko_KR:ko:en_GB:en
-  ```
-- `reboot` -->
 
 <br />
 
