@@ -19,6 +19,7 @@ PBL# Mobile - React Native
     - [Android](#android-2)
     - [IOS](#ios-3)
     - [새 프로젝트 생성 시](#새-프로젝트-생성-시)
+    - [프로파일 변경 시(Profile doesn't include the selected signing certificate)](#프로파일-변경-시profile-doesnt-include-the-selected-signing-certificate)
   - [App Center](#app-center)
   - [com.kakao.sdk.common.model.AuthError: Android keyHash validation failed. (AOS 배포앱에서만)](#comkakaosdkcommonmodelautherror-android-keyhash-validation-failed-aos-배포앱에서만)
   - [A problem occurred starting process 'command 'npx''](#a-problem-occurred-starting-process-command-npx)
@@ -137,7 +138,6 @@ The APKs have been extracted in the directory: /var/folders/yg/3y40k7_53tj_2k69j
 **아래와 같이 직접 빌드 시, 여러 이슈 발생.. 따라서 RN CLI를 사용 할 것**
 
 - `./gradlew assembleRelease` or `./gradlew assembleDebug`
-
   - apk빌드
   - assembleRelease의 경우, signingConfigs 및 buildTypes에 keystore가 필요
 
@@ -221,6 +221,16 @@ pod install
 rm -rf ~/Library/Developer/Xcode/DerivedData/*
 rm -rf ~/.gradle/caches
 ```
+
+`XCode > Product > Clean Build Folder`
+
+#### 프로파일 변경 시(Profile doesn't include the selected signing certificate)
+
+```shell
+rm -rf  ~/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*
+```
+
+`XCode > Settings > Apple Accounts > 해당 팀이 있는 계정 추가`
 
 <br />
 

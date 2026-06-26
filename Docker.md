@@ -163,44 +163,47 @@
 
 ### CLI
 
-- `docker-compose down --volume --rmi all`: 서비스 초기화(서비스, 네트워크 삭제)
-  - `--volume`: 볼륨 삭제
-    - 컨테이너 내부 데이터는 익명 볼륨에 저장되므로, down시 같이 제거됨
-    - 별도 volumes에 저장하여 유지 시킬 수 있음
-  - `--rmi all`: 싹 다 지움
-- `docker-compose -p 프로젝트명 up -d`\
-  `docker-compose -f docker-compose.teamcity.yml up`\
-  _서비스생성 > 이미지 빌드 > 컨테이너 생성 및 실행(서비스 실행)_
-  - `-p`: image이름으로 '현재 디렉토리 명\_'가 붙는데, 이것을 수정
+- `docker-compose -f docker-compose.teamcity.yml up`: 서비스생성 > 이미지 빌드 > 컨테이너 생성 및 실행(서비스 실행)
+  - `docker-compose up 서비스명 -d`: 특정 서비스(docker-compose.yml의 서비스명)만 지정
+  - `-p`: 서비스에 `container_name`가 지정되어 있지 않으면, 기본 컨테이너 명은 '디렉토리명-서비스명-번호'로 지정됨,
+    `-p 프로젝트명` 할 시, '프로젝트명-서비스명-번호'으로 지정
   - `-d`: 백그라운드 실행
   - `--platform linux/amd64`: 실행되는 호스트 환경에 맞춰 추가
     - `uname -m`
       - `x86_64`(Intel 기반)이면 `linux/amd64`
       - `aarch64` 또는 `arm64`(실리콘 맥)이면 `linux/arm64`
   - `--build`: 새 이미지로 재빌드 후 컨테이너 재생성(덮어씌어짐)하고 실행
+- `docker-compose down --volume --rmi all`: 컨테이너 제거(네트워크 기본 삭제, 볼륨/이미지 삭제)
+  - `docker-compose down 서비스명`: 특정 서비스만 지정
+  - `--volume`: 설정된 Named Volume 또는 익명 볼륨 제거
+  - `--rmi all`: Compose에서 사용하는 모든 이미지 삭제(허브에서 받은 이미지 포함)
+  - `--rmi local`: Compose가 빌드한 로컬 이미지만 삭제(허브에서 받은 이미지 제외)
 - `docker-compose ps`
 - `docker-compose stop`
-  - `docker-compose stop 컨테이너이름`
-  - `docker-compose rm -fsv 컨테이너이름`
+  - `docker-compose stop 서비스명`
+  - `docker-compose rm -fsv 서비스명`
     - `-f`: force
     - `-s`: stop
     - `-v`: volume
 - `docker-compose start`
+  - `docker-compose start 서비스명`
 - `docker-compose restart`
-- `docker-compose exec 컨테이너이름 명령어`: 개별 서비스 컨트롤
-- `docker-compose logs 컨테이너이름 -f`: 해당 컨테이너에 출력된 로그 확인
+- `docker-compose exec 서비스명 명령어`
+- `docker-compose logs 서비스명 -f`
   - `-f`: follow
 
 ### 설정
 
-`stop -> up` 또는 실행 중 `up` 하면 수정 옵션들이 반영됨
+컴포즈 파일 옵션 수정 후, `docker compose up -d --force-recreate 서비스명`
+
+#### `stop -> up` 또는 실행 중 `up` 하면 수정 옵션들이 반영(stop이 아닌 up)
 
 **services**
 
 - `env_file`: 컨테이너 내부 환경 변수 설정
 - `volumes`: `{호스트경로}:{컨테이너경로}`로 마운트 ( 컨테이너가 덮어띄어짐 )
   - `docker compose 실행 시점에 마운트가 됨`
-  - `:`사용하지 않고 단일경로로 설정 시, 설정한 로컬경로를 컨테이너의 동일 경로로 마운트
+  - `:`사용하지 않고 단일경로로 설정 시, 익명 볼륨으로 설정하는 것으로 `/var/lib/docker/volumes/<랜덤ID>/_data` 경로에 데이터 저장
   - `:ro`: Read-Only 마운트
   - `:rw`: Read-Write
 - `extra_hosts`: `{도메인}:{IP}`로 설정, 컨테이너의 `/etc/hosts`에 등록됨
