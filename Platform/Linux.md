@@ -88,6 +88,7 @@ ex) `커맨드 > /dev/null 2>&1`: 커맨드의 표준 출력을 버리고, 에�
 - `env`: 환경변수 목록
 - `man`: 명령어 매뉴얼(도움말) 출력, less의 기능을 따름
 - `su -`: root사용자로 변경, `su - root` 또는 `sudo -` 와 동일
+- `sudo -i`: root 쉘이 필요한 경우
 - `passwd root`: root계정 패스워드 설정
 
 top,

@@ -1,6 +1,8 @@
 # Platform - OpenVPN
 
-### 설치(2.8.5)
+## ESXI OVA - 2.8.5
+
+### 설치
 
 1. OpenVPN Access Server 설치 파일 다운로드(OVA)
    - [링크](https://as-portal.openvpn.com/get-access-server)
@@ -57,3 +59,14 @@ sleep 2
 ./sacli --key "vpn.server.lockout_policy.reset_time" ConfigDel
 ./sacli start
 ```
+
+## Linux Ubuntu Live Server - 3.2.2
+
+### 설치
+
+1. `sudo bash -c 'bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes'`
+   - 설치 시, 계정과 임시 비밀번호 노출됨
+   - 다시보기: `sudo cat /usr/local/openvpn_as/init.log`
+2. 리눅스 설치시의 지정 IP로 접속
+   - admin: `https://{ip}:943/admin/login`
+   - client: `https://{ip}:943/login`

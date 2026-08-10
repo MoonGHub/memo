@@ -23,10 +23,13 @@
 
 ## Install
 
-1. `curl -fsSL https://get.docker.com -o get-docker.sh`
-2. `sh get-docker.sh`
-3. `docker info` 또는 `systemctl status docker` 또는 `snap services`
+1. ~~`curl -fsSL https://get.docker.com -o get-docker.sh`~~\
+2. ~~`sh get-docker.sh`~~
+3. ~~`docker info` 또는 `systemctl status docker` 또는 `snap services`~~
 4. ~~`apt install docker-compose`~~ `docker-compose` CLI는 <u>**Docker CLI**</u>로 통합
+
+- 설치 방법은 공식 사이트 참고
+- `sudo usermod -aG docker $USER && newgrp docker`: 현재 로그인한 사용자를 도커 그룹에 추가
 
 ---
 
@@ -170,7 +173,7 @@
   - `-d`: 백그라운드 실행
   - `--platform linux/amd64`: 실행되는 호스트 환경에 맞춰 추가
     - `uname -m`
-      - `x86_64`(Intel 기반)이면 `linux/amd64`
+      - `x86_64`(Intel 또는 AMD 기반)이면 `linux/amd64`
       - `aarch64` 또는 `arm64`(실리콘 맥)이면 `linux/arm64`
   - `--build`: 새 이미지로 재빌드 후 컨테이너 재생성(덮어씌어짐)하고 실행
 - `docker-compose down --volume --rmi all`: 컨테이너 제거(네트워크 기본 삭제, 볼륨/이미지 삭제)

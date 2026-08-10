@@ -95,7 +95,8 @@
 - `git commit -m "msg"`
   - `--allow-empty`: 수정사항 없이 커밋 가능
 - `git commit --amend "msg"`: 최근 커밋으로 합치기 - 스테이징에 변화가 없을 경우, 메세지만 변경
-- `git commit -m '2025.01.11 병합' -m "$(git log {스쿼시 머지한 대상 브랜치의 마지막 커밋}..main --pretty=format:"%h | %an | %ad | %s" --date=short)"`
+- `git commit --amend --reset-author --no-edit`: 마지막 커밋의 Author를 현재 로컬 설정으로 변경
+- `git commit -m '2025.01.11 병합' -m "$(git log {마지막으로 반영한 main 커밋 해쉬}..main --pretty=format:"%h | %an | %ad | %s" --date=short)"`
 
 ### 업데이트(Pull / Push / Fetch)
 
@@ -118,7 +119,8 @@
 
 - `git merge {branch_name}`
   - `--no-ff`: Fast-Forward가 가능해도 Merge Commit을 생성하고 병합
-  - `--squash`: PR이 병합될 때 모든 커밋이 단일 커밋으로 압축
+  - `--squash`: PR이 병합될 때 모든 커밋이 단일 커밋으로 압축\
+    대안: `git cherry-pick --no-commit <마지막으로 반영한-main-커밋>..main`
 
 ---
 

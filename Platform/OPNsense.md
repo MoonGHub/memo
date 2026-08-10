@@ -1,30 +1,33 @@
 # Platform - OPNSense
 
-- [설치(23.1 - 23.1.1_2)](#설치231---2311_2)
-- [웹 콘솔 설정](#웹-콘솔-설정)
-  - [내부망 인터넷 연결](#내부망-인터넷-연결)
+- [설치(26.7)](#설치267)
+- [설정](#설정)
   - [웹 콘솔 접속 제한(포트)](#웹-콘솔-접속-제한포트)
   - [NAT(Network Address Translation)설정](#natnetwork-address-translation설정)
+    - [HAproxy 사용 시, 80과 443은 방화벽 설정만 추가](#haproxy-사용-시-80과-443은-방화벽-설정만-추가)
+  - [기타](#기타)
+    - [공유기망 아래에서 도메인 접속 시](#공유기망-아래에서-도메인-접속-시-interfaces--wan--block-private-networks-체크-해제)
+  - [IPS(침입탐지시스템) 활성화](#ips침입탐지시스템-활성화)
 - [플러그인](#플러그인)
-  - [HAProxy(리버스 프록시)](#haproxy리버스-프록시)
+  - [HAProxy(리버스 프록시) - os-haproxy](#haproxy리버스-프록시---os-haproxy)
     - [Jenkins Git webhook 연동 추가](#jenkins-git-webhook-연동-추가)
     - [http to https 리다이렉트 설정](#http-to-https-리다이렉트-설정)
     - [내부망 원격접속(SSH)](#내부망-원격접속ssh)
       - [Predefined 방식](#predefined-방식)
       - [Dynamic 방식](#dynamic-방식)
-  - [ACME Client(SSL)](#acme-clientssl)
-- [ETC](#etc)
-  - [IPS(침입탐지시스템) 활성화](#ips침입탐지시스템-활성화)
+  - [ACME Client(SSL) - os-acme-client](#acme-clientssl---os-acme-client)
 
 ---
 
-## 설치(23.1 - 23.1.1_2)
+## 설치(26.7)
 
 1. Shell(8) - 인스톨러 실행(`opnsense-installer`)
    - ID: root
    - PWD: opnsense
 2. Assign interfaces(1) - WAN과 LAN을 지정
 3. Set interface IP address(2) - 지정한 인터페이스에 IP및 서브넷 마스크 설정
+   > [!IMPORTANT]
+   > WAN 설정 시 게이트웨이도 지정 할 것, LAN은 안해도 됨 => 내부망 인터넷 자동으로 됨
 
 - 설치 위치 경로 및 설정 파일
   - /usr/local/etc/
@@ -33,42 +36,70 @@
 
 ---
 
-## 웹 콘솔 설정
+## 설정
 
-**크롬 브라우저에서 실행할 것**
-
-### 내부망 인터넷 연결
-
-1.  Firewall > Rules > 내부 포트망(LAN 또는 OPT1) > Add
-2.  Default로 설정된 값들로 바로 저장
-    - 내부망의 VM들이 OPNsense를 통해 나가는 트래픽을 허용하기 위함
-    - Direction은 OPNsense 기준
-
-<br />
-
-### 웹 콘솔 접속 제한(포트)
+### 웹 콘솔 접속 제한
 
 1.  System > Settings > Administration
-2.  Web GUI > Listen Interfaces에서 설정
+2.  Web GUI > Listen Interfaces > LAN
 
 <br />
 
 ### NAT(Network Address Translation)설정
 
-> 외부 접속 허용 포트 추가 시 설정
+> 외부 접속 허용 포트(80, 443 또는 윈도우 원격접속 등) 추가 시 설정
 
-Firewall > NAT
+Firewall > NAT > Destination NAT
 
-- 포트 포워딩(> Port Forward > add - 방화벽도 자동 등록됨)
-  - Interface: WAN
-  - TCP/IP Version: IPv4
-  - Protocol: TCP
-  - Source: any(all)\
-    내부 네트워크에 도메인으로 접속하기 위하여 any
-  - Destination: This Firewall
-    - port range: IN 포트 지정(HTTP -> HTTP, HTTPS -> HTTPS, 기타 지정 포트)
-    - Redirect target IP: NAT IP(내부 포트망의 GW)
-    - Redirect target port: NAT port(HTTP or HTTPS, 또는 기타 지정 포트)
+- Interface: WAN
+- Version: IPv4
+- Protocol: TCP
+- Source Address: any\
+   외부 접근 IP
+- Source Port: any\
+   외부 접근 포트
+- Destination Address: This Firewall\
+   외부에서 접속 시 지정하는 IP(OPNsense WAN IP)
+- Destination Port: Single port or range\
+   외부에서 접속 시 지정하는 포트
+- Redirect Target IP: Single host or Network\
+   포트 포워딩 할 IP
+- Redirect Target Port: Single port\
+   포트 포워딩 할 Port
+- **Firewall rule: Pass**\
+   **중요! 방화벽 자동 등록**
+
+#### HAproxy 사용 시, 80과 443은 방화벽 설정만 추가
+
+WAN / IPv4 / TCP / Source any
+→ This Firewall / 80 / Pass
+
+WAN / IPv4 / TCP / Source any
+→ This Firewall / 443 / Pass
+
+<br />
+
+### 기타
+
+#### 공유기망 아래에서 도메인 접속 시, Interfaces > WAN > Block private networks 체크 해제
+
+<br />
+
+### IPS(침입탐지시스템) 활성화
+
+[참고](https://docs.opnsense.org/manual/ips.html)
+
+1. Services > Intrusion Detection > Administration
+2. 모두 체크
+   - Enabled : IDS 활성화(탐지만)
+   - IPS mode : IPS 모드 활성화(차단)
+   - Promiscuous mode : 모든 트래픽을 감시
+3. 추가 설정
+   - Pattern matcher: HyperScan
+   - Interfaces: WAN보호할 인터페이스(기본적으로 외부와 연결된 인터페이스)
+4. Download 탭에서 Download & Update Rules 후, 모두 활성화
+5. Rules 탭에서 필요한 부분을 Drop룰로 변경
+6. Schedule 탭에서 cron(System > Settings > Cron) 업데이트 활성화
 
 ---
 
@@ -77,37 +108,28 @@ Firewall > NAT
 **플러그인 추가(System > Firmware > Plugins)**\
 (설치 후 새로고침 시, Services에 표시)
 
-- os-acme-client - 3.15
-- os-haproxy - 4.1
-
 <br />
 
-### HAProxy(리버스 프록시)
+### HAProxy(리버스 프록시) - os-haproxy
 
 1.  Real Servers 등록
     - Name or Prefix: Server Name
     - FQDN or IP: WAS의 IP
-    - Port: 접속 port
+    - Port: 접속 port(80)
     - Verify SSL Certificate 체크 해제
 2.  Virtual Services > Backend Pools 등록
+    - Name: 1.번의 Server Name과 동일하게
     - Servers: 1.번의 서버
     - Enable Health Checking 체크 해제
-3.  Rules & Checks > Conditions 등록
-    - Condition type: Host starts with 또는 Host contains
-    - Host Prefix 또는 Host contains: 도메인 이름
-4.  Rules & Checks > Rules 등록
-    - Select conditions: 3.번의 조건
-    - Execute function: Use specified Backend Pool
-    - Use backend pool: 2.번의 백엔드 풀
+3.  Advanced > Map Files 등록
+    - Type: dom - Domains
+    - Content: 라인 당 `{domain명} {2.의 백엔드 풀 이름}` 형식으로 작성
+4.  Rules & Checks > Rule 등록
+    - (Rule type)Type: Map Domains to backend pools using a map file
+    - (Parameters)Map file: 3.에서 작성한 Map파일 선택
 5.  Virtual Services > Public Services 등록
-    - Listen Addresses: 외부 접속 IP:Port(80)
-    - Select Rules: 3.번의 규칙
-
-> 3~5에서 Map File로 조건 대체
->
-> - Advanced > Map Files에 라인 당 `{domain명} {2.의 백엔드 풀 이름}` 형식으로 작성
-> - Rules & Checks > Conditions 등록(Map Domains to backend pools using a map file과 위의 작성 Map파일 선택)
-> - Public Services의 규칙에 위의 rule을 등록
+    - Listen Addresses: OPNsense WAN IP:Port(80)
+    - Select Rules: 4.번의 규칙
 
 - 시작 에러(WARNING: failed to start haproxy)
   1.  `service haproxy status` 및 `service haproxy start`으로 먼저 실행
@@ -126,34 +148,26 @@ Firewall > NAT
 
 #### http to https 리다이렉트 설정
 
-1. Firewall > NAT > Port Forward 설정을 추가(방화벽은 자동으로 추가 됨)
-   - WAN(all, all) -> Destination(This Firewall, 80) -> NAT(HAProxy public service의 리스닝 IP, 80)
-   - WAN(all, all) -> Destination(This Firewall, 443) -> NAT(HAProxy public service의 리스닝 IP, 443)
-2. HAProxy > real server들의 백엔드 풀이 설정된 public service를 동일하게 생성하여 리스닝 포트를 443으로 변경
+1. real server들의 백엔드 풀이 설정된 public service(80)를 동일하게 생성하여 리스닝 포트를 443으로 변경\
    - github-webhook도 생성한 443의 public service로 이동
    - 80의 public service는 Enable SSL offloading 체크 해제
-3. Rules & Checks > Conditions > add
+2. Rules & Checks > Conditions > add
    - Name: Traffic_is_HTTP
    - Condition type: Traffic is HTTP
-4. Rules & Checks > Conditions > add
+3. Rules & Checks > Conditions > add\
+    **ACME 추가 시 필수, 먼저 해놓아도 됨**
    - Name: acme-challenge-negate
-   - Condition type: Path regex
+   - Condition type: path_reg - Path regex
    - Negate condition 체크
    - Path Regex: `^/\.well-known/acme-challenge/?`
-5. Rules & Checks > Rules > add
+4. Rules & Checks > Rules > add
    - Name: redirect_https
-   - Select conditions: 3.에서 추가한 Traffic_is_HTTP과 4.에서 추가한 acme-challenge-negate
-   - Execute function: http-request redirect
-   - HTTP Redirect: `scheme https code 301`
-6. Virtual Services > Public Services > ~~add~~(~~또는~~ 2.의 기존 80포트 편집)
-
-   ~~- Name: ridirect_to_https~~\
-   ~~- Listen Addresses: GW IP:80~~\
-   ~~- Rules > Select Rules: 5.에서 추가한 redirect_https~~
-
-   또는 ACME Client 세팅에서 HAProxy Integration 체크로 자동 추가된 Public Services에서
-   - Listen Addresses: GW IP:80
-   - Rules > Select Rules: 5.에서 추가한 redirect_https(후 순위로 지정)
+   - Select conditions: 2.에서 추가한 Traffic_is_HTTP과 3.에서 추가한 acme-challenge-negate
+   - (Rule Type)Type: http-request
+   - (Parameters)Action: redirect
+   - (Parameters)Options/Values: `scheme https code 301`
+5. Virtual Services > Public Services > 80 포트의 Public Service
+   - Rules > Select Rules: 4.에서 추가한 redirect_https(순서 상관 없음 - 아마)
 
 #### 내부망 원격접속(SSH)
 
@@ -165,18 +179,27 @@ Firewall > NAT
 ##### Predefined 방식
 
 1. 공유기 포트 포워딩 TCP로 추가(ex. 2222)
-2. OPNsense > Firewall > NAT > Port Forward > Add
+2. OPNsense > Firewall > NAT > Destination NAT > Add
    - Interface: WAN
-   - TCP/IP Version: IPv4
+   - Version: IPv4
    - Protocol: TCP
-   - Source: any(all)
-   - Destination: This Firewall
-     - port range: IN 포트 지정(ex. 2222)
-     - Redirect target IP: NAT IP(내부 포트망의 GW)
-     - Redirect target port: NAT port(ex. 2222)
+   - Source Address: any
+   - Destination Address: This Firewall
+   - Destination Port: IN 포트 지정(ex. 2222)
+   - Redirect Target IP: NAT IP(내부 포트망의 GW)
+   - Redirect Target Port: NAT port(ex. 2222)
+   - **Firewall rule: Pass**\
+      **중요! 방화벽 자동 등록**
+
+   > [!NOTE]
+   > 내부망이 아닌 OPNsense WAN으로 받으면 방화벽만 추가해주면 됨
+   >
+   > WAN / IPv4 / TCP / Source any
+   > → This Firewall / 2222 / Pass
+
 3. HAProxy > Virtual Services > Public Services > Add
    - advanced mode: 체크
-   - Listen Addresses: 내부 포트망의 GW:지정 포트(ex.2222)
+   - Listen Addresses: OPNsense WAN IP 또는 내부 포트망의 GW:지정 포트(ex.2222)
    - Type: SSL/HTTPS (TCP mode)
    - Enable SSL offloading: 체크
    - Certificates: Web GUI TLS certificate
@@ -203,7 +226,7 @@ Predefined 방식의 1과 2 선행
 
 1. HAProxy > Virtual Services > Public Services > Add
    - advanced mode: 체크
-   - Listen Addresses: 내부 포트망의 GW:지정 포트(ex.2222)
+   - Listen Addresses: OPNsense WAN IP 또는 내부 포트망의 GW:지정 포트(ex.2222)
    - Type: SSL/HTTPS (TCP mode)
    - Enable SSL offloading: 체크
    - Certificates: Web GUI TLS certificate
@@ -220,11 +243,13 @@ Predefined 방식의 1과 2 선행
    - Name or Prefix: ssh-all
    - FQDN or IP: 0.0.0.0
    - Port: 22
+   - Verify SSL Certificate 체크 해제
 3. HAProxy > Virtual Services > Backend Pools > Add
    - advanced mode: 체크
    - Name: ssh-all
    - Mode: TCP(Layer 4)
    - Servers: 2.에서 등록한 ssh-all
+   - Enable Health Checking 체크 해제
    - Option pass-through
 
      ```
@@ -242,7 +267,7 @@ Predefined 방식의 1과 2 선행
 
 <br />
 
-### ACME Client(SSL)
+### ACME Client(SSL) - os-acme-client
 
 1.  Settings > Settings
     - Enable Plugin 체크
@@ -264,7 +289,7 @@ Predefined 방식의 1과 2 선행
     - Challenge Type: HTTP-01
     - HTTP Service: HAProxy HTTP Frontend Integration(OPNsense plugin)
     - Enable Auto-Configuration: 체크
-    - HAProxy Frontends: HAProxy에서 acme 인증 백엔드 풀이 등록되어있는 public service
+    - HAProxy Frontends: HAProxy의 80포트 public service
 6.  Certificates > Certificates > add
     - Common Name: 도메인 이름
     - Alt Names: HTTP-01 타입은 와일드 카드 불가능, 서브도메인이 있는경우 하나씩 추가
@@ -272,8 +297,8 @@ Predefined 방식의 1과 2 선행
     - Challenge Type: 5.의 타입
     - Key Length: ec-384
     - Automations: 4.의 자동화
-    - DNS Alias Mode: Automatic Mode (uses DNS lookups)
-7.  인증서 발급에 성공 되었으면, real server - backend pool이 등록된 HAProxy의 public service의 설정을 변경
+    - ~~DNS Alias Mode: Automatic Mode (uses DNS lookups)~~: DNS-01 관련 기능
+7.  인증서 발급에 성공 되었으면, HAProxy의 public service(443)의 설정을 변경
     - Enable SSL offloading 체크
     - SSL Offloading > Certificates: 6.에서 발급된 인증서를 등록
 
@@ -281,23 +306,3 @@ Predefined 방식의 1과 2 선행
   - 와일드카드(서브도메인) 인증서 발급 불가
 - HAproxy의 public service에서 노출되는 인증서 삭제
   - OPNsense콘솔 > System > Trust > Certificates > 제거
-
----
-
-## ETC
-
-### IPS(침입탐지시스템) 활성화
-
-[참고](https://docs.opnsense.org/manual/ips.html)
-
-1. Services > Intrusion Detection > Administration
-2. 모두 체크
-   - Enabled : IDS 활성화(탐지만)
-   - IPS mode : IPS 모드 활성화(차단)
-   - Promiscuous mode : 모든 트래픽을 감시
-3. 추가 설정
-   - Pattern matcher: HyperScan
-   - Interfaces: WAN보호할 인터페이스(기본적으로 외부와 연결된 인터페이스)
-4. Download 탭에서 Download & Update Rules 후, 모두 활성화
-5. Rules 탭에서 필요한 부분을 Drop룰로 변경
-6. Schedule 탭에서 cron(System > Settings > Cron) 업데이트 활성화
