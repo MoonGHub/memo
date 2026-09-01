@@ -403,6 +403,8 @@ apt-get update && apt-get install apt-file -y && apt-file update && apt-get inst
   - `*.pem`파일의 권한은 `chmod 400` 부여
   - 서버 아이피가 동일 하며, 서버를 다시 설치 했을 경우 ~/.ssh/known_hosts 를 제거
 
+- 서버호스트 키 조회: `awk '{print "서버이름 " $1 " " $2}' /etc/ssh/ssh_host_ed25519_key.pub`
+
 #### 접속 IP 제한
 
 1. `vim /etc/ssh/sshd_config`

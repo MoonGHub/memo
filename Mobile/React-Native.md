@@ -14,13 +14,14 @@ PBL# Mobile - React Native
   - [IOS](#ios-2)
   - [스토어 배포 이슈](#스토어-배포-이슈)
     - [AOS - App must support 16 KB memory page sizes](#aos---app-must-support-16-kb-memory-page-sizes)
+  - [hot updater](#hot-updater)
+    - [대쉬보드](#대쉬보드)
 - [PBL](#pbl)
   - [캐시 제거 및 패키지 인식 오류](#캐시-제거-및-패키지-인식-오류)
     - [Android](#android-2)
     - [IOS](#ios-3)
     - [새 프로젝트 생성 시](#새-프로젝트-생성-시)
     - [프로파일 변경 시(Profile doesn't include the selected signing certificate)](#프로파일-변경-시profile-doesnt-include-the-selected-signing-certificate)
-  - [App Center](#app-center)
   - [com.kakao.sdk.common.model.AuthError: Android keyHash validation failed. (AOS 배포앱에서만)](#comkakaosdkcommonmodelautherror-android-keyhash-validation-failed-aos-배포앱에서만)
   - [A problem occurred starting process 'command 'npx''](#a-problem-occurred-starting-process-command-npx)
 
@@ -178,6 +179,53 @@ The APKs have been extracted in the directory: /var/folders/yg/3y40k7_53tj_2k69j
 
 해결: [RN 버전 업데이트 >= 0.77](https://reactnative.dev/blog/2025/01/21/version-0.77#android-version-15-support--16kb-page-support)
 
+<br />
+
+### hot updater
+
+**AWS S3 Storage + Lambda@Edge Function**
+
+1. AWS IAM 설정
+   1. 활성화
+   2. 사용자 생성
+   3. 권한 세트 생성
+      ```
+      AmazonS3FullAccess
+      AWSLambda_FullAccess
+      CloudFrontFullAccess
+      IAMFullAccess
+      AmazonSSMFullAccess
+      ```
+   4. 사용자에 계정 할당(권한세트)
+2. aws sso 프로필 생성
+   - `aws configure sso --profile {프로필명; 아무렇게}`
+   - `aws configure list-profiles`
+3. 프로젝트에서 `yarn hot-updater init`
+4. IOS 및 AOS 세팅
+5. 채널 등록
+   - `yarn hot-updater channel set user-production`
+   - `yarn hot-updater channel set partner-production`
+6. 배포
+   - `yarn hot-updater channel`: 채널 확인
+   - ```
+     yarn hot-updater deploy \
+     -p ios \
+     -c user-production \
+     -m "테스트 업데이트"
+     ```
+     ```
+     yarn hot-updater deploy \
+     -p android \
+     -c user-production \
+     -m "테스트 업데이트"
+     ```
+
+#### 대쉬보드
+
+1. `aws configure list-profiles`
+2. `aws sso login --profile {프로필명}`
+3. 프로젝트 루트에서 `yarn hot-updater console`
+
 ---
 
 ## PBL
@@ -231,16 +279,6 @@ rm -rf  ~/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*
 ```
 
 `XCode > Settings > Apple Accounts > 해당 팀이 있는 계정 추가`
-
-<br />
-
-### App Center
-
-- codepush
-  - `appcenter codepush release-react -a {userName}/{AppName} -d {deployType}`
-    - userName: moong_push
-    - AppName: App Name
-    - deployType: Production/Staging[/...CustomName]
 
 <br />
 
